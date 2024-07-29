@@ -1,4 +1,4 @@
-package src;
+package src.entity;
 
 import src.constant.Level;
 
@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Deck {
     private String topic;
-    private Level level;
+    private Level level; //Mức độ đánh giá theo kỳ thi JLPT
     private List<Card> cards; //Danh sách các thẻ học
     private Date createdDate; //Ngày tạo bộ thẻ
     private String description; //Mô tả nội dung, nguồn tài liệu
@@ -64,7 +64,7 @@ public class Deck {
     public String toString() {
         return "Deck{" +
                 "topic='" + topic + '\'' +
-                ", level=" + level +
+                ", level=" + level.getValue()+
                 ", cards=" + cards +
                 ", createdDate=" + createdDate +
                 ", description='" + description + '\'' +

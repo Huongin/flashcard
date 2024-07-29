@@ -1,4 +1,4 @@
-package src;
+package src.constant;
 
 public interface CommonConstant {
     String Exit_SIGNAL = "exit";
