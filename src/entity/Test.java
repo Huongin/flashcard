@@ -1,4 +1,6 @@
-package src.entity;
+package entity;
+
+import entity.Card;
 
 import java.util.Date;
 import java.util.List;
@@ -18,21 +20,8 @@ public class Test {
         AUTO_ID++;
     }
 
-    public Test(int id, String name, String testStatus, Date createdDate, List<Card> card, int passScoreThreshold) {
-        this.id = id;
-        this.name = name;
-        this.testStatus = testStatus;
-        this.createdDate = createdDate;
-        this.card = card;
-        this.passScoreThreshold = passScoreThreshold;
-    }
-
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

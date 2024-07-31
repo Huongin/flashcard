@@ -1,23 +1,64 @@
-package src.view;
+package view;
 
-import src.util.InputUtil;
+import entity.User;
+import service.CardService;
+import service.UserService;
+import util.InputUtil;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class AdminMenu {
-    public void  menu(){
+
+    private final UserService userService;
+
+    public AdminMenu(UserService userService, CardService cardService) {
+        this.userService = userService;
+    }
+
+    public void  menu() {
         while (true) {
-            System.out.print("--------PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT--------");
+            System.out.print("--------MENU ADMIN MANAGEMENT--------");
             System.out.println("1.Quản lý danh sách người dùng");
             System.out.println("2.Quản lý thẻ học");
             System.out.println("3.Quản lý bộ thẻ học");
-            System.out.println("4.Quản lý bài học ");
-            System.out.println("5.Quản lý bài kiểm tra");
-            System.out.println("6.Thống kê kết quả bài kiểm tra");
-            System.out.println("7.Thoát");
+            System.out.println("4.Quản lý bài Test ");
+            System.out.println("5.Quản lý kết quả học");
+            System.out.println("6.Thoát");
             int choise = InputUtil.chooseOption("Xin mời chọn chức năng: ",
-                    "Chức năng là số dương từ 1 đến 7, vui lòng nhập lại: ", 1, 7);
+                    "Chức năng là số dương từ 1 đến 6, vui lòng nhập lại: ", 1, 6);
             switch (choise) {
                 case 1:
                     userManagementMenu();
+                    break;
+                case 2:
+                    flashcardMenu();
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    return;
+            }
+        }
+    }
+
+    private void flashcardMenu() {
+        while (true) {
+            System.out.println("------------------ PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT------------------");
+            System.out.println("------------------QUẢN LÝ DANH SÁCH THẺ HỌC------------------");
+            System.out.println("1. Thêm mới thẻ học");
+            System.out.println("2. Cập nhật thông tin thẻ học");
+            System.out.println("3. Tìm kiếm thẻ học theo tên");
+            System.out.println("4. Tìm kiếm thẻ học theo chủ đề");
+            System.out.println("5. Thoát");
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
+                    "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
+            switch (choice) {
+                case 1:
                     break;
                 case 2:
                     break;
@@ -30,17 +71,71 @@ public class AdminMenu {
                 case 6:
                     break;
                 case 7:
+                    break;
+                case 8:
                     return;
             }
         }
-        }
-
-    private void userManagementMenu() {
-        while (true){
-            System.out.println("--------PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT--------");
-            System.out.println("----------QUẢN LÝ DANH SÁCH NGƯỜI DÙNG----------");
-            System.out.println("");
-        }
     }
 
+    public void userManagementMenu() {
+        while (true){
+            System.out.println("------------------ PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT------------------");
+            System.out.println("------------------QUẢN LÝ DANH SÁCH NGƯỜI DÙNG------------------");
+            System.out.println("1.Tìm kiếm người dùng theo tên ");
+            System.out.println("2.Tạo mới tài khoản người dùng");
+            System.out.println("3.Cập nhật thông tin người dùng ");
+            System.out.println("4.Khóa hoạt động người dùng");
+            System.out.println("5.Lịch sử học của người dùng ");
+            System.out.println("6.Thoát");
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng" ,
+                    "Chức năng là số dương từ 1 đến 6, Vui lòng nhập lại: ", 1, 6);
+            switch (choice) {
+                case 1:
+                    userService.searchUserByName();
+                    break;
+                case 2:
+                    userService.createUser();
+                    break;
+                case 3: {
+                    int idUserUpdate;
+                    while (true) {
+                        try {
+                            System.out.println("Mời bạn nhập ID của User muốn update ");
+                            idUserUpdate = new Scanner(System.in).nextInt();
+                        } catch (InputMismatchException e) {
+                            System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
+                            continue;
+                        }
+                        break;
+                    }
+                    userService.updateUserInformation(idUserUpdate);
+                }
+                case 4: {
+                    User user;
+                    int idUserLock;
+                    while (true) {
+                        try {
+                            System.out.println("Mời bạn nhập ID của User muốn khóa ");
+                            idUserLock = new Scanner(System.in).nextInt();
+                        } catch (InputMismatchException e) {
+                            System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
+                            continue;
+                        }
+                        user = userService.findUserById(idUserLock);
+                        if (user == null) {
+                            System.out.print("Thông tin không chính xác , vui lòng nhập lại : ");
+                            continue;
+                        }
+                        break;
+                    }
+                    userService.lockUserById(idUserLock);
+                }
+                case 5:
+                    break;
+                case 6:
+                    return;
+            }
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package src.constant;
+package constant;
 
 public enum State {
     Active, INACTIVE;

@@ -1,58 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="432cf8a7-ee11-41ef-bd52-3062cf9501e8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.run/desktop.run.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AdminMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/AdminMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CardStudy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Study.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CommonConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/constant/CommonConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Deck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/InputUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/InputUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/MainMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TestDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/TestDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Main/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/constant/Regex.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN-2/src/BTVN2/giaiphuongtrinhbac2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN-2/src/BTVN2/giaiphuongtrinhbac2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN/src/SavingsBook.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN/src/SavingsBook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN/src/SavingsBookDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN/src/SavingsBookDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/entity/BookBorrowOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/entity/BookBorrowOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/entity/BookBorrowOrderDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/entity/BookBorrowOrderDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/entity/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/entity/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/entity/Reader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/entity/Reader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/BookBorrowOrderLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/BookBorrowOrderLogichandle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/BookLogicHandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/BookLogicHandle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/MenuLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/MenuLogichandle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/ReaderLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/ReaderLogichandle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constant/CardType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/constant/CardType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constant/CommonConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/constant/CommonConstant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/constant/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/constant/Level.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constant/StudyStatus.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constant/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/constant/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constant/UserRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/constant/UserRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/Study.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Study.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/TestDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/TestDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/InputUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/InputUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/AdminMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/AdminMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/MainMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Huongin"
+  }
 }]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Huongin/flashcard.git",
+    "accountId": "17edaea9-4121-4f1e-9cee-4bfe244d0157"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2jvJGrLeZItzq2CsgBYqgmishXY" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/OneDrive/Java27/project/flashcard&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

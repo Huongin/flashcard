@@ -1,7 +1,12 @@
-package src.entity;
+package entity;
 
 import java.util.Date;
 import java.util.List;
+
+import entity.User;
+
+
+
 
 public class TestDetail {
     private User user;

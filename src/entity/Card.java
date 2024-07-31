@@ -1,7 +1,8 @@
-package src.entity;
+package entity;
 
-import src.constant.CardType;
-import src.constant.State;
+
+import constant.CardType;
+import constant.State;
 
 public class Card {
     private static int AUTO_ID = 100;

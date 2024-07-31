@@ -1,4 +1,4 @@
-package src.constant;
+package constant;
 
 public enum Level {
     N1("Trình độ JLPT N1"),

@@ -1,6 +1,8 @@
-package src.entity;
+package entity;
 
 import java.util.List;
+import entity.User;
+import entity.Card;
 
 public class Study {
     private User user;

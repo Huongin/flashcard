@@ -1,6 +1,6 @@
-package src.util;
+package util;
 
-import src.constant.CommonConstant;
+import constant.CommonConstant;
 
 import java.util.InputMismatchException;
 import java.util.List;

@@ -1,10 +1,9 @@
-package src.entity;
+package entity;
 
-import src.constant.UserRole;
+import constant.UserRole;
 
 public class User {
 
-    private static int AUTO_ID = 1000;
 
     private int id;
     private String email;
@@ -14,12 +13,8 @@ public class User {
     private int age;
     private String motherTounge;
 
-    public User(){
-        this.id = AUTO_ID;
-        AUTO_ID++;
-    }
 
-    public User(int id, String email, String password, UserRole role, String fullName, int age, String motherTounge) {
+    public User(String email, String password, UserRole role) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -29,8 +24,21 @@ public class User {
         this.motherTounge = motherTounge;
     }
 
+    public User(int id, String email, String password, String fullName, int age, String motherTounge) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.age = age;
+        this.motherTounge = motherTounge;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEmail() {
