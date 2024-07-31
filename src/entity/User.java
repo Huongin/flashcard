@@ -2,7 +2,11 @@ package entity;
 
 import constant.UserRole;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
 
     private int id;
@@ -14,7 +18,7 @@ public class User {
     private String motherTounge;
 
 
-    public User(String email, String password, UserRole role) {
+    public User(String s, String email, UserRole user, String password, UserRole role) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -31,6 +35,9 @@ public class User {
         this.fullName = fullName;
         this.age = age;
         this.motherTounge = motherTounge;
+    }
+
+    public User(String adminEmail, String adminPassword, UserRole userRole) {
     }
 
     public int getId() {

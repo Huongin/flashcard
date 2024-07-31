@@ -101,12 +101,44 @@ public class UserService {
 
     // Đăng ký người dùng mới
     public User register() {
+        String email;
+        while (true) {
+            System.out.println("Nhập email (nhập 'exit' để thoát): ");
+            email = new Scanner(System.in).nextLine();
+            if (InputUtil.exitInput(email)) {
+                return null;
+            }
+
+            User existedUser = findUserByEmail(email);
+            if (existedUser != null) {
+                System.out.println("Email đã tồn tại trong hệ thống, vui lòng nhập lại: ");
+                continue;
+            }
+            break;
+        }
+        
+        System.out.println("Nhập mật khẩu (nhập 'exit' để thoát): ");
+        String password = new Scanner(System.in).nextLine();
+        if (InputUtil.exitInput(password)) {
+            return null;
+        }
+        
         User user = creatUserInfo();
         user.setRole(UserRole.USER);
         users.add(user);
         showUser(user);
         saveUserData();
+
         return user;
+    }
+
+    private User findUserByEmail(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     private User creatUserInfo() {
@@ -183,27 +215,40 @@ public class UserService {
     }
 
     public User login() {
-        int count = 0;
-        while (count < 5) {
-            count++;
-            String email;
-            while (true) {
-                System.out.print("Mời bạn nhập email: ");
-                email = new Scanner(System.in).nextLine();
-                if (!email.matches(Regex.EMAIL_REGEX)) {
-                    System.out.println("Email không đúng định dạng vui lòng nhập lại ");
-                    continue;
-                }
+        int loginCount = 1;
+        User user;
+        do {
+            System.out.println("Nhập email (nhập 'exit' để thoát): ");
+            String email = new Scanner(System.in).nextLine();
+            if (InputUtil.exitInput(email)) {
+                return null;
+            }
+
+            System.out.println("Nhập mật khẩu (nhập 'exit' để thoát): ");
+            String password = new Scanner(System.in).nextLine();
+            if (InputUtil.exitInput(password)) {
+                return null;
+            }
+
+            user = findUserByEmailAndPassword(email, password);
+            if (user != null) {
                 break;
             }
-            System.out.print("Mời bạn nhập mật khẩu : ");
-            String password = new Scanner(System.in).nextLine();
-            for (User user : users) {
-                if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
-                    return user;
-                }
+            loginCount++;
+            if (loginCount == MAX_LOGIN_TIMES) {
+                System.out.println("Bạn đã vượt quá số lần đăng nhập tối đa (5 lần), vui lòng thử lại sau");
+                break;
             }
-            System.out.println("Thông tin đăng nhập chưa chính xác. Đăng nhập thất bại" + (count) + "lần, vui lòng thử lại.");
+            System.out.println("Thông tin đăng nhập không chính xác, vui lòng thử lại: ");
+        } while (true);
+        return user;
+    }
+
+    private User findUserByEmailAndPassword(String email, String password) {
+        for (User user : users) {
+            if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
+                return user;
+            }
         }
         return null;
     }
@@ -326,27 +371,31 @@ public class UserService {
 
     //Hiển thị thông tin người dùng
     private void showUser(User user) {
-        printShowUsers();
+        printHeader();
         showUserDetail(user);
     }
 
     private void showUsers(List<User> users1) {
-        printShowUsers();
+        printHeader();
         for (User user : users1) {
             showUserDetail(user);
         }
     }
 
-    private void printShowUsers() {
+    private void printHeader() {
         System.out.printf("%-5s%-30s%-30s%-20s%-20s%-10s%-10s%n", "Id", "Fullname", "Email", "Age", "Role", "Mothertounge");
         System.out.println("------------------------------------------------------------------------------------------------------------------------------");
     }
 
     private void showUserDetail(User user) {
-        System.out.printf("%-5s%-30s%-30s%-20s%-20s%-10s%-10s%n", user.getId(), user.getFullname(), user.getEmail(), user.getAge(),
-                user.getRole(), user.getMothertounge());
+        System.out.printf("%-5s%-30s%-30s%-20s%-20s%-10s%-10s%n",
+                user.getId(),
+                user.getFullname(),
+                user.getEmail(),
+                user.getAge(),
+                user.getRole(),
+                user.getMothertounge());
     }
-
 
     //Tìm kiếm người dùng theo tên
     public void searchUserByName() {

@@ -1,5 +1,6 @@
 package view;
 
+import entity.Card;
 import entity.User;
 import service.CardService;
 import service.UserService;
@@ -11,9 +12,11 @@ import java.util.Scanner;
 public class AdminMenu {
 
     private final UserService userService;
+    private final CardService cardService;
 
     public AdminMenu(UserService userService, CardService cardService) {
         this.userService = userService;
+        this.cardService = cardService;
     }
 
     public void  menu() {
@@ -52,27 +55,24 @@ public class AdminMenu {
             System.out.println("------------------QUẢN LÝ DANH SÁCH THẺ HỌC------------------");
             System.out.println("1. Thêm mới thẻ học");
             System.out.println("2. Cập nhật thông tin thẻ học");
-            System.out.println("3. Tìm kiếm thẻ học theo tên");
-            System.out.println("4. Tìm kiếm thẻ học theo chủ đề");
+            System.out.println("3. Tìm kiếm thẻ học theo từ");
+            System.out.println("4. Danh sách các thẻ học đang có");
             System.out.println("5. Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
                     "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
             switch (choice) {
                 case 1:
+                    cardService.createCard();
                     break;
                 case 2:
-                    break;
+                    cardService.updateCardInfo();
                 case 3:
+                    cardService.searchCardByWord();
                     break;
                 case 4:
+                    cardService.listOfFlashcards();
                     break;
                 case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                case 8:
                     return;
             }
         }
@@ -86,10 +86,9 @@ public class AdminMenu {
             System.out.println("2.Tạo mới tài khoản người dùng");
             System.out.println("3.Cập nhật thông tin người dùng ");
             System.out.println("4.Khóa hoạt động người dùng");
-            System.out.println("5.Lịch sử học của người dùng ");
             System.out.println("6.Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng" ,
-                    "Chức năng là số dương từ 1 đến 6, Vui lòng nhập lại: ", 1, 6);
+                    "Chức năng là số dương từ 1 đến 5, Vui lòng nhập lại: ", 1, 5);
             switch (choice) {
                 case 1:
                     userService.searchUserByName();
@@ -132,8 +131,6 @@ public class AdminMenu {
                     userService.lockUserById(idUserLock);
                 }
                 case 5:
-                    break;
-                case 6:
                     return;
             }
         }
