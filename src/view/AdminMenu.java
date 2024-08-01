@@ -1,13 +1,13 @@
 package view;
 
+import Main.Main;
 import entity.Card;
 import entity.User;
 import service.CardService;
 import service.UserService;
 import util.InputUtil;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+
 
 public class AdminMenu {
 
@@ -97,37 +97,9 @@ public class AdminMenu {
                     userService.createUser();
                     break;
                 case 3:
-                    int idUserUpdate;
-                    while (true) {
-                        try {
-                            System.out.println("Mời bạn nhập ID của User muốn update ");
-                            idUserUpdate = new Scanner(System.in).nextInt();
-                        } catch (InputMismatchException e) {
-                            System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
-                            continue;
-                        }
-                        break;
-                    }
-                    userService.updateUserInformation(idUserUpdate);
+                    userService.updateUserInformation(Main.LOGGED_IN_USER.getId());
                 case 4:
-                    User user;
-                    int idUserLock;
-                    while (true) {
-                        try {
-                            System.out.println("Mời bạn nhập ID của User muốn khóa ");
-                            idUserLock = new Scanner(System.in).nextInt();
-                        } catch (InputMismatchException e) {
-                            System.out.println("Thông tin bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
-                            continue;
-                        }
-                        user = userService.findUserById(idUserLock);
-                        if (user == null) {
-                            System.out.print("Thông tin không chính xác , vui lòng nhập lại : ");
-                            continue;
-                        }
-                        break;
-                    }
-                    userService.lockUserById(idUserLock);
+                    userService.lockUserById();
                 case 5:
                     return;
             }

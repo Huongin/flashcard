@@ -41,9 +41,8 @@ public class CardService {
         System.out.println("Mời bạn chọn quyền sử dụng thẻ học: ");//Chọn trạng thái của thẻ
         System.out.println("1.Được phép học");
         System.out.println("2.Chưa được phép học");
-        int cardState = InputUtil.chooseOption(InputUtil.chooseOption("Xin mời chọn chức năng",
-                "Chức năng là số dương từ 1 đến 2, Vui lòng nhập lại: ", 1, 2);)
-
+        int cardState = InputUtil.chooseOption("Xin mời chọn chức năng",
+                "Chức năng là số dương từ 1 đến 2, Vui lòng nhập lại: ", 1, 2);
         switch (cardState) {
             case 1:
                 card.setState(State.Active);

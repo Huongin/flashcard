@@ -2,9 +2,8 @@ package entity;
 
 import constant.UserRole;
 
-import java.io.Serializable;
-
-public class User implements Serializable {
+public class User {
+    private static int AUTO_ID = 1;
 
     private int id;
     private String email;
@@ -13,6 +12,11 @@ public class User implements Serializable {
     private String fullName;
     private int age;
     private String motherTounge;
+
+    public User(String email, String password, String fullname, int age, String motherTounge){
+        this.id = AUTO_ID;
+        AUTO_ID++;
+    }
 
     public User(int id, String email, String password, UserRole role, String fullName, int age, String motherTounge) {
         this.id = id;
