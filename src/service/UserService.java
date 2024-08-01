@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class UserService {
     private static final String USER_DATA = "users.dat";
     private static int AUTO_ID;
-    private final List<User> users = new ArrayList<>();
+    private static final List<User> users = new ArrayList<>();
     private final List<Integer> lockedUserIds = new ArrayList<>();
     private static final int MAX_LOGIN_TIMES = 5;
 
@@ -257,7 +257,7 @@ public class UserService {
         return null;
     }
 
-    public User findUserById(int idUser) {
+    public static User findUserById(int idUser) {
         for (User user : users) {
             if (user.getId() == idUser) {
                 return user;

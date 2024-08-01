@@ -100,7 +100,7 @@ public class Card {
                 ", phonetic='" + phonetic + '\'' +
                 ", meaning='" + meaning + '\'' +
                 ", cardType=" + cardType.getValue()+
-                ", state=" + state +
+                ", state=" + state.getValue()+
                 ", example='" + example + '\'' +
                 ", creator=" + creator +
                 '}';
