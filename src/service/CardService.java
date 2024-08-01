@@ -13,6 +13,7 @@ public class CardService {
         card.setPhonetic(new Scanner(System.in).nextLine());
         System.out.println("Mời bạn chọn loại từ vựng");
 
+
         
     }
 

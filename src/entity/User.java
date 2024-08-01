@@ -6,9 +6,6 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-
     private int id;
     private String email;
     private String password;
@@ -17,8 +14,7 @@ public class User implements Serializable {
     private int age;
     private String motherTounge;
 
-
-    public User(String s, String email, UserRole user, String password, UserRole role) {
+    public User(int id, String email, String password, UserRole role, String fullName, int age, String motherTounge) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -37,7 +33,9 @@ public class User implements Serializable {
         this.motherTounge = motherTounge;
     }
 
+
     public User(String adminEmail, String adminPassword, UserRole userRole) {
+
     }
 
     public int getId() {

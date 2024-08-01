@@ -32,7 +32,7 @@ public class UserService {
 
     //Tạo Admin mặc định
     private void createDefaulAdminUser() {
-        if (users == null || users.isEmpty()) {
+        if (users.isEmpty()) {
             createAdmin();
             return;
         }
@@ -63,10 +63,11 @@ public class UserService {
         AUTO_ID = maxId + 1;
     }
 
+
     private void loadUserData() {
-        try (FileInputStream fis = new FileInputStream(USER_DATA);
-             ObjectInputStream ois = new ObjectInputStream(fis)) {
-            List<User> loadedUsers = (List<User>) ois.readObject();
+        try (FileInputStream fs = new FileInputStream(USER_DATA);
+             ObjectInputStream ois = new ObjectInputStream(fs)) {
+             List<User> loadedUsers = (List<User>)ois.readObject();
             if (loadedUsers != null) {
                 users.addAll(loadedUsers);
             }
@@ -77,13 +78,16 @@ public class UserService {
 
     //Lưu dữ liệu người dùng
     private void saveUserData() {
-        try (FileOutputStream fos = new FileOutputStream(USER_DATA);
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+        try {
+            FileOutputStream fos = new FileOutputStream(USER_DATA);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
             oos.writeObject(users);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi lưu dữ liệu người dùng", e);
         }
     }
+
 
     //Tạo mới tài khoản người dùng
     public void createUser() {
@@ -160,7 +164,7 @@ public class UserService {
                     break;
                 }
             }
-            if (coTrungEmailKhong == false) {
+            if (!coTrungEmailKhong) {
                 break;
             }
         }
@@ -175,11 +179,11 @@ public class UserService {
             break;
         }
         //Nhập họ tên
-        String name;
+        String fullname;
         while (true) {
             System.out.println("Mời bạn nhập họ tên: ");
-            name = new Scanner(System.in).nextLine();
-            if (!name.matches(".*\\d.*") && !name.isEmpty()) {
+            fullname = new Scanner(System.in).nextLine();
+            if (!fullname.matches(".*\\d.*") && !fullname.isEmpty()) {
                 break;
             } else {
                 System.out.println("Tên không hợp lệ, Vui lòng nhập lại.");
@@ -211,7 +215,7 @@ public class UserService {
             }
             break;
         }
-        return new User(AUTO_ID++, email, password, name, age, motherTounge);
+        return new User(AUTO_ID++, email, password, fullname, age, motherTounge);
     }
 
     public User login() {
@@ -343,12 +347,13 @@ public class UserService {
         }
         showUser(user);
         saveUserData();
+        System.out.println("Thông tin người dùng đã được cập nhật");
     }
-    public void lockUserById(int idUser) {
+    public void lockUserById(int idUserLock) {
         for (int i = 0; i < users.size() ; i++) {
-            if (users.get(i).getId() == idUser){
-                lockedUserIds.add(idUser);
-                System.out.println("User có ID " + idUser + " đã được khóa.");
+            if (users.get(i).getId() == idUserLock){
+                lockedUserIds.add(idUserLock);
+                System.out.println("User có ID " + idUserLock + " đã được khóa.");
                 saveUserData();
                 return;
             }

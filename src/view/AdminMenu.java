@@ -96,7 +96,7 @@ public class AdminMenu {
                 case 2:
                     userService.createUser();
                     break;
-                case 3: {
+                case 3:
                     int idUserUpdate;
                     while (true) {
                         try {
@@ -109,8 +109,7 @@ public class AdminMenu {
                         break;
                     }
                     userService.updateUserInformation(idUserUpdate);
-                }
-                case 4: {
+                case 4:
                     User user;
                     int idUserLock;
                     while (true) {
@@ -118,7 +117,7 @@ public class AdminMenu {
                             System.out.println("Mời bạn nhập ID của User muốn khóa ");
                             idUserLock = new Scanner(System.in).nextInt();
                         } catch (InputMismatchException e) {
-                            System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
+                            System.out.println("Thông tin bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
                             continue;
                         }
                         user = userService.findUserById(idUserLock);
@@ -129,7 +128,6 @@ public class AdminMenu {
                         break;
                     }
                     userService.lockUserById(idUserLock);
-                }
                 case 5:
                     return;
             }
