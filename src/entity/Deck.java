@@ -1,7 +1,6 @@
 package entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import constant.Level;
 
@@ -14,18 +13,18 @@ public class Deck {
     private List<Card> cards; //Danh sách các thẻ học
     private LocalDate createdDate; //Ngày tạo bộ thẻ
     private String description; //Mô tả nội dung, nguồn tài liệu
+    private User creator; // Người tạo ra bộ thẻ
+    private boolean isShared; // Bộ thẻ có được chia sẻ cho mọi người hay không
 
-    public Deck(int id, String topic, Level level, List<Card> cards, LocalDate createdDate, String description) {
+    public Deck(int id) {
         this.id = id;
         this.topic = topic;
         this.level = level;
         this.cards = cards;
         this.createdDate = createdDate;
         this.description = description;
-    }
-
-    public Deck(int id) {
-        this.id = id;
+        this.creator = creator;
+        this.isShared = isShared;
     }
 
     public int getId() {
@@ -76,6 +75,22 @@ public class Deck {
         this.description = description;
     }
 
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setShared(boolean shared) {
+        isShared = shared;
+    }
+
     @Override
     public String toString() {
         return "Deck{" +
@@ -85,6 +100,9 @@ public class Deck {
                 ", cards=" + cards +
                 ", createdDate=" + createdDate +
                 ", description='" + description + '\'' +
+                ", creator=" + creator +
+                ", isShared=" + isShared +
                 '}';
     }
+
 }

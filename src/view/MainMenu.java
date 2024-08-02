@@ -4,6 +4,7 @@ import Main.Main;
 import constant.UserRole;
 import entity.User;
 import service.CardService;
+import service.DeckService;
 import service.UserService;
 import util.InputUtil;
 
@@ -12,10 +13,11 @@ public class MainMenu {
     //Khai báo tất cả service
     private final UserService userService = new UserService();
     private final CardService cardService = new CardService();
+    private final DeckService deckService = new DeckService();
 
     //Khai báo tất cả các menu của các role khác nhau (Đi kèm các service cần thiết)
     private final UserMenu userMenu = new UserMenu(userService);
-    private final AdminMenu adminMenu = new AdminMenu(userService, cardService);
+    private final AdminMenu adminMenu = new AdminMenu(userService, cardService, deckService );
 
     public void menu() {
         while (true) {

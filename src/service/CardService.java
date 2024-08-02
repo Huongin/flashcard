@@ -1,20 +1,43 @@
 package service;
 
+
 import Main.Main;
 import constant.CardType;
 import constant.State;
-import constant.UserRole;
 import entity.Card;
-import entity.Deck;
 import entity.User;
+import util.FileUtil;
 import util.InputUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-import static constant.CardType.Noun;
 public class CardService {
-    private  User currentUser; //Người dùng hiện tại
-    private  Deck deck; //Deck duy nhất lưu trữ thẻ
+
+    private final FileUtil<Card> fileUtil = new FileUtil<>();
+    private static final String CARD_DATA_FILE = "cards.json";
+    private static int AUTO_ID;
+    private List<Card> cards;
+    private DeckService deckService;
+
+    public CardService() {
+        this.deckService = deckService;
+    }
+
+    public void setCards(){
+        List<Card> cardList = fileUtil.readDataFromFile(CARD_DATA_FILE, Card[].class);
+        cards = cardList != null ? cardList : new ArrayList<>();
+    }
+    public void findCurrentAutoId(){
+        int maxId = -1;
+        for (Card card : cards) {
+            if (card.getId() > maxId) {
+                maxId = card.getId();
+            }
+        }
+        AUTO_ID = maxId + 1;
+    }
 
     public void createCard() {
         Card card = new Card();
@@ -58,22 +81,8 @@ public class CardService {
         }
         System.out.println("Nhập ví dụ về cách dùng từ"); //Nhập ví dụ
         card.setExample(new Scanner(System.in).nextLine());
-        System.out.println("Khai báo người tạo thẻ"); // Chọn người tạo thẻ
-        System.out.println("Nhập ID của người tạo thẻ: ");
-        int creatorId = new Scanner(System.in).nextInt();
-        User creator = UserService.findUserById(creatorId);
-        if (creator == null) {
-            System.out.println("Người dùng không tồn tại.");
-            return;
-        }
-        //Cài đặt người tạo thẻ
-        card.setCreator(Main.LOGGED_IN_USER);
-        if (Main.LOGGED_IN_USER.getRole() == UserRole.ADMIN) {
-            card.setShared(true);
-        } else {
-            card.setShared(false);
-        }
-        //Lưu thẻ vào deck
+        //Gán người dùng hiện tại vào người tạo
+        card.setCreator();
 
     }
 

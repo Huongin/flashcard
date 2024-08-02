@@ -5,24 +5,32 @@ import Main.Main;
 import constant.Regex;
 import constant.UserRole;
 
+import util.FileUtil;
 import util.InputUtil;
 import entity.User;
 
+import java.io.File;
 import java.util.*;
 
 public class UserService {
-
-    private static final List<User> users = new ArrayList<>();
-    private static final HashSet<String> lockUserByEmails = new HashSet<>();
-
+    private final FileUtil<User> fileUtil = new FileUtil<>();
+    private static final String USER_FILE = "users.json";
+    private static List<User> users = new ArrayList<>();
     private static final int MAX_LOGIN_TIMES = 5;
-
-
+    private static int AUTO_ID;
     //Admin mặc định
     private static final String ADMIN_EMAIL = "admin@gmail.com";
     private static final String ADMIN_PASSWORD = "Admin123";
 
+    public void setUsers(){
+        List<User> userList = fileUtil.readDataFromFile(USER_FILE, User[].class);
+        users = userList != null ? userList : new ArrayList<>();
+    }
 
+    //Lưu dữ liệu người dùng
+    private void saveUserData(){
+        fileUtil.writeDataToFile(users,USER_FILE);
+    }
 
     public User login() {
         int loginCount = 1;
@@ -59,17 +67,6 @@ public class UserService {
         } while (true) ;
         return user;
     }
-    
-    //Lưu dữ liệu người dùng
-    private void saveUserData(User user){
-        for (int j = 0; j< users.size(); j++){
-            if(users.get(j) == null){
-                users.set(j,user);
-                break;
-            }
-        }
-    }
-
 
     //Tìm kiếm người dùng bằng mail
     private User findUserByEmail(String email) {
@@ -98,6 +95,16 @@ public class UserService {
         }
         return null;
     }
+    //File - tìm autoid
+    public void findCurrentAutoId(){
+        int maxId = -1;
+        for (User user : users){
+            if (user.getId() > maxId){
+                maxId = user.getId();
+            }
+        }
+        AUTO_ID = maxId + 1;
+    }
 
     //Tạo mới tài khoản cho Admin
     public void createUserForAdmin() {
@@ -110,7 +117,7 @@ public class UserService {
         user.setRole(choice == 1 ? UserRole.USER : UserRole.ADMIN);
         users.add(user);
         showUser(user);
-        saveUserData(user);
+        saveUserData();
     }
 
     //Hàm tạo user admin
@@ -132,7 +139,7 @@ public class UserService {
         User user = new User(ADMIN_EMAIL,ADMIN_PASSWORD,UserRole.ADMIN);
         user.setId(0);
         users.add(user);
-        saveUserData(user);
+        saveUserData();
     }
 
     // Đăng ký người dùng mới
@@ -260,6 +267,8 @@ public class UserService {
                 user.getRole(),
                 user.getMothertounge());
     }
+
+    //Câp nhật, sửa đổi thông tin
     public void updateUserInformation(int idUserUpdate) {
         User user = findUserById(idUserUpdate);
         System.out.println("Mời bạn nhập thông tin muốn chỉnh sửa: ");
@@ -348,7 +357,7 @@ public class UserService {
                 return;
         }
         showUser(user);
-        saveUserData(user);
+        saveUserData();
     }
 
     public User getLoggedInUser() {

@@ -5,7 +5,7 @@ import constant.CardType;
 import constant.State;
 
 public class Card {
-    private static int AUTO_ID = 100;
+    private static int AUTO_ID = 1;
 
     private int id;
     private String word;
@@ -14,15 +14,17 @@ public class Card {
     private CardType cardType;
     private State state;
     private String example;
-    private User creator;
-    private boolean IsShared; //True nếu là thẻ học chung, còn False nếu là thẻ học cá nhân
+    private User creator; //Người tạo thẻ học
+    private Deck deck; // Bộ thẻ mà thẻ học thuộc về
 
     public Card(){
         this.id = AUTO_ID;
         AUTO_ID++;
     }
 
-    public Card(int id, String word, String phonetic, String meaning, CardType cardType, State state, String example, User creator) {
+
+    public Card(int id, String word, String phonetic, String meaning,
+                CardType cardType, State state, String example, User creator, Deck deck) {
         this.id = id;
         this.word = word;
         this.phonetic = phonetic;
@@ -31,18 +33,7 @@ public class Card {
         this.state = state;
         this.example = example;
         this.creator = creator;
-    }
-
-    public boolean isShared() {
-        return IsShared;
-    }
-
-    public void setShared(boolean shared) {
-        IsShared = shared;
-    }
-
-    public int getId() {
-        return id;
+        this.deck = deck;
     }
 
     public String getWord() {
@@ -61,6 +52,14 @@ public class Card {
         this.phonetic = phonetic;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getMeaning() {
         return meaning;
     }
@@ -69,20 +68,20 @@ public class Card {
         this.meaning = meaning;
     }
 
-    public CardType getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
-    }
-
     public State getState() {
         return state;
     }
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public CardType getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(CardType cardType) {
+        this.cardType = cardType;
     }
 
     public String getExample() {
@@ -101,6 +100,14 @@ public class Card {
         this.creator = creator;
     }
 
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
     @Override
     public String toString() {
         return "Card{" +
@@ -112,7 +119,7 @@ public class Card {
                 ", state=" + state.getValue()+
                 ", example='" + example + '\'' +
                 ", creator=" + creator +
-                ", IsShared=" + IsShared +
+                ", deck=" + deck +
                 '}';
     }
 }

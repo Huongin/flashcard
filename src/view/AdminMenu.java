@@ -13,10 +13,12 @@ public class AdminMenu {
 
     private final UserService userService;
     private final CardService cardService;
+    private final DeckService deckService;
 
-    public AdminMenu(UserService userService, CardService cardService) {
+    public AdminMenu(UserService userService, CardService cardService, DeckService deckService) {
         this.userService = userService;
         this.cardService = cardService;
+        this.deckService = deckService;
     }
 
     public void  menu() {
@@ -52,27 +54,27 @@ public class AdminMenu {
 
     public void deckManagementMenu() {
         while (true) {
-            System.out.println("------------------ PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT------------------");
-            System.out.println("------------------QUẢN LÝ DANH MỤC THẺ HỌC------------------");
+            System.out.println("------------------- PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT-------------------");
+            System.out.println("-----------------------QUẢN LÝ DANH MỤC THẺ HỌC-----------------------");
             System.out.println("1. Thêm mới danh mục bộ thẻ");
             System.out.println("2. Cập nhật thông tin danh mục");
             System.out.println("3. Xóa danh mục");
             System.out.println("4. Xem danh sách các danh mục trong bộ thẻ đang có");
             System.out.println("5. Thoát");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng" ,
                     "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
             switch (choice) {
                 case 1: ;
-                    DeckService.createDeck();
+                    deckService.createDeck();
                     break;
                 case 2:
-                    DeckService.updateDeckById();
+                    deckService.updateDeckById();
                     break;
                 case 3:
-                    DeckService.deleteDeckById(Main.LOGGED_IN_USER.getId());
+                    deckService.deleteDeckById(Main.LOGGED_IN_USER.getId());
                     break;
                 case 4:
-                    DeckService.showCardDeckList();
+                    deckService.showCardDeckList();
                     break;
                 case 5:
                     return;
