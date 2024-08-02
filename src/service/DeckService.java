@@ -29,8 +29,13 @@ public class DeckService {
         System.out.println("Mời bạn nhập chủ đề cho bộ thẻ: ");
         deck.setTopic(new Scanner(System.in).nextLine());
         System.out.println("Mời bạn nhập cấp độ cho chủ đề của bộ thẻ: ");
+        System.out.println("1.Trình độ JLPT N1");
+        System.out.println("2.Trình độ JLPT N2");
+        System.out.println("3.Trình độ JLPT N3");
+        System.out.println("4.Trình độ JLPT N4");
+        System.out.println("5.Trình độ JLPT N5");
         int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
-                "Chức năng là số dương từ 1 tới 4, vui lòng nhập lại: ", 1, 4);
+                "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
         switch (choice) {
             case 1:
                 deck.setLevel(Level.N1);
@@ -43,6 +48,9 @@ public class DeckService {
                 break;
             case 4:
                 deck.setLevel(Level.N4);
+                break;
+            case 5:
+                deck.setLevel(Level.N5);
                 break;
         }
         System.out.println("Ngày tạo bộ thẻ: ");
@@ -83,8 +91,13 @@ public class DeckService {
             System.out.println("Mời bạn nhập chủ đề mới cho bộ thẻ: ");
             deck.setTopic(new Scanner(System.in).nextLine());
             System.out.println("Mời bạn chọn cấp độ mới cho bộ thẻ: ");
+            System.out.println("1.Trình độ JLPT N1");
+            System.out.println("2.Trình độ JLPT N2");
+            System.out.println("3.Trình độ JLPT N3");
+            System.out.println("4.Trình độ JLPT N4");
+            System.out.println("5.Trình độ JLPT N5");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
-                    "Chức năng là số dương từ 1 tới 4, vui lòng nhập lại: ", 1, 4);
+                    "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
             switch (choice) {
                 case 1:
                     deck.setLevel(Level.N1);
@@ -97,6 +110,9 @@ public class DeckService {
                     break;
                 case 4:
                     deck.setLevel(Level.N4);
+                    break;
+                case 5:
+                    deck.setLevel(Level.N5);
                     break;
             }
             System.out.println("Ngày tạo bộ thẻ: ");
