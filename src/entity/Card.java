@@ -15,6 +15,7 @@ public class Card {
     private State state;
     private String example;
     private User creator;
+    private boolean IsShared; //True nếu là thẻ học chung, còn False nếu là thẻ học cá nhân
 
     public Card(){
         this.id = AUTO_ID;
@@ -30,6 +31,14 @@ public class Card {
         this.state = state;
         this.example = example;
         this.creator = creator;
+    }
+
+    public boolean isShared() {
+        return IsShared;
+    }
+
+    public void setShared(boolean shared) {
+        IsShared = shared;
     }
 
     public int getId() {
@@ -103,6 +112,7 @@ public class Card {
                 ", state=" + state.getValue()+
                 ", example='" + example + '\'' +
                 ", creator=" + creator +
+                ", IsShared=" + IsShared +
                 '}';
     }
 }

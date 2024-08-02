@@ -1,16 +1,21 @@
 package service;
 
+import Main.Main;
 import constant.CardType;
 import constant.State;
+import constant.UserRole;
 import entity.Card;
+import entity.Deck;
 import entity.User;
 import util.InputUtil;
 
 import java.util.Scanner;
 
 import static constant.CardType.Noun;
-
 public class CardService {
+    private  User currentUser; //Người dùng hiện tại
+    private  Deck deck; //Deck duy nhất lưu trữ thẻ
+
     public void createCard() {
         Card card = new Card();
         System.out.println("Mời bạn nhập từ vựng: "); //Nhập từ vựng
@@ -57,16 +62,21 @@ public class CardService {
         System.out.println("Nhập ID của người tạo thẻ: ");
         int creatorId = new Scanner(System.in).nextInt();
         User creator = UserService.findUserById(creatorId);
-        if(creator == null){
+        if (creator == null) {
             System.out.println("Người dùng không tồn tại.");
             return;
         }
-        card.setCreator(creator);
-
-        //chọn
-
+        //Cài đặt người tạo thẻ
+        card.setCreator(Main.LOGGED_IN_USER);
+        if (Main.LOGGED_IN_USER.getRole() == UserRole.ADMIN) {
+            card.setShared(true);
+        } else {
+            card.setShared(false);
+        }
+        //Lưu thẻ vào deck
 
     }
+
 
     public void updateCardInfo() {
     }

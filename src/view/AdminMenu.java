@@ -1,11 +1,11 @@
 package view;
 
 import Main.Main;
-import entity.Card;
-import entity.User;
 import service.CardService;
+import service.DeckService;
 import service.UserService;
 import util.InputUtil;
+
 
 
 
@@ -35,9 +35,10 @@ public class AdminMenu {
                     userManagementMenu();
                     break;
                 case 2:
-                    flashcardMenu();
+                    flashcardManagementMenu();
                     break;
                 case 3:
+                    deckManagementMenu();
                     break;
                 case 4:
                     break;
@@ -49,7 +50,37 @@ public class AdminMenu {
         }
     }
 
-    private void flashcardMenu() {
+    public void deckManagementMenu() {
+        while (true) {
+            System.out.println("------------------ PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT------------------");
+            System.out.println("------------------QUẢN LÝ DANH MỤC THẺ HỌC------------------");
+            System.out.println("1. Thêm mới danh mục bộ thẻ");
+            System.out.println("2. Cập nhật thông tin danh mục");
+            System.out.println("3. Xóa danh mục");
+            System.out.println("4. Xem danh sách các danh mục trong bộ thẻ đang có");
+            System.out.println("5. Thoát");
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
+                    "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
+            switch (choice) {
+                case 1: ;
+                    DeckService.createDeck();
+                    break;
+                case 2:
+                    DeckService.updateDeckById();
+                    break;
+                case 3:
+                    DeckService.deleteDeckById(Main.LOGGED_IN_USER.getId());
+                    break;
+                case 4:
+                    DeckService.showCardDeckList();
+                    break;
+                case 5:
+                    return;
+            }
+        }
+    }
+
+    private void  flashcardManagementMenu() {
         while (true) {
             System.out.println("------------------ PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT------------------");
             System.out.println("------------------QUẢN LÝ DANH SÁCH THẺ HỌC------------------");
@@ -86,7 +117,7 @@ public class AdminMenu {
             System.out.println("2.Tạo mới tài khoản người dùng");
             System.out.println("3.Cập nhật thông tin người dùng ");
             System.out.println("4.Khóa hoạt động người dùng");
-            System.out.println("6.Thoát");
+            System.out.println("5.Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng" ,
                     "Chức năng là số dương từ 1 đến 5, Vui lòng nhập lại: ", 1, 5);
             switch (choice) {
@@ -94,12 +125,12 @@ public class AdminMenu {
                     userService.searchUserByName();
                     break;
                 case 2:
-                    userService.createUser();
+                    userService.createUserForAdmin();
                     break;
                 case 3:
                     userService.updateUserInformation(Main.LOGGED_IN_USER.getId());
                 case 4:
-                    userService.lockUserById();
+                    userService.lockUserByEmail(Main.LOGGED_IN_USER.getEmail());
                 case 5:
                     return;
             }
