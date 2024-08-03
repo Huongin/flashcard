@@ -18,13 +18,8 @@
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/MenuLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/MenuLogichandle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/ReaderLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/ReaderLogichandle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Deck.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/CardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CardService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/DeckService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/DeckService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/AdminMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/AdminMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/MainMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,21 +59,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.AdminMenu.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.MainTest.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/OneDrive/Java27/project/flashcard/gson-2.10.1.jar",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.AdminMenu.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainTest.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/OneDrive/Java27/project/flashcard/gson-2.10.1.jar&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.AdminMenu">
     <configuration name="AdminMenu" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="view.AdminMenu" />

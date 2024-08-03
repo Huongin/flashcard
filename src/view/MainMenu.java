@@ -12,8 +12,9 @@ public class MainMenu {
 
     //Khai báo tất cả service
     private final UserService userService = new UserService();
-    private final CardService cardService = new CardService();
     private final DeckService deckService = new DeckService();
+    private final CardService cardService = new CardService(deckService);
+
 
     //Khai báo tất cả các menu của các role khác nhau (Đi kèm các service cần thiết)
     private final UserMenu userMenu = new UserMenu(userService);

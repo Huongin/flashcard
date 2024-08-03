@@ -83,7 +83,7 @@ public class DeckService {
         fileUtil.writeDataToFile(decks,DECK_DATA_FILE);
     }
 
-    private static Deck findDeckById(int id) {
+    public static Deck findDeckById(int id) {
         for (Deck deck: decks){
             if(deck.getId() == id){
                 return deck;
