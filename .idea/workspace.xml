@@ -5,8 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="432cf8a7-ee11-41ef-bd52-3062cf9501e8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/service/StudyService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/TestService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN-2/src/BTVN2/giaiphuongtrinhbac2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN-2/src/BTVN2/giaiphuongtrinhbac2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN/src/SavingsBook.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/BTVN/src/SavingsBook.java" afterDir="false" />
@@ -20,15 +18,10 @@
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/MenuLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/MenuLogichandle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/ReaderLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/ReaderLogichandle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Card.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Deck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/Study.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Study.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/CardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CardService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/DeckService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/DeckService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/FileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/FileUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/AdminMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/AdminMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/MainMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/StudyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/StudyService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/UserMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/UserMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

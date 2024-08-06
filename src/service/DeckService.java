@@ -193,16 +193,18 @@ public class DeckService {
         System.out.printf("%-5s%-30s%n", deck.getId(), deck.getTopic(), deck.getLevel(), deck.getDescription(), deck.getDescription());
     }
 
-    //
+    //Danh sách bộ thẻ do admin tạo
     public List<Deck> getAdminCreatedDecks(){
-        List<Deck> adminDecks = new ArrayList<>();
+        List<Deck> publicDecks = new ArrayList<>();
         for (Deck deck: decks){
             if (deck.getCreator().getRole().equals(UserRole.ADMIN)){
-                adminDecks.add(deck);
+                publicDecks.add(deck);
             }
         }
-        return adminDecks;
+        return publicDecks;
     }
+
+    // Danh sách bộ thẻ do user đăng nhập tạo
     public List<Deck> getUserCreatedDecks(User user){
         List<Deck> userDecks = new ArrayList<>();
         for (Deck deck: decks){

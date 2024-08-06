@@ -14,20 +14,19 @@ public class Deck {
     private LocalDate createdDate; //Ngày tạo bộ thẻ
     private String description; //Mô tả nội dung, nguồn tài liệu
     private User creator; // Người tạo ra bộ thẻ
-    private boolean isShared; // Bộ thẻ có được chia sẻ cho mọi người hay không
+
 
     public Deck(int id) {
         this.id = id;
     }
 
-    public Deck( String topic, Level level, List<Card> cards, LocalDate createdDate, String description, User creator, boolean isShared) {
+    public Deck( String topic, Level level, List<Card> cards, LocalDate createdDate, String description, User creator) {
         this.topic = topic;
         this.level = level;
         this.cards = cards;
         this.createdDate = createdDate;
         this.description = description;
         this.creator = creator;
-        this.isShared = isShared;
     }
 
     public int getId() {
@@ -86,13 +85,6 @@ public class Deck {
         this.creator = creator;
     }
 
-    public boolean isShared() {
-        return isShared;
-    }
-
-    public void setShared(boolean shared) {
-        isShared = shared;
-    }
 
     @Override
     public String toString() {
@@ -104,7 +96,6 @@ public class Deck {
                 ", createdDate=" + createdDate +
                 ", description='" + description + '\'' +
                 ", creator=" + creator +
-                ", isShared=" + isShared +
                 '}';
     }
 

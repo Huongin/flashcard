@@ -12,10 +12,7 @@ import util.FileUtil;
 import util.InputUtil;
 
 import java.awt.print.Book;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class CardService {
@@ -63,15 +60,15 @@ public class CardService {
             System.out.println("Không có bộ thẻ nào để chọn. Vui lòng tạo bộ thẻ trước khi tạo thẻ");
             return;
         }
-        System.out.println("Chọn bộ thẻ mà thẻ học thuộc : ");
+        System.out.println("Chọn bộ thẻ cho thẻ học : ");
         for (Deck deck : decksToChoose){
             System.out.println("ID: "+ deck.getId() + ", chủ đề: " + deck.getTopic() + ", Level: " + deck.getLevel());
         }
         System.out.println("Nhập ID bộ thẻ: ");
-        String input = new Scanner(System.in).nextLine();
+        int deckId = new Scanner(System.in).nextInt();
         Deck selected = null;
         for (Deck deck : decksToChoose){
-            if (String.valueOf(deck.getId()).equals(input)){
+            if (deck.getId() == deckId){
                 selected = deck;
                 break;
             }
@@ -120,6 +117,15 @@ public class CardService {
         cards.add(card);
         showCard(card);
         saveCardData();
+    }
+    public  List<Card> getCardsByDeck (Deck deck){
+        List<Card> cardsInDeck = new ArrayList<>();
+        for (Card card : cards){
+            if (card.getDeck().equals(deck)){
+                cardsInDeck.add(card);
+            }
+        }
+        return cardsInDeck;
     }
 
     private void saveCardData() {
@@ -277,5 +283,8 @@ public class CardService {
     public void printHeader() {
         System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", "id", "Word", "Phonetic", "Meaning", "CardType", "State", "Example", "Creator", "Deck");
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
+    }
+
+    public void deleteCardById() {
     }
 }
