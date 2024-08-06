@@ -3,22 +3,22 @@ package view;
 import Main.Main;
 import constant.UserRole;
 import entity.User;
-import service.CardService;
-import service.DeckService;
-import service.UserService;
+import service.*;
 import util.InputUtil;
 
 public class MainMenu {
 
     //Khai báo tất cả service
     private final UserService userService = new UserService();
-    private final DeckService deckService = new DeckService();
-    private final CardService cardService = new CardService(deckService);
+    private final DeckService deckService = new DeckService(userService);
+    private final CardService cardService = new CardService(userService, deckService);
+    private final StudyService studyService = new StudyService(userService, deckService, cardService);
+    private final TestService testService = new TestService();
 
 
     //Khai báo tất cả các menu của các role khác nhau (Đi kèm các service cần thiết)
-    private final UserMenu userMenu = new UserMenu(userService);
-    private final AdminMenu adminMenu = new AdminMenu(userService, cardService, deckService );
+    private final UserMenu userMenu = new UserMenu(userService, deckService, cardService, studyService);
+    private final AdminMenu adminMenu = new AdminMenu(userService, cardService, deckService, testService );
 
     public void menu() {
         while (true) {
@@ -56,5 +56,4 @@ public class MainMenu {
             }
         }
     }
-
 }

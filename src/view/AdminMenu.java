@@ -1,9 +1,7 @@
 package view;
 
 import Main.Main;
-import service.CardService;
-import service.DeckService;
-import service.UserService;
+import service.*;
 import util.InputUtil;
 
 
@@ -14,11 +12,13 @@ public class AdminMenu {
     private final UserService userService;
     private final CardService cardService;
     private final DeckService deckService;
+    private final TestService testService;
 
-    public AdminMenu(UserService userService, CardService cardService, DeckService deckService) {
+    public AdminMenu(UserService userService, CardService cardService, DeckService deckService,TestService testService) {
         this.userService = userService;
         this.cardService = cardService;
         this.deckService = deckService;
+        this.testService = testService;
     }
 
     public void  menu() {
@@ -27,11 +27,10 @@ public class AdminMenu {
             System.out.println("1.Quản lý danh sách người dùng");
             System.out.println("2.Quản lý thẻ học");
             System.out.println("3.Quản lý bộ thẻ học");
-            System.out.println("4.Quản lý bài Test ");
-            System.out.println("5.Quản lý kết quả học");
-            System.out.println("6.Thoát");
+            System.out.println("4.Quản lý bài test");
+            System.out.println("5.Thoát");
             int choise = InputUtil.chooseOption("Xin mời chọn chức năng: ",
-                    "Chức năng là số dương từ 1 đến 6, vui lòng nhập lại: ", 1, 6);
+                    "Chức năng là số dương từ 1 đến 5, vui lòng nhập lại: ", 1, 5);
             switch (choise) {
                 case 1:
                     userManagementMenu();
@@ -41,6 +40,37 @@ public class AdminMenu {
                     break;
                 case 3:
                     deckManagementMenu();
+                    break;
+                case 4:
+                    testManagementMenu();
+                    break;
+                case 5:
+                    return;
+            }
+        }
+    }
+
+
+
+
+    private void testManagementMenu() {
+        while (true){
+            System.out.println("------------------- PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT-------------------");
+            System.out.println("-----------------------QUẢN LÝ BÀI TEST-----------------------");
+            System.out.println("1. Tạo bài test mới");
+            System.out.println("2. Xem danh sách bài test");
+            System.out.println("3. Chỉnh sửa bài test");
+            System.out.println("4. Xóa bài test");
+            System.out.println("5. Xem kết quả kiểm tra bài test");
+            System.out.println("6. Thoát");
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng" ,
+                    "Chức năng là số dương từ 1 tới 6, vui lòng nhập lại: ", 1, 6);
+            switch (choice) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
                     break;
                 case 4:
                     break;
@@ -89,7 +119,7 @@ public class AdminMenu {
             System.out.println("1. Thêm mới thẻ học");
             System.out.println("2. Cập nhật thông tin thẻ học");
             System.out.println("3. Tìm kiếm thẻ học theo từ");
-            System.out.println("4. Danh sách các thẻ học đang có");
+            System.out.println("4. Tìm kiếm thẻ học theo chủ đề");
             System.out.println("5. Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
                     "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
@@ -100,10 +130,10 @@ public class AdminMenu {
                 case 2:
                     cardService.updateCardInfo();
                 case 3:
-                    cardService.searchCardByWord();
+                    cardService.findCardByWord();
                     break;
                 case 4:
-                    cardService.listOfFlashcards();
+                    cardService.findCardByTopic();
                     break;
                 case 5:
                     return;

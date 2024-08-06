@@ -10,6 +10,7 @@ public class Study {
     private List<Card> studiedCards;
     private List<Card> incommingCards;
 
+
     public Study(User user, Card card, List<Card> studiedCards, List<Card> incommingCards) {
         this.user = user;
         this.card = card;

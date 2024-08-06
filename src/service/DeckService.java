@@ -2,7 +2,9 @@ package service;
 
 import Main.Main;
 import constant.Level;
+import constant.UserRole;
 import entity.Deck;
+import entity.Study;
 import entity.User;
 import util.FileUtil;
 import util.InputUtil;
@@ -20,11 +22,15 @@ public class DeckService {
     private static int AUTO_ID;
 
     private static List<Deck> decks;
+    private final UserService userService;
 
+    public DeckService(UserService userService) {
+        this.userService =userService;
+    }
 
     public void setDecks(){
-       List<Deck> deckList = fileUtil.readDataFromFile(DECK_DATA_FILE, Deck[].class);
-       decks = deckList != null ? deckList : new ArrayList<>();
+      List<Deck> deckList = fileUtil.readDataFromFile(DECK_DATA_FILE, Deck[].class);
+      decks = deckList != null ? deckList : new ArrayList<>();
    }
     public void findCurrentAutoId(){
         int maxId = -1;
@@ -36,8 +42,9 @@ public class DeckService {
         AUTO_ID = maxId +1;
     }
 
-    public static void createDeck() {
-        if (Main.LOGGED_IN_USER == null){
+    public void createDeck() {
+        User user = userService.getLoggedInUser();
+        if (user == null){
             System.out.println("Bạn cần đăng nhập trước khi tạo bộ thẻ");
             return;
         }
@@ -69,17 +76,17 @@ public class DeckService {
                 deck.setLevel(Level.N5);
                 break;
         }
+        System.out.print("Thời gian tạo thẻ: ");
         deck.setCreatedDate(LocalDate.now());
         System.out.println("Nhập miêu tả nội dung hoặc nguồn tài liệu của bộ thẻ: ");
         deck.setDescription(new Scanner(System.in).nextLine());
 
-        deck.setCreator(Main.LOGGED_IN_USER);//Gán thông tin người tạo deck
-
+        deck.setCreator(user);//Gán thông tin người tạo deck
         decks.add(deck);
         saveDeckData(); //Lưu dữ liệu Data
     }
 
-    public static void saveDeckData() {
+    public void saveDeckData() {
         fileUtil.writeDataToFile(decks,DECK_DATA_FILE);
     }
 
@@ -92,7 +99,7 @@ public class DeckService {
         return null;
     }
 
-    public static void updateDeckById() {
+    public void updateDeckById() {
         while (true) {
             System.out.println("Mời bạn nhập ID của chủ đề bộ thẻ muốn cập nhật: ");
             int id;
@@ -158,7 +165,7 @@ public class DeckService {
         }
     }
 
-    public static void deleteDeckById(int id) {
+    public void deleteDeckById(int id) {
         Deck deck = findDeckById(id);
         decks.remove(deck);
         saveDeckData();//Lưu file
@@ -172,17 +179,37 @@ public class DeckService {
         }
     }
 
-    private static void printHeader() {
+    public static void printHeader() {
         System.out.printf("%-5s%-30s%n", "Id", "Topic", "Level", "CreatDate", "Description");
         System.out.println("----------------------------------------");
     }
 
-    private static void showDeck(Deck deck) {
+    public void showDeck(Deck deck) {
         printHeader();
         showDeckDetail(deck);
     }
 
-    private static void showDeckDetail(Deck deck) {
+    public static void showDeckDetail(Deck deck) {
         System.out.printf("%-5s%-30s%n", deck.getId(), deck.getTopic(), deck.getLevel(), deck.getDescription(), deck.getDescription());
+    }
+
+    //
+    public List<Deck> getAdminCreatedDecks(){
+        List<Deck> adminDecks = new ArrayList<>();
+        for (Deck deck: decks){
+            if (deck.getCreator().getRole().equals(UserRole.ADMIN)){
+                adminDecks.add(deck);
+            }
+        }
+        return adminDecks;
+    }
+    public List<Deck> getUserCreatedDecks(User user){
+        List<Deck> userDecks = new ArrayList<>();
+        for (Deck deck: decks){
+            if (deck.getCreator().equals(user)) {
+                userDecks.add(deck);
+            }
+        }
+        return userDecks;
     }
 }

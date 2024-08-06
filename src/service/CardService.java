@@ -4,8 +4,10 @@ package service;
 import Main.Main;
 import constant.CardType;
 import constant.State;
+import constant.UserRole;
 import entity.Card;
 import entity.Deck;
+import entity.User;
 import util.FileUtil;
 import util.InputUtil;
 
@@ -21,10 +23,12 @@ public class CardService {
     private final FileUtil<Card> fileUtil = new FileUtil<>();
     private static final String CARD_DATA_FILE = "cards.json";
     private static int AUTO_ID;
-    private List<Card> cards;
-    private DeckService deckService;
+    private List<Card> cards = new ArrayList<>();
+    private final UserService userService;
+    private final DeckService deckService;
 
-    public CardService(DeckService deckService) {
+    public CardService(UserService userService, DeckService deckService) {
+        this.userService = userService;
         this.deckService = deckService;
     }
 
@@ -43,12 +47,41 @@ public class CardService {
     }
 
     public void createCard() {
-        if (Main.LOGGED_IN_USER == null) {
-            System.out.println("Bạn cần đăng nhập trước khi tạo bộ thẻ");
+        User user = userService.getLoggedInUser();
+        if (user == null){
+            System.out.println("Vui lòng đăng nhập lại trước khi tạo thẻ.");
+        }
+        //Chọn bộ thẻ cho thẻ học
+        System.out.println("Chọn chủ đề cho thẻ học: ");
+        List<Deck> decksToChoose;
+        if (user.getRole().equals(UserRole.ADMIN)) {
+            decksToChoose = deckService.getAdminCreatedDecks();
+        }else {
+            decksToChoose = deckService.getUserCreatedDecks(user);
+        }
+        if (decksToChoose.isEmpty()){
+            System.out.println("Không có bộ thẻ nào để chọn. Vui lòng tạo bộ thẻ trước khi tạo thẻ");
             return;
         }
-        Card card = new Card();
-        card.setId(AUTO_ID++);
+        System.out.println("Chọn bộ thẻ mà thẻ học thuộc : ");
+        for (Deck deck : decksToChoose){
+            System.out.println("ID: "+ deck.getId() + ", chủ đề: " + deck.getTopic() + ", Level: " + deck.getLevel());
+        }
+        System.out.println("Nhập ID bộ thẻ: ");
+        String input = new Scanner(System.in).nextLine();
+        Deck selected = null;
+        for (Deck deck : decksToChoose){
+            if (String.valueOf(deck.getId()).equals(input)){
+                selected = deck;
+                break;
+            }
+        }
+        if (selected == null){
+            System.out.println("Không tìm thấy bộ thẻ với ID đã nhập");
+            return;
+        }
+        //Tạo thẻ học
+        Card card = new Card(AUTO_ID++);
 
         System.out.println("Mời bạn nhập từ vựng: "); //Nhập từ vựng
         card.setWord(new Scanner(System.in).nextLine());
@@ -80,29 +113,10 @@ public class CardService {
 
         System.out.println("Nhập ví dụ về cách dùng từ"); //Nhập ví dụ
         card.setExample(new Scanner(System.in).nextLine());
+        card.setCreator(user); //Gán người tạo thẻ
+        card.setDeck(selected);//Gán bộ thẻ cho thẻ học
+        cards.add(card); // Thêm thẻ vào danh sách bộ thẻ
 
-        card.setCreator(Main.LOGGED_IN_USER); //Gán người tạo thẻ
-
-        //Chọn bộ thẻ cho thẻ học
-        deckService.setDecks();
-        DeckService.showCardDeckList();
-
-        while (true) {
-            System.out.println("Mời bạn nhập ID của chủ đề bộ thẻ muốn cập nhật: ");
-            int id;
-            try {
-                id = new Scanner(System.in).nextInt();
-            } catch (InputMismatchException e) {
-                System.out.println("Giá trị vừa nhập không phải là một số nguyên. Vui lòng nhập lại: ");
-                continue;
-            }
-            Deck deck = deckService.findDeckById(id);
-            if (deck == null) {
-                System.out.println("Id vừa nhập không tồn tại trong hệ thống, vui lòng nhập lại: ");
-                continue;
-            }
-            card.setDeck(deck);
-        }
         cards.add(card);
         showCard(card);
         saveCardData();
@@ -113,22 +127,26 @@ public class CardService {
     }
     private Card findCardById(int idCard) {
         for (Card card: cards) {
+            if (card.getId() == idCard){
+                return card;
+            }
         }
+        return null;
     }
 
     public void updateCardInfo() {
         while (true) {
             System.out.println("Mời bạn nhập ID của thẻ học: ");
-            int idCard;
+            int cardId;
             while (true) {
                 try {
-                    idCard= new Scanner(System.in).nextInt();
+                    cardId= new Scanner(System.in).nextInt();
                     break; // Thoát khỏi vòng lặp nếu gúa trị là số nguyên hợp lệ
                 } catch (InputMismatchException e) {
                     System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại");
                 }
             }
-            Card card = findCardById(idCard);
+            Card card = findCardById(cardId);
             if (card == null) {
                 System.out.println("Thông tin không chính xác, vui lòng nhập lại: ");
                 continue;
@@ -188,10 +206,8 @@ public class CardService {
                     card.setExample(newExample);
                     break;
                 case 6:
-                    System.out.println("Mời bạn nhập lại bộ thẻ của từ");
-                    deckService.setDecks();
+                    Deck deck;
                     DeckService.showCardDeckList();
-
                     while (true) {
                         System.out.println("Mời bạn nhập ID của chủ đề bộ thẻ muốn cập nhật: ");
                         int id;
@@ -201,14 +217,14 @@ public class CardService {
                             System.out.println("Giá trị vừa nhập không phải là một số nguyên. Vui lòng nhập lại: ");
                             continue;
                         }
-                        Deck deck = deckService.findDeckById(id);
+                        deck= DeckService.findDeckById(id);
                         if (deck == null) {
                             System.out.println("Id vừa nhập không tồn tại trong hệ thống, vui lòng nhập lại: ");
                             continue;
                         }
-                        card.setDeck(deck);
+                        break;
                     }
-                    break;
+                    card.setDeck(deck); //Cập nhật bộ thẻ cho thẻ học
                 case 7:
                     return;
             }
@@ -219,27 +235,46 @@ public class CardService {
         }
     }
 
-
-
-    public void searchCardByWord() {
+    public void findCardByWord() {
+        System.out.println("Mời bạn nhập từ vựng cần tìm: ");
+        String word = new Scanner(System.in).nextLine();
+        List<Card> cards1 = new ArrayList<>();
+        for (Card card : cards){
+            if (card.getWord().toLowerCase().contains(word.toLowerCase())){
+                cards1.add(card);
+            }
+        }
+        showCard(cards1);
     }
 
-    public void searchCardByTopic() {
+    public void findCardByTopic() {
+        System.out.println("Mời bạn nhập chủ đề muốn tìm: ");
+        String name = new Scanner(System.in).nextLine();
+        List<Card> cards1 = new ArrayList<>();
+        for (Card card : cards){
+            if (card.getDeck().getTopic().toLowerCase().contains(name.toLowerCase())){
+                cards1.add(card);
+            }
+        }
+        showCard(cards1);
     }
 
-    public void listOfFlashcards() {
-    }
-
-    private void showCard(Card card) {
+    public void showCard(Card card) {
         printHeader();
         showCardDetail(card);
     }
+    public void showCard(List<Card> cards1) {
+        printHeader();
+        for (Card card : cards1){
+            showCardDetail(card);
+        }
+    }
 
-    private void showCardDetail(Card card) {
+    public void showCardDetail(Card card) {
         System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", card.getId(), card.getWord(), card.getPhonetic(), card.getMeaning(), card.getCardType(), card.getState(),card.getExample(), card.getCreator(), card.getDeck());
     }
 
-    private void printHeader() {
+    public void printHeader() {
         System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", "id", "Word", "Phonetic", "Meaning", "CardType", "State", "Example", "Creator", "Deck");
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
     }

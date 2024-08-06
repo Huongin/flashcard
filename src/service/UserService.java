@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.*;
 
 public class UserService {
+
     private final FileUtil<User> fileUtil = new FileUtil<>();
     private static final String USER_FILE = "users.json";
     private static List<User> users = new ArrayList<>();
@@ -69,7 +70,7 @@ public class UserService {
     }
 
     //Tìm kiếm người dùng bằng mail
-    private User findUserByEmail(String email) {
+    public User findUserByEmail(String email) {
         for (User user : users) {
             if (user.getEmail().equals(email)) {
                 return user;
@@ -78,7 +79,7 @@ public class UserService {
         return null;
     }
     //Tìm kiếm người dùng bằng mail và mật khẩu
-    private User findUserByEmailAndPassword(String email, String password) {
+    public User findUserByEmailAndPassword(String email, String password) {
         for (User user : users) {
             if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
                 return user;
@@ -151,7 +152,7 @@ public class UserService {
     }
 
     // Khai báo thông tin người dùng
-    private User creatUserInfo() {
+    public User creatUserInfo() {
         String email;
         String password;
         //Nhập email
@@ -246,19 +247,19 @@ public class UserService {
         showUserDetail(user);
     }
 
-    private void showUsers(List<User> users1) {
+    public void showUsers(List<User> users1) {
         printHeader();
         for (User user : users1) {
             showUserDetail(user);
         }
     }
 
-    private void printHeader() {
+    public void printHeader() {
         System.out.printf("%-5s%-30s%-30s%-20s%-20s%-10s%-10s%n", "Id", "Fullname", "Email", "Age", "Role", "Mothertounge");
         System.out.println("------------------------------------------------------------------------------------------------------------------------------");
     }
 
-    private void showUserDetail(User user) {
+    public void showUserDetail(User user) {
         System.out.printf("%-5s%-30s%-30s%-20s%-20s%-10s%-10s%n",
                 user.getId(),
                 user.getFullname(),

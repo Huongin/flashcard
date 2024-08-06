@@ -17,10 +17,6 @@ public class Card {
     private User creator; //Người tạo thẻ học
     private Deck deck; // Bộ thẻ mà thẻ học thuộc về
 
-    public Card(){
-        this.id = AUTO_ID;
-        AUTO_ID++;
-    }
 
 
     public Card(int id, String word, String phonetic, String meaning,
@@ -34,6 +30,9 @@ public class Card {
         this.example = example;
         this.creator = creator;
         this.deck = deck;
+    }
+
+    public Card(int id) {
     }
 
     public String getWord() {

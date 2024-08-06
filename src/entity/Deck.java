@@ -18,6 +18,9 @@ public class Deck {
 
     public Deck(int id) {
         this.id = id;
+    }
+
+    public Deck( String topic, Level level, List<Card> cards, LocalDate createdDate, String description, User creator, boolean isShared) {
         this.topic = topic;
         this.level = level;
         this.cards = cards;
