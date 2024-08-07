@@ -50,24 +50,21 @@ public class CardService {
         }
         //Chọn bộ thẻ cho thẻ học
         System.out.println("Chọn chủ đề cho thẻ học: ");
-        List<Deck> decksToChoose;
-        if (user.getRole().equals(UserRole.ADMIN)) {
-            decksToChoose = deckService.getAdminCreatedDecks();
-        }else {
-            decksToChoose = deckService.getUserCreatedDecks(user);
-        }
-        if (decksToChoose.isEmpty()){
-            System.out.println("Không có bộ thẻ nào để chọn. Vui lòng tạo bộ thẻ trước khi tạo thẻ");
+
+        List<Deck> userDecks = user.getRole().equals(UserRole.ADMIN) ? deckService.getAdminCreatedDecks() : deckService.getUserCreatedDecks(user);
+        if (userDecks.isEmpty()){
+            System.out.println("Bạn không có bộ thẻ nào trong danh sách.");
             return;
         }
         System.out.println("Chọn bộ thẻ cho thẻ học : ");
-        for (Deck deck : decksToChoose){
+        for (Deck deck : userDecks){
             System.out.println("ID: "+ deck.getId() + ", chủ đề: " + deck.getTopic() + ", Level: " + deck.getLevel());
         }
+
         System.out.println("Nhập ID bộ thẻ: ");
         int deckId = new Scanner(System.in).nextInt();
         Deck selected = null;
-        for (Deck deck : decksToChoose){
+        for (Deck deck : userDecks){
             if (deck.getId() == deckId){
                 selected = deck;
                 break;
@@ -114,7 +111,6 @@ public class CardService {
         card.setDeck(selected);//Gán bộ thẻ cho thẻ học
         cards.add(card); // Thêm thẻ vào danh sách bộ thẻ
 
-        cards.add(card);
         showCard(card);
         saveCardData();
     }
@@ -131,9 +127,10 @@ public class CardService {
     private void saveCardData() {
         fileUtil.writeDataToFile(cards,CARD_DATA_FILE);
     }
-    private Card findCardById(int idCard) {
+
+    private Card findCardById(int cardId) {
         for (Card card: cards) {
-            if (card.getId() == idCard){
+            if (card.getId() == cardId){
                 return card;
             }
         }
@@ -141,6 +138,10 @@ public class CardService {
     }
 
     public void updateCardInfo() {
+        User user = userService.getLoggedInUser();
+        if (user == null){
+            System.out.println("Vui lòng đăng nhập lại trước khi tạo thẻ.");
+        }
         while (true) {
             System.out.println("Mời bạn nhập ID của thẻ học: ");
             int cardId;
@@ -213,7 +214,7 @@ public class CardService {
                     break;
                 case 6:
                     Deck deck;
-                    DeckService.showCardDeckList();
+                    deckService.showCardDeckList();
                     while (true) {
                         System.out.println("Mời bạn nhập ID của chủ đề bộ thẻ muốn cập nhật: ");
                         int id;
@@ -250,10 +251,10 @@ public class CardService {
                 cards1.add(card);
             }
         }
-        showCard(cards1);
+        showCards(cards1);
     }
 
-    public void findCardByTopic() {
+    public void findCardByNameTopic() {
         System.out.println("Mời bạn nhập chủ đề muốn tìm: ");
         String name = new Scanner(System.in).nextLine();
         List<Card> cards1 = new ArrayList<>();
@@ -262,14 +263,14 @@ public class CardService {
                 cards1.add(card);
             }
         }
-        showCard(cards1);
+        showCards(cards1);
     }
 
     public void showCard(Card card) {
         printHeader();
         showCardDetail(card);
     }
-    public void showCard(List<Card> cards1) {
+    public void showCards(List<Card> cards1) {
         printHeader();
         for (Card card : cards1){
             showCardDetail(card);
@@ -285,6 +286,10 @@ public class CardService {
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
-    public void deleteCardById() {
+    public void deleteCardById(int cardId) {
+        Card card = findCardById(cardId);
+        cards.remove(card);
+        showCard(card);
+        saveCardData();//Lưu file
     }
 }

@@ -1,22 +1,21 @@
 package entity;
 
 import java.util.List;
-import entity.User;
-import entity.Card;
 
 public class Study {
     private User user;
-    private Card card;
-    private List<Card> studiedCards;
-    private List<Card> incommingCards;
+    private Deck deck;
+    private List<Card> studiedCards; // Danh sách các thẻ đã học
+    private List<Card> incomingCards; // Danh sách các thẻ chưa học (sắp học)
 
 
-    public Study(User user, Card card, List<Card> studiedCards, List<Card> incommingCards) {
+    public Study(User user, Deck deck, List<Card> studiedCards, List<Card> incomingCards) {
         this.user = user;
-        this.card = card;
+        this.deck = deck;
         this.studiedCards = studiedCards;
-        this.incommingCards = incommingCards;
+        this.incomingCards = incomingCards;
     }
+
 
     public User getUser() {
         return user;
@@ -26,12 +25,12 @@ public class Study {
         this.user = user;
     }
 
-    public Card getCard() {
-        return card;
+    public Deck getDeck() {
+        return deck;
     }
 
-    public void setCard(Card card) {
-        this.card = card;
+    public void setDeck(Deck deck) {
+        this.deck = deck;
     }
 
     public List<Card> getStudiedCards() {
@@ -42,21 +41,21 @@ public class Study {
         this.studiedCards = studiedCards;
     }
 
-    public List<Card> getIncommingCards() {
-        return incommingCards;
+    public List<Card> getIncomingCards() {
+        return incomingCards;
     }
 
-    public void setIncommingCards(List<Card> incommingCards) {
-        this.incommingCards = incommingCards;
+    public void setIncomingCards(List<Card> incomingCards) {
+        this.incomingCards = incomingCards;
     }
 
     @Override
     public String toString() {
         return "Study{" +
                 "user=" + user +
-                ", card=" + card +
+                ", deck=" + deck +
                 ", studiedCards=" + studiedCards +
-                ", incommingCards=" + incommingCards +
+                ", incommingCards=" + incomingCards +
                 '}';
     }
 }

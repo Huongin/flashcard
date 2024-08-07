@@ -224,6 +224,7 @@ public class UserService {
 
         User user = new User(email, password, fullname, age, motherTounge);
         users.add(user);
+        saveUserData();
         return user;
     }
 

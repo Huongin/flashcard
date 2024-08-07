@@ -100,6 +100,17 @@ public class DeckService {
     }
 
     public void updateDeckById() {
+        User user = userService.getLoggedInUser();
+
+        List<Deck> userDecks = user.getRole().equals(UserRole.ADMIN) ? getAdminCreatedDecks() : getUserCreatedDecks(user);
+        if (userDecks.isEmpty()){
+            System.out.println("Bạn không có bộ thẻ nào trong danh sách.");
+            return;
+        }
+        System.out.println("Danh sách bộ thẻ của bạn là: ");
+        for (Deck deck :userDecks){
+            showDeck(deck);
+        }
         while (true) {
             System.out.println("Mời bạn nhập ID của chủ đề bộ thẻ muốn cập nhật: ");
             int id;
@@ -172,7 +183,7 @@ public class DeckService {
         showCardDeckList();
     }
 
-    public static void showCardDeckList() {
+    public void showCardDeckList() {
         printHeader();
         for (Deck deck : decks){
             showDeckDetail(deck);

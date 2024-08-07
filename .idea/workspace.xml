@@ -18,10 +18,12 @@
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/MenuLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/MenuLogichandle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/ReaderLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/ReaderLogichandle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/Study.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Study.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/CardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CardService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/DeckService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/DeckService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/StudyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/StudyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/AdminMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/AdminMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/UserMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/UserMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,7 +78,7 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.AdminMenu">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="AdminMenu" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="view.AdminMenu" />
       <module name="flashcard" />
@@ -118,9 +120,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.AdminMenu" />
         <item itemvalue="Application.MainTest" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>

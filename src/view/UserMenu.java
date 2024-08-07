@@ -40,13 +40,13 @@ public class UserMenu {
                     PersonalCardManagementMenu();
                     break;
                 case 3:
-                    findCard();
+                    //findCard();
                     break;
                 case 4:
-                    test();
+                    //test();
                     break;
                 case 5:
-                    showLearningStatistics();
+                    //showLearningStatistics();
                     break;
                 case 6:
                     return;
@@ -85,7 +85,7 @@ public class UserMenu {
                     cardService.updateCardInfo();
                     break;
                 case 6:
-                    cardService.deleteCardById(); //chưa tạo
+                    cardService.deleteCardById(Main.LOGGED_IN_USER.getId());
                     break;
                 case 7:
                     studyService.studyWithPersonalCards();

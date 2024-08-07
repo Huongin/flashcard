@@ -1,6 +1,7 @@
 package view;
 
 import Main.Main;
+import entity.User;
 import service.*;
 import util.InputUtil;
 
@@ -133,7 +134,7 @@ public class AdminMenu {
                     cardService.findCardByWord();
                     break;
                 case 4:
-                    cardService.findCardByTopic();
+                    cardService.findCardByNameTopic();
                     break;
                 case 5:
                     return;
