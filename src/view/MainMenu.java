@@ -13,7 +13,7 @@ public class MainMenu {
     private final DeckService deckService = new DeckService(userService);
     private final CardService cardService = new CardService(userService, deckService);
     private final StudyService studyService = new StudyService(userService, deckService, cardService);
-    private final TestService testService = new TestService();
+    private final TestService testService = new TestService(userService,deckService,cardService);
 
 
     //Khai báo tất cả các menu của các role khác nhau (Đi kèm các service cần thiết)

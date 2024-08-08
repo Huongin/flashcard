@@ -29,11 +29,12 @@ public class CardService {
         this.deckService = deckService;
     }
 
-    public void setCards(){
+    public void setCards() {
         List<Card> cardList = fileUtil.readDataFromFile(CARD_DATA_FILE, Card[].class);
         cards = cardList != null ? cardList : new ArrayList<>();
     }
-    public void findCurrentAutoId(){
+
+    public void findCurrentAutoId() {
         int maxId = -1;
         for (Card card : cards) {
             if (card.getId() > maxId) {
@@ -45,32 +46,32 @@ public class CardService {
 
     public void createCard() {
         User user = userService.getLoggedInUser();
-        if (user == null){
+        if (user == null) {
             System.out.println("Vui lòng đăng nhập lại trước khi tạo thẻ.");
         }
         //Chọn bộ thẻ cho thẻ học
         System.out.println("Chọn chủ đề cho thẻ học: ");
 
         List<Deck> userDecks = user.getRole().equals(UserRole.ADMIN) ? deckService.getAdminCreatedDecks() : deckService.getUserCreatedDecks(user);
-        if (userDecks.isEmpty()){
+        if (userDecks.isEmpty()) {
             System.out.println("Bạn không có bộ thẻ nào trong danh sách.");
             return;
         }
         System.out.println("Chọn bộ thẻ cho thẻ học : ");
-        for (Deck deck : userDecks){
-            System.out.println("ID: "+ deck.getId() + ", chủ đề: " + deck.getTopic() + ", Level: " + deck.getLevel());
+        for (Deck deck : userDecks) {
+            System.out.println("ID: " + deck.getId() + ", chủ đề: " + deck.getTopic() + ", Level: " + deck.getLevel());
         }
 
         System.out.println("Nhập ID bộ thẻ: ");
         int deckId = new Scanner(System.in).nextInt();
         Deck selected = null;
-        for (Deck deck : userDecks){
-            if (deck.getId() == deckId){
+        for (Deck deck : userDecks) {
+            if (deck.getId() == deckId) {
                 selected = deck;
                 break;
             }
         }
-        if (selected == null){
+        if (selected == null) {
             System.out.println("Không tìm thấy bộ thẻ với ID đã nhập");
             return;
         }
@@ -109,15 +110,16 @@ public class CardService {
         card.setExample(new Scanner(System.in).nextLine());
         card.setCreator(user); //Gán người tạo thẻ
         card.setDeck(selected);//Gán bộ thẻ cho thẻ học
-        cards.add(card); // Thêm thẻ vào danh sách bộ thẻ
 
+        cards.add(card); // Thêm thẻ vào danh sách bộ thẻ
         showCard(card);
         saveCardData();
     }
-    public  List<Card> getCardsByDeck (Deck deck){
+
+    public List<Card> getCardsByDeck(Deck deck) {
         List<Card> cardsInDeck = new ArrayList<>();
-        for (Card card : cards){
-            if (card.getDeck().equals(deck)){
+        for (Card card : cards) {
+            if (card.getDeck().equals(deck)) {
                 cardsInDeck.add(card);
             }
         }
@@ -125,12 +127,12 @@ public class CardService {
     }
 
     private void saveCardData() {
-        fileUtil.writeDataToFile(cards,CARD_DATA_FILE);
+        fileUtil.writeDataToFile(cards, CARD_DATA_FILE);
     }
 
     private Card findCardById(int cardId) {
-        for (Card card: cards) {
-            if (card.getId() == cardId){
+        for (Card card : cards) {
+            if (card.getId() == cardId) {
                 return card;
             }
         }
@@ -139,7 +141,7 @@ public class CardService {
 
     public void updateCardInfo() {
         User user = userService.getLoggedInUser();
-        if (user == null){
+        if (user == null) {
             System.out.println("Vui lòng đăng nhập lại trước khi tạo thẻ.");
         }
         while (true) {
@@ -147,7 +149,7 @@ public class CardService {
             int cardId;
             while (true) {
                 try {
-                    cardId= new Scanner(System.in).nextInt();
+                    cardId = new Scanner(System.in).nextInt();
                     break; // Thoát khỏi vòng lặp nếu gúa trị là số nguyên hợp lệ
                 } catch (InputMismatchException e) {
                     System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại");
@@ -224,7 +226,7 @@ public class CardService {
                             System.out.println("Giá trị vừa nhập không phải là một số nguyên. Vui lòng nhập lại: ");
                             continue;
                         }
-                        deck= DeckService.findDeckById(id);
+                        deck = DeckService.findDeckById(id);
                         if (deck == null) {
                             System.out.println("Id vừa nhập không tồn tại trong hệ thống, vui lòng nhập lại: ");
                             continue;
@@ -246,8 +248,8 @@ public class CardService {
         System.out.println("Mời bạn nhập từ vựng cần tìm: ");
         String word = new Scanner(System.in).nextLine();
         List<Card> cards1 = new ArrayList<>();
-        for (Card card : cards){
-            if (card.getWord().toLowerCase().contains(word.toLowerCase())){
+        for (Card card : cards) {
+            if (card.getWord().toLowerCase().contains(word.toLowerCase())) {
                 cards1.add(card);
             }
         }
@@ -258,8 +260,8 @@ public class CardService {
         System.out.println("Mời bạn nhập chủ đề muốn tìm: ");
         String name = new Scanner(System.in).nextLine();
         List<Card> cards1 = new ArrayList<>();
-        for (Card card : cards){
-            if (card.getDeck().getTopic().toLowerCase().contains(name.toLowerCase())){
+        for (Card card : cards) {
+            if (card.getDeck().getTopic().toLowerCase().contains(name.toLowerCase())) {
                 cards1.add(card);
             }
         }
@@ -270,15 +272,16 @@ public class CardService {
         printHeader();
         showCardDetail(card);
     }
+
     public void showCards(List<Card> cards1) {
         printHeader();
-        for (Card card : cards1){
+        for (Card card : cards1) {
             showCardDetail(card);
         }
     }
 
     public void showCardDetail(Card card) {
-        System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", card.getId(), card.getWord(), card.getPhonetic(), card.getMeaning(), card.getCardType(), card.getState(),card.getExample(), card.getCreator(), card.getDeck());
+        System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", card.getId(), card.getWord(), card.getPhonetic(), card.getMeaning(), card.getCardType(), card.getState(), card.getExample(), card.getCreator(), card.getDeck());
     }
 
     public void printHeader() {
@@ -291,5 +294,9 @@ public class CardService {
         cards.remove(card);
         showCard(card);
         saveCardData();//Lưu file
+    }
+
+    public List<Card> getAdminCards() {
+        return List.of();
     }
 }

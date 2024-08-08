@@ -1,10 +1,8 @@
 package view;
 
 import Main.Main;
-import service.CardService;
-import service.DeckService;
-import service.StudyService;
-import service.UserService;
+import entity.Test;
+import service.*;
 import util.InputUtil;
 
 public class UserMenu {
@@ -13,12 +11,14 @@ public class UserMenu {
     private final DeckService deckService;
     private final CardService cardService;
     private final StudyService studyService;
+    private final TestService testService;
 
-    public UserMenu(UserService userService, DeckService deckService, CardService cardService, StudyService studyService) {
+    public UserMenu(UserService userService, DeckService deckService, CardService cardService, StudyService studyService, TestService testService) {
         this.userService = userService;
         this.deckService = deckService;
         this.cardService = cardService;
         this.studyService = studyService;
+        this.testService = testService;
     }
 
     public void menu() {
@@ -43,7 +43,7 @@ public class UserMenu {
                     //findCard();
                     break;
                 case 4:
-                    //test();
+                    testService.takeTest();
                     break;
                 case 5:
                     //showLearningStatistics();

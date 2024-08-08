@@ -47,12 +47,19 @@ public class StudyService {
         return null;
     }
 
+
     public void studyWithPublicCards() {
         User user = userService.getLoggedInUser();
 
         // Hiển thị các bộ thẻ trong danh sách chung
-        System.out.println("Danh sách bộ thẻ công khai");
+        System.out.println("Danh sách bộ thẻ chung");
         List<Deck> publicDecks = deckService.getAdminCreatedDecks();
+        if (publicDecks.isEmpty()){
+            System.out.println("Không có bộ thẻ nào do admin tạo để sử dụng");
+            return;
+        }
+        //Hiển thị danh sách bộ thẻ
+        System.out.println("Chọn bộ thẻ bạn muốn: ");
         for (Deck deck: publicDecks){
             System.out.println("ID: " + deck.getId() + ", Chủ đề: " + deck.getTopic() + ", Cấp độ: " + deck.getLevel());
         }

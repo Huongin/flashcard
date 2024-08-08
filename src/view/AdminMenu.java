@@ -5,7 +5,7 @@ import entity.User;
 import service.*;
 import util.InputUtil;
 
-
+import java.util.ArrayList;
 
 
 public class AdminMenu {
@@ -59,25 +59,26 @@ public class AdminMenu {
             System.out.println("------------------- PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT-------------------");
             System.out.println("-----------------------QUẢN LÝ BÀI TEST-----------------------");
             System.out.println("1. Tạo bài test mới");
-            System.out.println("2. Xem danh sách bài test");
+            System.out.println("2. Danh sách bài test");
             System.out.println("3. Chỉnh sửa bài test");
-            System.out.println("4. Xóa bài test");
-            System.out.println("5. Xem kết quả kiểm tra bài test");
+            System.out.println("4. Xem kết quả kiểm tra bài test");
             System.out.println("6. Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng" ,
-                    "Chức năng là số dương từ 1 tới 6, vui lòng nhập lại: ", 1, 6);
+                    "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
             switch (choice) {
                 case 1:
+                    testService.createNewTest();
                     break;
                 case 2:
+                    testService.showTestList();
                     break;
                 case 3:
+                    testService.updateTestById();
                     break;
                 case 4:
+                   // testService.viewTestResults();
                     break;
                 case 5:
-                    break;
-                case 6:
                     return;
             }
         }

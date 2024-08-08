@@ -5,16 +5,13 @@ import java.util.List;
 
 import entity.User;
 
-
-
-
 public class TestDetail {
     private User user;
     private Test test;
     private Date testDate; //Ngày làm test
-    private List<Card> corectCard;
-    private List<Card> incorrectCard;
-    private int Score;
+    private List<Card> corectCard; //Danh sách các thẻ trả lời đúng
+    private List<Card> incorrectCard; //Danh sách các thẻ trả lời sai
+    private int Score; //Điểm số
 
     public TestDetail(User user, Test test, Date testDate, List<Card> corectCard, List<Card> incorrectCard, int score) {
         this.user = user;

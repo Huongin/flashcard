@@ -1,8 +1,8 @@
 package constant;
 
 public enum State {
-    Active("Cho phép học"),
-    INACTIVE("Chưa được phép học");
+    Active("Cho phép"),
+    INACTIVE("Chưa được phép");
 
     public String value;
 
