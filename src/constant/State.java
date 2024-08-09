@@ -1,7 +1,7 @@
 package constant;
 
 public enum State {
-    Active("Cho phép"),
+    ACTIVE("Cho phép"),
     INACTIVE("Chưa được phép");
 
     public String value;

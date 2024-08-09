@@ -1,26 +1,19 @@
 package service;
 
-import Main.Main;
 import constant.Level;
-import constant.UserRole;
 import entity.Deck;
-import entity.Study;
 import entity.User;
 import util.FileUtil;
 import util.InputUtil;
 
 
-import java.time.LocalDate;
 import java.util.*;
 
 public class DeckService {
 
     private static final FileUtil<Deck> fileUtil = new FileUtil<>();
-
     private static final String DECK_DATA_FILE = "deck.json";
-
     private static int AUTO_ID;
-
     private static List<Deck> decks;
     private final UserService userService;
 
@@ -62,7 +55,7 @@ public class DeckService {
         System.out.println("3.Trình độ JLPT N3");
         System.out.println("4.Trình độ JLPT N4");
         System.out.println("5.Trình độ JLPT N5");
-        int choice = InputUtil.chooseOption("Xin mời chọn chức năng" ,
+        int choice = InputUtil.chooseOption("Xin mời chọn chức năng " ,
                 "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
         switch (choice) {
             case 1:
@@ -103,7 +96,7 @@ public class DeckService {
     public void updateDeckById() {
         User user = userService.getLoggedInUser();
 
-        List<Deck> userDecks = user.getRole().equals(UserRole.ADMIN) ? getAdminCreatedDecks() : getUserCreatedDecks(user);
+        List<Deck> userDecks = getUserCreatedDecks(user);
         if (userDecks.isEmpty()){
             System.out.println("Bạn không có bộ thẻ nào trong danh sách.");
             return;
@@ -173,11 +166,12 @@ public class DeckService {
             }
             showDeck(deck);
             saveDeckData();//Lưu dữ liệu Data
+            break;
         }
     }
 
-    public void deleteDeckById(int id) {
-        Deck deck = findDeckById(id);
+    public void deleteDeckById(int deleteId) {
+        Deck deck = findDeckById(deleteId);
         decks.remove(deck);
         saveDeckData();//Lưu file
         showCardDeckList();
@@ -204,25 +198,20 @@ public class DeckService {
         System.out.printf("%-5s%-30s%-30s%-20s%-10s%n", deck.getId(), deck.getTopic(), deck.getLevel(), deck.getDescription(), deck.getDescription());
     }
 
-    //Danh sách bộ thẻ do admin tạo
-    public List<Deck> getAdminCreatedDecks(){
-        List<Deck> publicDecks = new ArrayList<>();
-        for (Deck deck: decks){
-            if (deck.getCreator().getRole().equals(UserRole.ADMIN)){
-                publicDecks.add(deck);
-            }
-        }
-        return publicDecks;
-    }
 
     // Danh sách bộ thẻ do user đăng nhập tạo
     public List<Deck> getUserCreatedDecks(User user){
         List<Deck> userDecks = new ArrayList<>();
         for (Deck deck: decks){
-            if (deck.getCreator().equals(user)) {
-                userDecks.add(deck);
+           User creator = deck.getCreator();
+           if (creator != null && creator.getId() == user.getId()){
+               userDecks.add(deck);
             }
         }
         return userDecks;
+    }
+
+    public List<Deck> getAdminCreatedDecks() {
+        return null;
     }
 }

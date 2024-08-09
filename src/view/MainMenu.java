@@ -1,6 +1,6 @@
 package view;
 
-import Main.Main;
+import main.Main;
 import constant.UserRole;
 import entity.User;
 import service.*;
@@ -59,7 +59,7 @@ public class MainMenu {
     }
     public void initializeData(){
         userService.setUsers();
-        userService.createDefaulAdminUser();
+       // userService.createDefaulAdminUser();
         userService.findCurrentAutoId();
 
         deckService.setDecks();

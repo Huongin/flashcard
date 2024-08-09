@@ -1,11 +1,11 @@
 package view;
 
-import Main.Main;
+import entity.Card;
 import entity.User;
+import main.Main;
 import service.*;
 import util.InputUtil;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -54,9 +54,6 @@ public class AdminMenu {
         }
     }
 
-
-
-
     private void testManagementMenu() {
         while (true){
             System.out.println("------------------- PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT-------------------");
@@ -98,7 +95,7 @@ public class AdminMenu {
     public void deckManagementMenu() {
         while (true) {
             System.out.println("------------------- PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT-------------------");
-            System.out.println("-----------------------QUẢN LÝ DANH MỤC THẺ HỌC-----------------------");
+            System.out.println("-----------------------QUẢN LÝ DANH MỤC BỘ THẺ HỌC-----------------------");
             System.out.println("1. Thêm mới danh mục bộ thẻ");
             System.out.println("2. Cập nhật thông tin danh mục");
             System.out.println("3. Xóa danh mục");
@@ -107,14 +104,17 @@ public class AdminMenu {
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng" ,
                     "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
             switch (choice) {
-                case 1: ;
+                case 1:
                     deckService.createDeck();
                     break;
                 case 2:
                     deckService.updateDeckById();
                     break;
                 case 3:
-                    deckService.deleteDeckById(Main.LOGGED_IN_USER.getId());
+                    System.out.println("CẢNH BÁO! Khi xóa bộ thẻ các thẻ học trong bộ thẻ và lịch sử học tập sẽ bị xóa theo." +
+                            "Nếu đồng ý vui lòng nhập ID bộ thẻ cần xóa");
+                    int deleteId = new Scanner(System.in).nextInt();
+                    deckService.deleteDeckById(deleteId);
                     break;
                 case 4:
                     deckService.showCardDeckList();
@@ -131,24 +131,30 @@ public class AdminMenu {
             System.out.println("------------------QUẢN LÝ DANH SÁCH THẺ HỌC------------------");
             System.out.println("1. Thêm mới thẻ học");
             System.out.println("2. Cập nhật thông tin thẻ học");
-            System.out.println("3. Tìm kiếm thẻ học theo từ");
-            System.out.println("4. Tìm kiếm thẻ học theo chủ đề");
-            System.out.println("5. Thoát");
+            System.out.println("3. Xóa thẻ học");
+            System.out.println("4. Tìm kiếm thẻ học theo từ");
+            System.out.println("5. Tìm kiếm thẻ học theo chủ đề");
+            System.out.println("6. Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
-                    "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
+                    "Chức năng là số dương từ 1 tới 6, vui lòng nhập lại: ", 1, 6);
             switch (choice) {
                 case 1:
-                    cardService.createCard();
+                    User user = Main.LOGGED_IN_USER;
+                    cardService.createCard(user);
                     break;
                 case 2:
                     cardService.updateCardInfo();
                 case 3:
+                    System.out.println("Mời bạn nhập ID của thẻ học cần xóa: ");
+                    int cardId = new Scanner(System.in).nextInt();
+                    cardService.deleteCardById(cardId);
+                case 4:
                     cardService.findCardByWord();
                     break;
-                case 4:
+                case 5:
                     cardService.findCardByNameTopic();
                     break;
-                case 5:
+                case 6:
                     return;
             }
         }
@@ -170,12 +176,15 @@ public class AdminMenu {
                     userService.searchUserByName();
                     break;
                 case 2:
-                    userService.createUserForAdmin();
+                    userService.creatUserInfo();
                     break;
                 case 3:
-                    userService.updateUserInformation(Main.LOGGED_IN_USER.getId());
+                    userService.updateUserInformationByAdmin();
                 case 4:
-                    userService.lockUserByEmail(Main.LOGGED_IN_USER.getEmail());
+                    System.out.println("Mời bạn nhập Email của tài khoản cần khóa: ");
+                    String lockEmail = new Scanner(System.in).nextLine();
+
+                    userService.lockUserByEmail(lockEmail);
                 case 5:
                     return;
             }

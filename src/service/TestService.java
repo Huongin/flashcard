@@ -74,7 +74,7 @@ public class TestService {
                 "Chức năng là số dương từ 1 tới 2, vui lòng nhập lại: ", 1, 2);
         switch (statuschoose) {
             case 1:
-                test.setTestStatus(State.Active);
+                test.setTestStatus(State.ACTIVE);
                 break;
             case 2:
                 test.setTestStatus(State.INACTIVE);
@@ -164,7 +164,7 @@ public class TestService {
                             "Chức năng là số dương từ 1 tới 2, vui lòng nhập lại: ", 1, 2);
                     switch (newStatus){
                         case 1:
-                            test.setTestStatus(State.Active);
+                            test.setTestStatus(State.ACTIVE);
                             System.out.println("Trạng thái bài test đã kích hoạt");
                             break;
                         case 2:

@@ -1,7 +1,7 @@
 package service;
 
 
-import Main.Main;
+import main.Main;
 import constant.Regex;
 import constant.UserRole;
 
@@ -9,7 +9,6 @@ import util.FileUtil;
 import util.InputUtil;
 import entity.User;
 
-import java.io.File;
 import java.util.*;
 
 public class UserService {
@@ -79,7 +78,7 @@ public class UserService {
                 System.out.println("Bạn đã vượt quá số lần đăng nhập tối đa (5 lần), vui lòng thử lại sau");
                 break;
             }
-            System.out.println("Thông tin đăng nhập không chính xác.Đăng nhập thất bại" + loginCount + " lần, vui lòng thử lại.");
+            System.out.println("Thông tin đăng nhập không chính xác.Đăng nhập thất bại, vui lòng thử lại.");
         } while (true) ;
         return user;
     }
@@ -87,7 +86,7 @@ public class UserService {
     //Tìm kiếm người dùng bằng mail
     public User findUserByEmail(String email) {
         for (User user : users) {
-            if (user.getEmail().equals(email)) {
+            if (user.getEmail() != null && user.getEmail().equals(email)) {
                 return user;
             }
         }
@@ -97,7 +96,7 @@ public class UserService {
     //Tìm kiếm người dùng bằng mail và mật khẩu
     public User findUserByEmailAndPassword(String email, String password) {
         for (User user : users) {
-            if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
+            if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equalsIgnoreCase(password)) {
                 return user;
             }
         }
@@ -120,8 +119,15 @@ public class UserService {
         System.out.println("Chọn quyền của user:");
         System.out.println("1.User");
         System.out.println("2.Admin");
-        int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
-                "Chức năng là số dương từ 1 đến 2, Vui lòng nhập lại: ", 1, 2);
+        int choice;
+        while (true) {
+            choice = InputUtil.chooseOption("Xin mời chọn chức năng",
+                    "Chức năng là số dương từ 1 đến 2, Vui lòng nhập lại: ", 1, 2);
+            if (choice == 1 || choice == 2) {
+                break;
+            }
+            System.out.println("Vui lòng chọn lại chức năng hợp lệ");
+        }
         user.setRole(choice == 1 ? UserRole.USER : UserRole.ADMIN);
         users.add(user);
         showUser(user);
@@ -155,6 +161,7 @@ public class UserService {
         User user = creatUserInfo();
         user.setRole(UserRole.USER);
         users.add(user);
+        saveUserData();
         return user;
     }
 
@@ -173,18 +180,14 @@ public class UserService {
                 System.out.println("Email không đúng định dạng vui lòng nhập lại");
                 continue;
             }
-            boolean coTrungEmailKhong = false;
-            for (User user1 : users) {
-                if (email.equalsIgnoreCase(user1.getEmail())) {
-                    System.out.println("Email đã tồn tại vui lòng nhập lại.");
-                    coTrungEmailKhong = true;
-                    break;
-                }
+            User findUser = findUserByEmail(email);
+            if (findUser != null) {
+                System.out.println("Email đã tồn tại trong hệ thống, vui lòng nhập lại: ");
+                continue;
             }
-            if (!coTrungEmailKhong) {
-                break;
-            }
+            break;
         }
+
         //Nhập mật khẩu
         while (true) {
             System.out.println("Vui lòng nhập mật khẩu (8 -> 12 ký tự cả chữ thường, chữ hoa, số (nhập 'exit' để thoát): ");
@@ -239,14 +242,12 @@ public class UserService {
     public void searchUserByName() {
         System.out.println("Mời bạn nhập tên của User: ");
         String name = new Scanner(System.in).nextLine();
-        List<User> users1 = new ArrayList<>();
-
         for (User user : users) {
             if (user.getFullname() != null && user.getFullname().toLowerCase().contains(name.toLowerCase())) {
-                users1.add(user);
+                System.out.println(user);
             }
+            showUser(user);
         }
-        showUsers(users1);
     }
 
     //Hiển thị thông tin người dùng
@@ -369,6 +370,99 @@ public class UserService {
         saveUserData();
     }
 
+    public void updateUserInformationByAdmin() {
+        System.out.println("Mời bạn nhập email tài khoản cần cập nhật thông tin: ");
+        String email = new Scanner(System.in).nextLine();
+        User user = findUserByEmail(email);
+        System.out.println("Mời bạn nhập thông tin muốn chỉnh sửa: ");
+        System.out.println("1.Email");
+        System.out.println("2.Password");
+        System.out.println("3.Tên");
+        System.out.println("4.Tuổi");
+        System.out.println("5.Ngôn ngữ mẹ đẻ");
+        System.out.println("6.Thoát");
+        int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
+                "Chức năng là số dương từ 1 đến 6, Vui lòng nhập lại: ", 1, 6);
+        switch (choice){
+            case 1:
+                String newEmail;
+                while (true){
+                    System.out.println("Mời bạn nhập email mới: ");
+                    newEmail = new Scanner(System.in).nextLine();
+                    if (!newEmail.matches(Regex.EMAIL_REGEX)) {
+                        System.out.println("Email không đúng định dạng vui lòng nhập lại");
+                        continue;
+                    }
+                    boolean coTrungEmailKhong = false;
+                    for (User user1 : users) {
+                        if (newEmail.equalsIgnoreCase(user1.getEmail()) && user1.getId() != user.getId()) {
+                            System.out.println("Email đã tồn tại vui lòng nhập lại");
+                            coTrungEmailKhong = true;
+                            break;
+                        }
+                    }
+                    if (!coTrungEmailKhong) {
+                        break;
+                    }
+                }
+                user.setEmail(newEmail);
+                break;
+            case 2:
+                String newPassword;
+                while (true) {
+                    System.out.println("Mời bạn nhập password mới (8 -> 12 ký tự cả chữ thường, chữ hoa và cả số)");
+                    newPassword = new Scanner(System.in).nextLine();
+                    if (!newPassword.matches(Regex.PASSWORD_REGEX)) {
+                        System.out.println("Password không đúng định dạng vui lòng nhập lại ");
+                        continue;
+                    }
+                    break;
+                }
+                user.setPassword(newPassword);
+                break;
+            case 3:
+                String newName;
+                while (true) {
+                    System.out.println("Mời bạn nhập họ tên mới: ");
+                    newName = new Scanner(System.in).nextLine();
+                    if (!newName.matches(".*\\d.*") && !newName.isEmpty()) {
+                        break;
+                    } else {
+                        System.out.println("Tên không hợp lệ, Vui lòng nhập lại.");
+                    }
+                }
+                user.setFullname(newName);
+                break;
+            case 4:
+                int newAge = - 1;
+                while (true) {
+                    try {
+                        System.out.println("Mời bạn nhập tuổi mới: ");
+                        newAge = new Scanner(System.in).nextInt();
+                        if (newAge < 0 || newAge > 120) {
+                            System.out.println("Tuổi không hợp lệ. Vui lòng nhập lại.");
+                            continue;
+                        }
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.print("Số tuổi là số nguyên từ 1 đến 120, vui lòng nhập lại: ");
+                    }
+                }
+                user.setAge(newAge);
+                break;
+            case 5:
+                String newMotherTounge;
+                System.out.print("Nhập ngôn ngữ mẹ đẻ của bạn: ");
+                newMotherTounge = new Scanner(System.in).nextLine();
+                user.setMothertounge(newMotherTounge);
+                break;
+            case 6:
+                return;
+        }
+        showUser(user);
+        saveUserData();
+    }
+
     public User getLoggedInUser() {
         for (User userTemp : users) {
             if (userTemp.getId() == Main.LOGGED_IN_USER.getId()) {
@@ -378,14 +472,14 @@ public class UserService {
         return null;
     }
 
-    public void lockUserByEmail(String email) {
-        User user =findUserByEmail(email);
+    public void lockUserByEmail(String lockEmail) {
+        User user =findUserByEmail(lockEmail);
         if (user != null) {
             user.setLooked(true);
             saveUserData();
-            System.out.println("Người dùng với Email" + email + "dã bị khóa");
+            System.out.println("Người dùng với Email" + lockEmail + "dã bị khóa");
         }else {
-            System.out.println("Không tìm thấy người dùng với Email " + email);
+            System.out.println("Không tìm thấy người dùng với Email " + lockEmail);
         }
     }
 }

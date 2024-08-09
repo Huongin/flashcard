@@ -1,6 +1,7 @@
 package view;
 
-import Main.Main;
+import entity.User;
+import main.Main;
 import service.*;
 import util.InputUtil;
 
@@ -84,16 +85,22 @@ public class UserMenu {
                     deckService.updateDeckById();
                     break;
                 case 3:
-                    deckService.deleteDeckById(Main.LOGGED_IN_USER.getId());
+                    System.out.println("CẢNH BÁO! Khi xóa bộ thẻ các thẻ học trong bộ thẻ và lịch sử học tập sẽ bị xóa theo." +
+                            "Nếu đồng ý vui lòng nhập ID bộ thẻ cần xóa");
+                    int deleteId = new Scanner(System.in).nextInt();
+                    deckService.deleteDeckById(deleteId);
                     break;
                 case 4:
-                    cardService.createCard();
+                    User user = Main.LOGGED_IN_USER;
+                    cardService.createCard(user);
                     break;
                 case 5:
                     cardService.updateCardInfo();
                     break;
                 case 6:
-                    cardService.deleteCardById(Main.LOGGED_IN_USER.getId());
+                    System.out.println("Mời bạn nhập ID của thẻ học cần xóa: ");
+                    int cardId = new Scanner(System.in).nextInt();
+                    cardService.deleteCardById(cardId);
                     break;
                 case 7:
                     studyService.studyWithPersonalCards();

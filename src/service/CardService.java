@@ -1,9 +1,7 @@
 package service;
 
 
-import Main.Main;
 import constant.CardType;
-import constant.State;
 import constant.UserRole;
 import entity.Card;
 import entity.Deck;
@@ -11,9 +9,7 @@ import entity.User;
 import util.FileUtil;
 import util.InputUtil;
 
-import java.awt.print.Book;
 import java.util.*;
-import java.util.jar.Attributes;
 
 
 public class CardService {
@@ -45,36 +41,35 @@ public class CardService {
         AUTO_ID = maxId + 1;
     }
 
-    public void createCard() {
-        User user = userService.getLoggedInUser();
-        if (user == null) {
-            System.out.println("Vui lòng đăng nhập lại trước khi tạo thẻ.");
-        }
+    public void createCard(User user) {
         //Chọn bộ thẻ cho thẻ học
-        System.out.println("Chọn chủ đề cho thẻ học: ");
-
-        List<Deck> userDecks = user.getRole().equals(UserRole.ADMIN) ? deckService.getAdminCreatedDecks() : deckService.getUserCreatedDecks(user);
+        System.out.println("Hãy chọn chủ đề cho thẻ học của bạn: ");
+        List<Deck> userDecks = deckService.getUserCreatedDecks(user);
         if (userDecks.isEmpty()) {
             System.out.println("Bạn không có bộ thẻ nào trong danh sách.");
             return;
-        }
-        System.out.println("Chọn bộ thẻ cho thẻ học : ");
-        for (Deck deck : userDecks) {
-            System.out.println("ID: " + deck.getId() + ", chủ đề: " + deck.getTopic() + ", Level: " + deck.getLevel());
-        }
-
-        System.out.println("Nhập ID bộ thẻ: ");
-        int deckId = new Scanner(System.in).nextInt();
-        Deck selected = null;
-        for (Deck deck : userDecks) {
-            if (deck.getId() == deckId) {
-                selected = deck;
-                break;
+        } else {
+            System.out.println("Danh sách các bộ thẻ của bạn là : ");
+            for (Deck deck : userDecks){
+                System.out.println("ID: " + deck.getId() + ", Tên chủ đề: " + deck.getTopic() + ",Cấp độ: " + deck.getLevel());
             }
         }
-        if (selected == null) {
-            System.out.println("Không tìm thấy bộ thẻ với ID đã nhập");
-            return;
+        Deck selectedDeck;
+        while (true){
+            System.out.println("Nhập ID bộ thẻ muốn thêm thẻ học vào: ");
+            int deckId;
+            try {
+                deckId = new Scanner(System.in).nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Giá trị bạn nhập không phải số nguyên.Vui lòng nhập lại: ");
+                continue;
+            }
+            selectedDeck = DeckService.findDeckById(deckId);
+            if (selectedDeck == null) {
+                System.out.println("Thông tin không chính xác vui lòng nhập lại");
+                continue;
+            }
+            break;
         }
         //Tạo thẻ học
         Card card = new Card(AUTO_ID++);
@@ -110,7 +105,7 @@ public class CardService {
         System.out.println("Nhập ví dụ về cách dùng từ"); //Nhập ví dụ
         card.setExample(new Scanner(System.in).nextLine());
         card.setCreator(user); //Gán người tạo thẻ
-        card.setDeck(selected);//Gán bộ thẻ cho thẻ học
+        card.setDeck(selectedDeck);//Gán bộ thẻ cho thẻ học
 
         cards.add(card); // Thêm thẻ vào danh sách bộ thẻ
         showCard(card);
@@ -282,11 +277,11 @@ public class CardService {
     }
 
     public void showCardDetail(Card card) {
-        System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", card.getId(), card.getWord(), card.getPhonetic(), card.getMeaning(), card.getCardType(), card.getState(), card.getExample(), card.getCreator(), card.getDeck());
+        System.out.printf("%-5s%-20s%-20s%-30s%-20s%-20s%-60s%-20s%-10s%n", card.getId(), card.getWord(), card.getPhonetic(), card.getMeaning(), card.getCardType(), card.getState(), card.getExample(), card.getCreator(), card.getDeck());
     }
 
     public void printHeader() {
-        System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", "id", "Word", "Phonetic", "Meaning", "CardType", "State", "Example", "Creator", "Deck");
+        System.out.printf("%-5s%-20s%-20s%-30s%-20s%-20s%-60s%-20s%-10s%n", "id", "Word", "Phonetic", "Meaning", "CardType", "State", "Example", "Creator", "Deck");
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
