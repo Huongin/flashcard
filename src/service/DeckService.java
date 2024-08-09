@@ -32,6 +32,11 @@ public class DeckService {
       List<Deck> deckList = fileUtil.readDataFromFile(DECK_DATA_FILE, Deck[].class);
       decks = deckList != null ? deckList : new ArrayList<>();
    }
+
+    public void saveDeckData() {
+        fileUtil.writeDataToFile(decks,DECK_DATA_FILE);
+    }
+
     public void findCurrentAutoId(){
         int maxId = -1;
         for (Deck deck : decks){
@@ -77,17 +82,13 @@ public class DeckService {
                 break;
         }
         System.out.print("Thời gian tạo thẻ: ");
-        deck.setCreatedDate(LocalDate.now());
+        deck.setCreatedDate(new Date());
         System.out.println("Nhập miêu tả nội dung hoặc nguồn tài liệu của bộ thẻ: ");
         deck.setDescription(new Scanner(System.in).nextLine());
 
         deck.setCreator(user);//Gán thông tin người tạo deck
         decks.add(deck);
         saveDeckData(); //Lưu dữ liệu Data
-    }
-
-    public void saveDeckData() {
-        fileUtil.writeDataToFile(decks,DECK_DATA_FILE);
     }
 
     public static Deck findDeckById(int id) {
@@ -108,9 +109,8 @@ public class DeckService {
             return;
         }
         System.out.println("Danh sách bộ thẻ của bạn là: ");
-        for (Deck deck :userDecks){
-            showDeck(deck);
-        }
+        showCardDeckList();
+
         while (true) {
             System.out.println("Mời bạn nhập ID của chủ đề bộ thẻ muốn cập nhật: ");
             int id;
@@ -130,7 +130,7 @@ public class DeckService {
             System.out.println("2.Cấp độ của bộ thẻ");
             System.out.println("3.Nội dung miêu tả về bộ thẻ");
             System.out.println("4.Thoát");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng ",
                     "Chức năng là số dương từ 1 đến 4, Vui lòng nhập lại: ", 1, 4);
             switch (choice) {
                 case 1:
@@ -169,10 +169,10 @@ public class DeckService {
                     deck.setDescription(new Scanner(System.in).nextLine());
                     break;
                 case 4:
-                    showDeck(deck);
-                    saveDeckData();//Lưu dữ liệu Data
                     return;
             }
+            showDeck(deck);
+            saveDeckData();//Lưu dữ liệu Data
         }
     }
 
@@ -191,7 +191,7 @@ public class DeckService {
     }
 
     public static void printHeader() {
-        System.out.printf("%-5s%-30s%n", "Id", "Topic", "Level", "CreatDate", "Description");
+        System.out.printf("%-5s%-30s%-30s%-20s%-10s%n", "Id", "Topic", "Level", "CreatDate", "Description");
         System.out.println("----------------------------------------");
     }
 
@@ -201,7 +201,7 @@ public class DeckService {
     }
 
     public static void showDeckDetail(Deck deck) {
-        System.out.printf("%-5s%-30s%n", deck.getId(), deck.getTopic(), deck.getLevel(), deck.getDescription(), deck.getDescription());
+        System.out.printf("%-5s%-30s%-30s%-20s%-10s%n", deck.getId(), deck.getTopic(), deck.getLevel(), deck.getDescription(), deck.getDescription());
     }
 
     //Danh sách bộ thẻ do admin tạo

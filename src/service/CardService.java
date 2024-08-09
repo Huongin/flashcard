@@ -13,6 +13,7 @@ import util.InputUtil;
 
 import java.awt.print.Book;
 import java.util.*;
+import java.util.jar.Attributes;
 
 
 public class CardService {
@@ -258,10 +259,10 @@ public class CardService {
 
     public void findCardByNameTopic() {
         System.out.println("Mời bạn nhập chủ đề muốn tìm: ");
-        String name = new Scanner(System.in).nextLine();
+        String topic = new Scanner(System.in).nextLine();
         List<Card> cards1 = new ArrayList<>();
         for (Card card : cards) {
-            if (card.getDeck().getTopic().toLowerCase().contains(name.toLowerCase())) {
+            if (card.getDeck().getTopic().toLowerCase().contains(topic.toLowerCase())) {
                 cards1.add(card);
             }
         }

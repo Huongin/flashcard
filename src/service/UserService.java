@@ -16,28 +16,39 @@ public class UserService {
 
     private final FileUtil<User> fileUtil = new FileUtil<>();
     private static final String USER_FILE = "users.json";
-    private static List<User> users = new ArrayList<>();
-    private static final int MAX_LOGIN_TIMES = 5;
-    private static int AUTO_ID;
-    //Admin mặc định
     private static final String ADMIN_EMAIL = "admin@gmail.com";
     private static final String ADMIN_PASSWORD = "Admin123";
+    private static final int MAX_LOGIN_TIMES = 5;
+    private static int AUTO_ID;
+    private List<User> users;
+
+
 
     public void setUsers(){
         List<User> userList = fileUtil.readDataFromFile(USER_FILE, User[].class);
         users = userList != null ? userList : new ArrayList<>();
     }
 
-    //Lưu dữ liệu người dùng
+    //Lưu dữ liệu vào File
     private void saveUserData(){
         fileUtil.writeDataToFile(users,USER_FILE);
+    }
+
+    public void findCurrentAutoId(){
+        int maxId = -1;
+        for (User user : users){
+            if (user.getId() > maxId){
+                maxId = user.getId();
+            }
+        }
+        AUTO_ID = maxId + 1;
     }
 
     public User login() {
         int loginCount = 1;
         User user = null;
         do {
-            System.out.println("Nhập email (nhập 'exit' để thoát): ");
+            System.out.println("Mời bạn nhập Email (nhập 'exit' để thoát): ");
             String email = new Scanner(System.in).nextLine();
             if (InputUtil.exitInput(email)) {
                 return null;
@@ -46,7 +57,7 @@ public class UserService {
                 System.out.println("Email không đúng định dạng vui lòng nhập lại");
                 continue;
             }
-            System.out.println("Nhập mật khẩu (nhập 'exit' để thoát): ");
+            System.out.println("Mời bạn nhập mật khẩu (nhập 'exit' để thoát): ");
             String password = new Scanner(System.in).nextLine();
             if (InputUtil.exitInput(password)) {
                 return null;
@@ -57,6 +68,10 @@ public class UserService {
             }
             user = findUserByEmailAndPassword(email, password);
             if (user != null) {
+                if(user.isLooked()){
+                    System.out.println("Tài khoản này đã bị khóa");
+                    return null;
+                }
                 break;
             }
             loginCount++;
@@ -64,7 +79,7 @@ public class UserService {
                 System.out.println("Bạn đã vượt quá số lần đăng nhập tối đa (5 lần), vui lòng thử lại sau");
                 break;
             }
-            System.out.println("Thông tin đăng nhập không chính xác, vui lòng thử lại: ");
+            System.out.println("Thông tin đăng nhập không chính xác.Đăng nhập thất bại" + loginCount + " lần, vui lòng thử lại.");
         } while (true) ;
         return user;
     }
@@ -78,6 +93,7 @@ public class UserService {
         }
         return null;
     }
+
     //Tìm kiếm người dùng bằng mail và mật khẩu
     public User findUserByEmailAndPassword(String email, String password) {
         for (User user : users) {
@@ -87,24 +103,15 @@ public class UserService {
         }
         return null;
     }
+
     //Tìm kiếm người dùng bằng ID
-    public static User findUserById(int idUser) {
+    public User findUserById(int idUser) {
         for (User user : users) {
             if (user.getId() == idUser) {
                 return user;
             }
         }
         return null;
-    }
-    //File - tìm autoid
-    public void findCurrentAutoId(){
-        int maxId = -1;
-        for (User user : users){
-            if (user.getId() > maxId){
-                maxId = user.getId();
-            }
-        }
-        AUTO_ID = maxId + 1;
     }
 
     //Tạo mới tài khoản cho Admin
@@ -124,7 +131,7 @@ public class UserService {
     //Hàm tạo user admin
     public  void createDefaulAdminUser(){
         if (users == null || users.isEmpty()) {
-            creatAdmin();
+            createAdmin();
             return;
         }
         for (User user : users){
@@ -133,10 +140,10 @@ public class UserService {
                 return;
             }
         }
-        creatAdmin();
+        createAdmin();
     }
 
-    private void creatAdmin() {
+    private void createAdmin() {
         User user = new User(ADMIN_EMAIL,ADMIN_PASSWORD,UserRole.ADMIN);
         user.setId(0);
         users.add(user);
@@ -157,7 +164,7 @@ public class UserService {
         String password;
         //Nhập email
         while (true) {
-            System.out.println("Nhập email (nhập 'exit' để thoát): ");
+            System.out.println("Mời bạn nhập email (nhập 'exit' để thoát): ");
             email = new Scanner(System.in).nextLine();
             if (InputUtil.exitInput(email)) {
                 return null;
@@ -180,7 +187,7 @@ public class UserService {
         }
         //Nhập mật khẩu
         while (true) {
-            System.out.println("Nhập mật khẩu (nhập 'exit' để thoát): ");
+            System.out.println("Vui lòng nhập mật khẩu (8 -> 12 ký tự cả chữ thường, chữ hoa, số (nhập 'exit' để thoát): ");
             password = new Scanner(System.in).nextLine();
             if (InputUtil.exitInput(password)) {
                 return null;
@@ -219,10 +226,10 @@ public class UserService {
         }
         //Nhập ngôn ngữ mẹ đẻ
         String motherTounge;
-        System.out.print("Nhập ngôn ngữ mẹ đẻ của bạn: ");
+        System.out.print("Mời bạn nhập ngôn ngữ mẹ đẻ: ");
         motherTounge = new Scanner(System.in).nextLine();
 
-        User user = new User(email, password, fullname, age, motherTounge);
+        User user = new User(AUTO_ID++, email, password, fullname, age, motherTounge);
         users.add(user);
         saveUserData();
         return user;
@@ -256,12 +263,12 @@ public class UserService {
     }
 
     public void printHeader() {
-        System.out.printf("%-5s%-30s%-30s%-20s%-20s%-10s%-10s%n", "Id", "Fullname", "Email", "Age", "Role", "Mothertounge");
+        System.out.printf("%-5s%-30s%-30s%-20s%-10s%-10s%n", "Id", "Fullname", "Email", "Age", "Role", "Mothertounge");
         System.out.println("------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public void showUserDetail(User user) {
-        System.out.printf("%-5s%-30s%-30s%-20s%-20s%-10s%-10s%n",
+        System.out.printf("%-5s%-30s%-30s%-20s%-10s%-10s%n",
                 user.getId(),
                 user.getFullname(),
                 user.getEmail(),
@@ -300,7 +307,7 @@ public class UserService {
                             break;
                         }
                     }
-                    if (coTrungEmailKhong == false) {
+                    if (!coTrungEmailKhong) {
                         break;
                     }
                 }
@@ -372,5 +379,13 @@ public class UserService {
     }
 
     public void lockUserByEmail(String email) {
+        User user =findUserByEmail(email);
+        if (user != null) {
+            user.setLooked(true);
+            saveUserData();
+            System.out.println("Người dùng với Email" + email + "dã bị khóa");
+        }else {
+            System.out.println("Không tìm thấy người dùng với Email " + email);
+        }
     }
 }

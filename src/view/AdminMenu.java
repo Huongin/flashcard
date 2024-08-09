@@ -6,6 +6,7 @@ import service.*;
 import util.InputUtil;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class AdminMenu {
@@ -14,12 +15,14 @@ public class AdminMenu {
     private final CardService cardService;
     private final DeckService deckService;
     private final TestService testService;
+    private final TestDetailService testDetailService;
 
-    public AdminMenu(UserService userService, CardService cardService, DeckService deckService,TestService testService) {
+    public AdminMenu(UserService userService, CardService cardService, DeckService deckService,TestService testService, TestDetailService testDetailService) {
         this.userService = userService;
         this.cardService = cardService;
         this.deckService = deckService;
         this.testService = testService;
+        this.testDetailService = testDetailService;
     }
 
     public void  menu() {
@@ -30,9 +33,9 @@ public class AdminMenu {
             System.out.println("3.Quản lý bộ thẻ học");
             System.out.println("4.Quản lý bài test");
             System.out.println("5.Thoát");
-            int choise = InputUtil.chooseOption("Xin mời chọn chức năng: ",
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng: ",
                     "Chức năng là số dương từ 1 đến 5, vui lòng nhập lại: ", 1, 5);
-            switch (choise) {
+            switch (choice) {
                 case 1:
                     userManagementMenu();
                     break;
@@ -61,10 +64,11 @@ public class AdminMenu {
             System.out.println("1. Tạo bài test mới");
             System.out.println("2. Danh sách bài test");
             System.out.println("3. Chỉnh sửa bài test");
-            System.out.println("4. Xem kết quả kiểm tra bài test");
+            System.out.println("4. Xem kết quả kiểm tra theo ID bài test");
+            System.out.println("5. Xem kết quả kiểm tra theo tên User");
             System.out.println("6. Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng" ,
-                    "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
+                    "Chức năng là số dương từ 1 tới 6, vui lòng nhập lại: ", 1, 6);
             switch (choice) {
                 case 1:
                     testService.createNewTest();
@@ -76,9 +80,16 @@ public class AdminMenu {
                     testService.updateTestById();
                     break;
                 case 4:
-                   // testService.viewTestResults();
+                    System.out.println("Nhập ID bài test cần tìm: ");
+                    int testId = new Scanner(System.in).nextInt();
+                    testDetailService.testResultsByIdTest(testId);
                     break;
                 case 5:
+                    System.out.println("Nhập ID người dùng cần tìm kiếm kết quả: ");
+                    int userId = new Scanner(System.in).nextInt();
+                    testDetailService.testResultsByUserId(userId);
+                    break;
+                case 6:
                     return;
             }
         }

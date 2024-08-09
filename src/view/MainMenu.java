@@ -14,20 +14,21 @@ public class MainMenu {
     private final CardService cardService = new CardService(userService, deckService);
     private final StudyService studyService = new StudyService(userService, deckService, cardService);
     private final TestService testService = new TestService(userService,deckService,cardService);
+    private final TestDetailService testDetailService = new TestDetailService(userService,deckService,cardService,testService);
 
 
     //Khai báo tất cả các menu của các role khác nhau (Đi kèm các service cần thiết)
-    private final UserMenu userMenu = new UserMenu(userService, deckService, cardService, studyService);
-    private final AdminMenu adminMenu = new AdminMenu(userService, cardService, deckService, testService );
+    private final UserMenu userMenu = new UserMenu(userService, deckService, cardService, studyService, testService, testDetailService);
+    private final AdminMenu adminMenu = new AdminMenu(userService, cardService, deckService, testService, testDetailService );
 
     public void menu() {
         while (true) {
             System.out.println("==================================================================");
-            System.out.println("------- PHẦN MỀM QUẢN LÝ VÀ MUA BÁN VÉ XEM PHIM CHIẾU RẠP --------");
+            System.out.println("------- PHẦN MỀM QUẢN LÝ HỌC TỪ VỰNG TIẾNG NHẬT --------");
             System.out.println("1. Đăng nhập");
             System.out.println("2. Đăng ký");
             System.out.println("3. Thoát");
-            int choice = InputUtil.chooseOption( "Xin mời chọn chức năng",
+            int choice = InputUtil.chooseOption( "Xin mời chọn chức năng  ",
                     "Chức năng là số dương từ 1 tới 3, vui lòng nhập lại: ", 1, 3);
             switch (choice) {
                 case 1:
@@ -55,5 +56,23 @@ public class MainMenu {
                     return;
             }
         }
+    }
+    public void initializeData(){
+        userService.setUsers();
+        userService.createDefaulAdminUser();
+        userService.findCurrentAutoId();
+
+        deckService.setDecks();
+        deckService.findCurrentAutoId();
+
+        cardService.setCards();
+        cardService.findCurrentAutoId();
+
+        studyService.setStudy();
+
+        testService.setTests();
+        testService.findCurrentAutoId();
+
+        testDetailService.setTestDetails();
     }
 }

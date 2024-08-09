@@ -1,9 +1,9 @@
 package entity;
 
+import constant.State;
 import constant.UserRole;
 
 public class User {
-    private static int AUTO_ID = 1;
 
     private int id;
     private String email;
@@ -12,13 +12,11 @@ public class User {
     private String fullName;
     private int age;
     private String motherTounge;
+    private boolean isLooked;
 
-    public User(String email, String password, String fullname, int age, String motherTounge){
-        this.id = AUTO_ID;
-        AUTO_ID++;
-    }
 
-    public User(int id, String email, String password, UserRole role, String fullName, int age, String motherTounge) {
+
+    public User(int i, String email, String password, String fullName, int age, String motherTounge) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -26,9 +24,10 @@ public class User {
         this.fullName = fullName;
         this.age = age;
         this.motherTounge = motherTounge;
+        this.isLooked = isLooked;
     }
 
-    public User(int id, String email, String password, String fullName, int age, String motherTounge) {
+    public User(int id, String email, String password, String fullName, int age, String motherTounge, State state) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -98,16 +97,25 @@ public class User {
         this.motherTounge = mothertounge;
     }
 
+    public boolean isLooked() {
+        return isLooked;
+    }
+
+    public void setLooked(boolean looked) {
+        isLooked = looked;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", role=" + role+
-                ", fullname='" + fullName + '\'' +
+                ", role=" + role +
+                ", fullName='" + fullName + '\'' +
                 ", age=" + age +
-                ", mothertounge='" + motherTounge + '\'' +
+                ", motherTounge='" + motherTounge + '\'' +
+                ", isLooked=" + isLooked +
                 '}';
     }
 }

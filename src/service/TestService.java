@@ -2,10 +2,7 @@ package service;
 
 import constant.DateTimeConstant;
 import constant.State;
-import entity.Card;
-import entity.Deck;
-import entity.Test;
-import entity.User;
+import entity.*;
 import util.FileUtil;
 import util.InputUtil;
 
@@ -220,12 +217,6 @@ public class TestService {
             saveTestsData();
         }
     }
-    public void takeTest() {
-        User user = userService.getLoggedInUser();
-        System.out.println("Nhập");
-    }
-
-
 
     public Test findTestById(int idTest) {
         for (Test test : tests) {
@@ -255,6 +246,4 @@ public class TestService {
     public void showTestDetail(Test test) {
         System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", test.getId(), test.getName(), test.getTestStatus(), test.getCreatedDate(), test.getPassScoreThreshold());
     }
-
-
 }

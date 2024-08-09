@@ -3,8 +3,6 @@ package entity;
 import java.util.Date;
 import java.util.List;
 
-import entity.User;
-
 public class TestDetail {
     private User user;
     private Test test;
@@ -13,14 +11,15 @@ public class TestDetail {
     private List<Card> incorrectCard; //Danh sách các thẻ trả lời sai
     private int Score; //Điểm số
 
-    public TestDetail(User user, Test test, Date testDate, List<Card> corectCard, List<Card> incorrectCard, int score) {
-        this.user = user;
-        this.test = test;
+    public TestDetail(User user, Test test, Date date, List<Card> correctCards, List<Card> incorrectCards, int score) {
+        this.user = this.user;
+        this.test = this.test;
         this.testDate = testDate;
         this.corectCard = corectCard;
         this.incorrectCard = incorrectCard;
         Score = score;
     }
+
 
     public User getUser() {
         return user;

@@ -1,9 +1,10 @@
 package view;
 
 import Main.Main;
-import entity.Test;
 import service.*;
 import util.InputUtil;
+
+import java.util.Scanner;
 
 public class UserMenu {
 
@@ -11,48 +12,55 @@ public class UserMenu {
     private final DeckService deckService;
     private final CardService cardService;
     private final StudyService studyService;
-    private final TestService testService;
+    private final TestDetailService testDetailService;
 
-    public UserMenu(UserService userService, DeckService deckService, CardService cardService, StudyService studyService, TestService testService) {
+    public UserMenu(UserService userService, DeckService deckService, CardService cardService, StudyService studyService, TestService testService, TestDetailService testDetailService) {
         this.userService = userService;
         this.deckService = deckService;
         this.cardService = cardService;
         this.studyService = studyService;
-        this.testService = testService;
+        this.testDetailService = testDetailService;
     }
 
     public void menu() {
         while (true) {
             System.out.println("-------PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT-------");
-            System.out.println("1. Học cùng thẻ học chung");
-            System.out.println("2. Quản lý thẻ học cá nhân");
-            System.out.println("3. Tra từ vựng");
-            System.out.println("4. Test");
-            System.out.println("5. Thống kê kết quả học tập");
-            System.out.println("6. Thoát");
+            System.out.println("1. Quản lý thông tin tài khoản");
+            System.out.println("2. Học cùng thẻ học chung");
+            System.out.println("3. Quản lý thẻ học cá nhân");
+            System.out.println("4. Tra từ vựng theo từ");
+            System.out.println("5. Test");
+            System.out.println("6. Thống kê kết quả học tập");
+            System.out.println("7. Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
-                    "Chức năng là số dương từ 1 tới 6, vui lòng nhập lại: ", 1, 6);
+                    "Chức năng là số dương từ 1 tới 7, vui lòng nhập lại: ", 1, 7);
             switch (choice) {
                 case 1:
-                    studyWithCard();
+                    userService.updateUserInformation(Main.LOGGED_IN_USER.getId());
                     break;
                 case 2:
-                    PersonalCardManagementMenu();
+                    studyWithCard();
                     break;
                 case 3:
-                    //findCard();
+                    PersonalCardManagementMenu();
                     break;
                 case 4:
-                    testService.takeTest();
+                    cardService.findCardByWord();
                     break;
                 case 5:
-                    //showLearningStatistics();
+                    testDetailService.takeTest();
                     break;
                 case 6:
+                    System.out.println("Nhập ID người dùng cần tìm kiếm kết quả: ");
+                    int userId = new Scanner(System.in).nextInt();
+                    testDetailService.testResultsByUserId(userId);
+                    break;
+                case 7:
                     return;
             }
         }
     }
+
 
     private void PersonalCardManagementMenu() {
         while (true) {

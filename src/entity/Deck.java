@@ -1,6 +1,7 @@
 package entity;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import constant.Level;
 
@@ -11,7 +12,7 @@ public class Deck {
     private String topic;
     private Level level; //Mức độ đánh giá theo kỳ thi JLPT
     private List<Card> cards; //Danh sách các thẻ học
-    private LocalDate createdDate; //Ngày tạo bộ thẻ
+    private Date createdDate; //Ngày tạo bộ thẻ
     private String description; //Mô tả nội dung, nguồn tài liệu
     private User creator; // Người tạo ra bộ thẻ
 
@@ -20,7 +21,7 @@ public class Deck {
         this.id = id;
     }
 
-    public Deck( String topic, Level level, List<Card> cards, LocalDate createdDate, String description, User creator) {
+    public Deck( String topic, Level level, List<Card> cards, Date createdDate, String description, User creator) {
         this.topic = topic;
         this.level = level;
         this.cards = cards;
@@ -61,11 +62,11 @@ public class Deck {
         this.cards = cards;
     }
 
-    public LocalDate getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 

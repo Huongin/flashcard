@@ -5,7 +5,6 @@ import constant.CardType;
 import constant.State;
 
 public class Card {
-    private static int AUTO_ID = 1;
 
     private int id;
     private String word;
