@@ -15,6 +15,7 @@ public class Deck {
     private Date createdDate; //Ngày tạo bộ thẻ
     private String description; //Mô tả nội dung, nguồn tài liệu
     private User creator; // Người tạo ra bộ thẻ
+    private List<User> assignedUser;
 
 
     public Deck(int id) {
@@ -28,6 +29,18 @@ public class Deck {
         this.createdDate = createdDate;
         this.description = description;
         this.creator = creator;
+    }
+
+    public Deck(List<User> assignedUser) {
+        this.assignedUser = assignedUser;
+    }
+
+    public List<User> getAssignedUser() {
+        return assignedUser;
+    }
+
+    public void setAssignedUser(List<User> assignedUser) {
+        this.assignedUser = assignedUser;
     }
 
     public int getId() {

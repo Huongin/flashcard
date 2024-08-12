@@ -100,10 +100,11 @@ public class TestService {
     }
 
     private List<Card> selectDeckAndGetCards() {
-        // Lấy danh sách bộ thẻ do admin tạo
-        List<Deck> publicDecks = deckService.getAdminCreatedDecks();
+        User user = userService.getLoggedInUser();
+        // Lấy danh sách bộ thẻ do admin gán cho người dùng
+        List<Deck> publicDecks = deckService.getAssignedDecksForUser(user);
         if (publicDecks.isEmpty()) {
-            System.out.println("Không có bộ thẻ nào do admin tạo để sử dụng");
+            System.out.println("Không có bộ thẻ nào được admin gán để sử dụng");
             return null;
         }
         //Hiển thị danh sách bộ thẻ

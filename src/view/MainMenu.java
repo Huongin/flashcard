@@ -59,7 +59,7 @@ public class MainMenu {
     }
     public void initializeData(){
         userService.setUsers();
-       // userService.createDefaulAdminUser();
+        userService.createDefaulAdminUser();
         userService.findCurrentAutoId();
 
         deckService.setDecks();

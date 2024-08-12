@@ -100,9 +100,10 @@ public class AdminMenu {
             System.out.println("2. Cập nhật thông tin danh mục");
             System.out.println("3. Xóa danh mục");
             System.out.println("4. Xem danh sách các danh mục trong bộ thẻ đang có");
-            System.out.println("5. Thoát");
+            System.out.println("5. Gán người dùng vào bộ thẻ");
+            System.out.println("6. Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng" ,
-                    "Chức năng là số dương từ 1 tới 5, vui lòng nhập lại: ", 1, 5);
+                    "Chức năng là số dương từ 1 tới 6, vui lòng nhập lại: ", 1, 6);
             switch (choice) {
                 case 1:
                     deckService.createDeck();
@@ -120,6 +121,9 @@ public class AdminMenu {
                     deckService.showCardDeckList();
                     break;
                 case 5:
+                    deckService.assignUserToDeck();
+                    break;
+                case 6:
                     return;
             }
         }

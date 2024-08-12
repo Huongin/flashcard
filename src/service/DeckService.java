@@ -178,24 +178,23 @@ public class DeckService {
     }
 
     public void showCardDeckList() {
-        printHeader();
         for (Deck deck : decks){
             showDeckDetail(deck);
         }
     }
 
-    public static void printHeader() {
-        System.out.printf("%-5s%-30s%-30s%-20s%-10s%n", "Id", "Topic", "Level", "CreatDate", "Description");
-        System.out.println("----------------------------------------");
-    }
 
     public void showDeck(Deck deck) {
-        printHeader();
         showDeckDetail(deck);
     }
 
     public static void showDeckDetail(Deck deck) {
-        System.out.printf("%-5s%-30s%-30s%-20s%-10s%n", deck.getId(), deck.getTopic(), deck.getLevel(), deck.getDescription(), deck.getDescription());
+        System.out.println("Id: " + deck.getId());
+        System.out.println("Topic: " + deck.getTopic());
+        System.out.println("Level: " + deck.getLevel());
+        System.out.println("Created Date: " + deck.getCreatedDate());
+        System.out.println("Description: " + deck.getDescription());
+        System.out.println("------------------------------------------");
     }
 
 
@@ -211,7 +210,64 @@ public class DeckService {
         return userDecks;
     }
 
-    public List<Deck> getAdminCreatedDecks() {
-        return null;
+    //Chức năng gán người dùng vào bộ thẻ của admin
+
+    public void  assignUserToDeck() {
+        // Danh sách người dùng được gán vào bộ thẻ
+        List<User> assignedUsers = new ArrayList<>();//Danh sách người dùng được chọn gán vào bộ thẻ
+
+        Scanner scanner = new Scanner(System.in);
+
+        // Tìm deck cần gán
+        System.out.println("Nhập ID bộ thẻ cần gán cho người dùng");
+        int deckId = scanner.nextInt();
+        Deck deck = findDeckById(deckId);
+        if (deck == null) {
+            System.out.println("Bộ thẻ không tồn tại.");
+            return;
+        }
+        // Nhập số lượng người dùng muốn gán vào bộ thẻ
+        int userNumber = 0;
+        while (true) {
+            System.out.println("Nhập số người dùng muốn gán vào bộ thẻ");
+            if (userNumber > 0){
+                break;
+            }else {
+                System.out.println("Số lượng người dùng phải lớn hơn 0. Vui lòng thử lại.");
+            }
+
+            //Nhập ID người dùng cần gán vào bộ thẻ
+            for (int i = 0; i < userNumber; i++) {
+                while (true) {
+                    System.out.println("Nhập ID người dùng thứ" + (i + 1) + "cần gán vào bộ thẻ: ");
+                    try {
+                        int userId = scanner.nextInt();
+                        User user = userService.findUserById(userId);
+                        if (user == null) {
+                            System.out.println("Người dùng với ID" + userId + "Không tồn tại, vui lòng nhập lại.");
+                        } else {
+                            assignedUsers.add(user);
+                            break;
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Giá trị nhập vào không phải là số nguyên. Vui lòng thử lại.");
+                        scanner.next();// Bỏ qua giá trị không hợp lệ
+                    }
+                }
+            }
+            deck.setAssignedUser(assignedUsers);
+            System.out.println("Đã gán người dùng vào bộ thẻ thành công");
+        }
+    }
+
+    //Lấy danh sách bộ thẻ người dùng được gán
+    public List<Deck> getAssignedDecksForUser(User user){
+        List<Deck> assignedDecks = new ArrayList<>();
+        for (Deck deck : decks){
+            if (deck.getAssignedUser() != null && deck.getAssignedUser().contains(user)){
+                assignedDecks.add(deck);
+            }
+        }
+        return assignedDecks;
     }
 }

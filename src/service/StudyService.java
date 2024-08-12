@@ -43,106 +43,51 @@ public class StudyService {
         }
         return null;
     }
-
-
-    public void studyWithPublicCards() {
+    
+    public void studyWithAssignedDecks() {
         User user = userService.getLoggedInUser();
 
-        // Hiển thị các bộ thẻ trong danh sách chung
-        System.out.println("Danh sách bộ thẻ chung");
-        List<Deck> publicDecks = deckService.getAdminCreatedDecks();
-        if (publicDecks.isEmpty()){
-            System.out.println("Không có bộ thẻ nào do admin tạo để sử dụng");
+        //Hiển thị các bộ thẻ người dùng được gán
+        System.out.println("Danh sách bộ thẻ được gán cho bạn là: ");
+        List<Deck> assignedDecks = deckService.getAssignedDecksForUser(user);//Danh sách bộ thẻ được gán cho người d
+        if (assignedDecks.isEmpty()) {
+            System.out.println("Bạn chưa được gán bộ thẻ nào để học");
             return;
         }
         //Hiển thị danh sách bộ thẻ
-        System.out.println("Chọn bộ thẻ bạn muốn: ");
-        for (Deck deck: publicDecks){
-            System.out.println("ID: " + deck.getId() + ", Chủ đề: " + deck.getTopic() + ", Cấp độ: " + deck.getLevel());
+        System.out.println("Chọn bộ thẻ bạn muốn học: ");
+        for (Deck deck : assignedDecks) {
+            System.out.println("ID: " + deck.getId() + ", Chủ đề: " + deck.getTopic() + ", Cấp độ: " + deck.getLevel() + ", Người tạo: " + deck.getCreator());
         }
-        //Chọn và nhập ID  bộ thẻ muốn học
-        System.out.println("Nhập ID bộ thẻ muốn học");
+        //Chọn và nhập ID bộ thẻ muốn học
+        System.out.println("Nhập ID bộ thẻ muốn học: ");
         int deckId = new Scanner(System.in).nextInt();
         Deck selected = null;
-        for (Deck deck: publicDecks){
-            if(deck.getId() == deckId){
+        for (Deck deck : assignedDecks) {
+            if (deck.getId() == deckId) {
                 selected = deck;
                 break;
             }
         }
-        if(selected == null){
+        if (selected == null) {
             System.out.println("Không tìm thấy bộ thẻ với ID vừa nhập.");
             return;
         }
         //Hiển thị các thẻ học trong bộ thẻ đã chọn
         List<Card> cards = cardService.getCardsByDeck(selected);
-        if (cards.isEmpty()){
+        if (cards.isEmpty()) {
             System.out.println("Bộ thẻ này không có thẻ học nào.");
             return;
         }
         //Tạo mới Study nếu chưa có
-        Study userStudy = getStudyByUserAndDeck(user,selected);
-        if (userStudy == null){
-            userStudy = new Study(user,selected,new ArrayList<>(),new ArrayList<>(cards));
-            studies.add(userStudy);
-        }
-        System.out.println("Số lượng từ trong bộ thẻ: " + cards.size());
-
-        Scanner inputEnter = new Scanner(System.in);
-        List<Card> cardsRemove = new ArrayList<>(); //Danh sách card sau khi học xong sẽ xóa khỏi danh sách chưa học
-        for (Card card : userStudy.getIncomingCards()){
-            cardService.showCard(card);
-            System.out.println("Nhấn Enter để chuyển qua từ tiếp theo....");
-            inputEnter.nextLine();
-
-            userStudy.getStudiedCards().add(card); //Những thẻ đã học sẽ được chuyển vào danh sách đã học
-            cardsRemove.add(card); //những thẻ học rồi cho danh sách riêng tí xóa
-        }
-        userStudy.getIncomingCards().removeAll(cardsRemove); //xóa danh sách những thẻ đã học trong những
-        System.out.println("Bạn đã hoàn thành bài học với bộ thẻ này");
-
-        //Lưu lại
-        saveStudyData();
-    }
-
-    public void studyWithPersonalCards() {
-        User user = userService.getLoggedInUser();
-
-        // Hiển thị các bộ thẻ trong danh sách cá nhân
-        System.out.println("Danh sách bộ thẻ cá nhân");
-        List<Deck> userDecks = deckService.getUserCreatedDecks(user);
-        for (Deck deck: userDecks){
-            System.out.println("ID: " + deck.getId() + ", Chủ đề: " + deck.getTopic() + ", Cấp độ: " + deck.getLevel());
-        }
-        //Chọn và nhập ID  bộ thẻ muốn học
-        System.out.println("Nhập ID bộ thẻ muốn học");
-        int deckId = new Scanner(System.in).nextInt();
-        Deck selected = null;
-        for (Deck deck: userDecks){
-            if(deck.getId() == deckId){
-                selected = deck;
-                break;
-            }
-        }
-        if(selected == null){
-            System.out.println("Không tìm thấy bộ thẻ với ID vừa nhập.");
-            return;
-        }
-        //Hiển thị các thẻ học trong bộ thẻ đã chọn
-        List<Card> cards = cardService.getCardsByDeck(selected);
-        if (cards.isEmpty()){
-            System.out.println("Bộ thẻ này không có thẻ học nào.");
-            return;
-        }
-
-        //Tạo mới Study nếu chưa có
-        Study userStudy = getStudyByUserAndDeck(user,selected);
-        if (userStudy == null){
-            userStudy = new Study(user,selected,new ArrayList<>(),new ArrayList<>(cards));
+        Study userStudy = getStudyByUserAndDeck(user, selected);
+        if (userStudy == null) {
+            userStudy = new Study(user, selected, new ArrayList<>(), new ArrayList<>(cards));
             studies.add(userStudy);
         }
 
-        System.out.println("Số lượng từ trong bộ thẻ: " + cards.size());
+        System.out.print("Số lượng từ trong bộ thẻ: " + cards.size());
+
 
         Scanner inputEnter = new Scanner(System.in);
         List<Card> cardsRemove = new ArrayList<>(); //Danh sách cards sau khi học xong sẽ xóa khỏi danh sách chưa học
@@ -157,6 +102,64 @@ public class StudyService {
         userStudy.getIncomingCards().removeAll(cardsRemove); //xóa danh sách những thẻ đã học trong danh sách thẻ chưa học
         System.out.println("Bạn đã hoàn thành bài học với bộ thẻ này");
 
+        //Lưu lại
+        saveStudyData();
+    }
+
+    public void studyWithPersonalCards() {
+        User user = userService.getLoggedInUser();
+
+        // Hiển thị các bộ thẻ trong danh sách cá nhân
+        System.out.println("Danh sách bộ thẻ cá nhân");
+        List<Deck> userDecks = deckService.getUserCreatedDecks(user);
+        for (Deck deck : userDecks) {
+            System.out.println("ID: " + deck.getId() + ", Chủ đề: " + deck.getTopic() + ", Cấp độ: " + deck.getLevel());
+        }
+        //Chọn và nhập ID  bộ thẻ muốn học
+        System.out.println("Nhập ID bộ thẻ muốn học");
+        int deckId = new Scanner(System.in).nextInt();
+        Deck selected = null;
+        for (Deck deck : userDecks) {
+            if (deck.getId() == deckId) {
+                selected = deck;
+                break;
+            }
+        }
+        if (selected == null) {
+            System.out.println("Không tìm thấy bộ thẻ với ID vừa nhập.");
+            return;
+        }
+        //Hiển thị các thẻ học trong bộ thẻ đã chọn
+        List<Card> cards = cardService.getCardsByDeck(selected);
+        if (cards.isEmpty()) {
+            System.out.println("Bộ thẻ này không có thẻ học nào.");
+            return;
+        }
+        System.out.println("Bộ thẻ này có các thẻ học là: ");
+        for (Card card : cards) {
+            cardService.showCardDetail(card);
+        }
+
+        //Tạo mới Study nếu chưa có
+        Study userStudy = getStudyByUserAndDeck(user, selected);
+        if (userStudy == null) {
+            userStudy = new Study(user, selected, new ArrayList<>(), new ArrayList<>(cards));
+            studies.add(userStudy);
+        }
+
+        System.out.print("Số lượng từ trong bộ thẻ: " + cards.size());
+        Scanner inputEnter = new Scanner(System.in);
+        List<Card> cardsRemove = new ArrayList<>(); //Danh sách cards sau khi học xong sẽ xóa khỏi danh sách chưa học
+        for (Card card : userStudy.getIncomingCards()){
+            cardService.showCard(card);
+            System.out.println("Nhấn Enter để chuyển qua từ tiếp theo....");
+            inputEnter.nextLine();
+
+            userStudy.getStudiedCards().add(card); //Những thẻ đã học sẽ được chuyển vào đây
+            cardsRemove.add(card); //những thẻ đã học được lưu vào danh sách này để xóa khỏi danh sách chưa học
+        }
+        userStudy.getIncomingCards().removeAll(cardsRemove); //xóa danh sách những thẻ đã học trong danh sách thẻ chưa học
+        System.out.println("Bạn đã hoàn thành bài học với bộ thẻ này");
         //Lưu lại
         saveStudyData();
     }

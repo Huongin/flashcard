@@ -4,7 +4,7 @@ import constant.State;
 import constant.UserRole;
 
 public class User {
-
+    private static int AUTO_ID = 1;
     private int id;
     private String email;
     private String password;
@@ -14,7 +14,10 @@ public class User {
     private String motherTounge;
     private boolean isLooked;
 
-
+    public User(){
+        this.id = AUTO_ID;
+        AUTO_ID++;
+    }
 
     public User(int i, String email, String password, String fullName, int age, String motherTounge) {
         this.id = id;
@@ -39,6 +42,10 @@ public class User {
 
     public User(String adminEmail, String adminPassword, UserRole userRole) {
 
+    }
+
+    public static int getAutoId() {
+        return AUTO_ID;
     }
 
     public int getId() {

@@ -33,7 +33,7 @@ public class UserMenu {
             System.out.println("5. Test");
             System.out.println("6. Thống kê kết quả học tập");
             System.out.println("7. Thoát");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng " ,
                     "Chức năng là số dương từ 1 tới 7, vui lòng nhập lại: ", 1, 7);
             switch (choice) {
                 case 1:
@@ -75,7 +75,7 @@ public class UserMenu {
             System.out.println("6. Xóa bộ thẻ");
             System.out.println("7. Học cùng thẻ học cá nhân");
             System.out.println("8. Thoát  ");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng " ,
                     "Chức năng là số dương từ 1 tới 8, vui lòng nhập lại: ", 1, 8);
             switch (choice) {
                 case 1:
@@ -124,7 +124,7 @@ public class UserMenu {
                     "Chức năng là số dương từ 1 tới 4, vui lòng nhập lại: ", 1, 4);
             switch (choice) {
                 case 1:
-                    studyService.studyWithPublicCards();
+                    studyService.studyWithAssignedDecks();
                     break;
                 case 2:
                     studyService.studiedCards();

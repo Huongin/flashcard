@@ -80,6 +80,9 @@ public class CardService {
         System.out.println("Mời bạn nhập phiên âm của từ: ");// Nhập phiên âm
         card.setPhonetic(new Scanner(System.in).nextLine());
 
+        System.out.println("Mời bạn nhập nghĩa của từ: ");// Nhập nghĩa từ vựng
+        card.setMeaning(new Scanner(System.in).nextLine());
+
         System.out.println("Mời bạn chọn loại từ vựng");// Nhập loại từ
         System.out.println("1. Danh từ");
         System.out.println("2. Tính từ i");
@@ -107,7 +110,7 @@ public class CardService {
         card.setCreator(user); //Gán người tạo thẻ
         card.setDeck(selectedDeck);//Gán bộ thẻ cho thẻ học
 
-        cards.add(card); // Thêm thẻ vào danh sách bộ thẻ
+        cards.add(card); // Thêm thẻ vào danh sách thẻ
         showCard(card);
         saveCardData();
     }
@@ -115,7 +118,7 @@ public class CardService {
     public List<Card> getCardsByDeck(Deck deck) {
         List<Card> cardsInDeck = new ArrayList<>();
         for (Card card : cards) {
-            if (card.getDeck().equals(deck)) {
+            if (card.getDeck() != null && card.getDeck().equals(deck)) {
                 cardsInDeck.add(card);
             }
         }
@@ -230,6 +233,7 @@ public class CardService {
                         break;
                     }
                     card.setDeck(deck); //Cập nhật bộ thẻ cho thẻ học
+                    break;
                 case 7:
                     return;
             }
@@ -265,25 +269,28 @@ public class CardService {
     }
 
     public void showCard(Card card) {
-        printHeader();
         showCardDetail(card);
     }
 
     public void showCards(List<Card> cards1) {
-        printHeader();
         for (Card card : cards1) {
             showCardDetail(card);
         }
     }
 
     public void showCardDetail(Card card) {
-        System.out.printf("%-5s%-20s%-20s%-30s%-20s%-20s%-60s%-20s%-10s%n", card.getId(), card.getWord(), card.getPhonetic(), card.getMeaning(), card.getCardType(), card.getState(), card.getExample(), card.getCreator(), card.getDeck());
+        System.out.println("ID: " + card.getId());
+        System.out.println("Từ vựng: " + card.getWord());
+        System.out.println("Phiên âm: " + card.getPhonetic());
+        System.out.println("Nghĩa của từ: " + card.getMeaning());
+        System.out.println("Loại từ: " + card.getCardType());
+        System.out.println("Trạng thái: " + card.getState());
+        System.out.println("Bộ thẻ: " + card.getDeck().getTopic());
+        System.out.println("Ví dụ: " + card.getExample());
+        System.out.println("Người tạo: " + card.getCreator().getFullname());
+        System.out.println("------------------------------------------");
     }
 
-    public void printHeader() {
-        System.out.printf("%-5s%-20s%-20s%-30s%-20s%-20s%-60s%-20s%-10s%n", "id", "Word", "Phonetic", "Meaning", "CardType", "State", "Example", "Creator", "Deck");
-        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
-    }
 
     public void deleteCardById(int cardId) {
         Card card = findCardById(cardId);

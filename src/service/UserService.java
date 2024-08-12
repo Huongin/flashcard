@@ -17,10 +17,10 @@ public class UserService {
     private static final String USER_FILE = "users.json";
     private static final String ADMIN_EMAIL = "admin@gmail.com";
     private static final String ADMIN_PASSWORD = "Admin123";
-    private static final int MAX_LOGIN_TIMES = 5;
     private static int AUTO_ID;
     private List<User> users;
 
+    private static final int MAX_LOGIN_TIMES = 5;
 
 
     public void setUsers(){
@@ -96,7 +96,8 @@ public class UserService {
     //Tìm kiếm người dùng bằng mail và mật khẩu
     public User findUserByEmailAndPassword(String email, String password) {
         for (User user : users) {
-            if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equalsIgnoreCase(password)) {
+            if (user.getEmail() != null && user.getPassword() != null
+                    && user.getEmail().equalsIgnoreCase(email) && user.getPassword().equalsIgnoreCase(password)) {
                 return user;
             }
         }
@@ -141,8 +142,8 @@ public class UserService {
             return;
         }
         for (User user : users){
-            if(user.getEmail().equalsIgnoreCase(ADMIN_EMAIL)
-                && user.getPassword().equalsIgnoreCase(ADMIN_PASSWORD)){
+            if(user.getEmail() != null && user.getPassword() != null
+            && user.getEmail().equalsIgnoreCase(ADMIN_EMAIL) && user.getPassword().equalsIgnoreCase(ADMIN_PASSWORD)){
                 return;
             }
         }
@@ -229,7 +230,7 @@ public class UserService {
         }
         //Nhập ngôn ngữ mẹ đẻ
         String motherTounge;
-        System.out.print("Mời bạn nhập ngôn ngữ mẹ đẻ: ");
+        System.out.println("Mời bạn nhập ngôn ngữ mẹ đẻ: ");
         motherTounge = new Scanner(System.in).nextLine();
 
         User user = new User(AUTO_ID++, email, password, fullname, age, motherTounge);

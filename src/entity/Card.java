@@ -5,7 +5,7 @@ import constant.CardType;
 import constant.State;
 
 public class Card {
-
+    private static int AUTO_ID = 1;
     private int id;
     private String word;
     private String phonetic;
@@ -15,6 +15,12 @@ public class Card {
     private String example;
     private User creator; //Người tạo thẻ học
     private Deck deck; // Bộ thẻ mà thẻ học thuộc về
+
+
+    public Card(){
+        this.id = AUTO_ID;
+        AUTO_ID ++;
+    }
 
 
 
@@ -32,6 +38,10 @@ public class Card {
     }
 
     public Card(int id) {
+    }
+
+    public static int getAutoId() {
+        return AUTO_ID;
     }
 
     public String getWord() {
@@ -114,7 +124,7 @@ public class Card {
                 ", phonetic='" + phonetic + '\'' +
                 ", meaning='" + meaning + '\'' +
                 ", cardType=" + cardType.getValue()+
-                ", state=" + state.getValue()+
+                ", state=" + state +
                 ", example='" + example + '\'' +
                 ", creator=" + creator +
                 ", deck=" + deck +
