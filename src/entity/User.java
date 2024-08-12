@@ -1,10 +1,11 @@
 package entity;
 
-import constant.State;
+import constant.Status;
 import constant.UserRole;
 
 public class User {
     private static int AUTO_ID = 1;
+
     private int id;
     private String email;
     private String password;
@@ -12,14 +13,14 @@ public class User {
     private String fullName;
     private int age;
     private String motherTounge;
-    private boolean isLooked;
+    private Status status;
 
     public User(){
         this.id = AUTO_ID;
         AUTO_ID++;
     }
 
-    public User(int i, String email, String password, String fullName, int age, String motherTounge) {
+    public User(int id, String email, String password, String fullName, int age, String motherTounge) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -27,16 +28,17 @@ public class User {
         this.fullName = fullName;
         this.age = age;
         this.motherTounge = motherTounge;
-        this.isLooked = isLooked;
     }
 
-    public User(int id, String email, String password, String fullName, int age, String motherTounge, State state) {
+    public User(int id, String email, String password, UserRole role, String fullName, int age, String motherTounge, Status status) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.role = role;
         this.fullName = fullName;
         this.age = age;
         this.motherTounge = motherTounge;
+        this.status = status;
     }
 
 
@@ -104,12 +106,12 @@ public class User {
         this.motherTounge = mothertounge;
     }
 
-    public boolean isLooked() {
-        return isLooked;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setLooked(boolean looked) {
-        isLooked = looked;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
@@ -122,7 +124,7 @@ public class User {
                 ", fullName='" + fullName + '\'' +
                 ", age=" + age +
                 ", motherTounge='" + motherTounge + '\'' +
-                ", isLooked=" + isLooked +
+                ", status=" + status.getValue() +
                 '}';
     }
 }

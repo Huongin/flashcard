@@ -1,6 +1,6 @@
 package constant;
 
-public enum State {
+public enum Status {
     ACTIVE("Cho phép"),
     INACTIVE("Chưa được phép");
 
@@ -10,7 +10,7 @@ public enum State {
         return value;
     }
 
-    State(String value) {
+    Status(String value) {
         this.value = value;
     }
 }

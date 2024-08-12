@@ -7,15 +7,15 @@ public class TestDetail {
     private User user;
     private Test test;
     private Date testDate; //Ngày làm test
-    private List<Card> corectCard; //Danh sách các thẻ trả lời đúng
+    private List<Card> correctCard;
     private List<Card> incorrectCard; //Danh sách các thẻ trả lời sai
     private int Score; //Điểm số
 
     public TestDetail(User user, Test test, Date date, List<Card> correctCards, List<Card> incorrectCards, int score) {
-        this.user = this.user;
-        this.test = this.test;
+        this.user = user;
+        this.test = test;
         this.testDate = testDate;
-        this.corectCard = corectCard;
+        this.correctCard = correctCards;
         this.incorrectCard = incorrectCard;
         Score = score;
     }
@@ -45,12 +45,12 @@ public class TestDetail {
         this.testDate = testDate;
     }
 
-    public List<Card> getCorectCard() {
-        return corectCard;
+    public List<Card> getCorrectCard() {
+        return correctCard;
     }
 
-    public void setCorectCard(List<Card> corectCard) {
-        this.corectCard = corectCard;
+    public void setCorrectCard(List<Card> corectCard) {
+        this.correctCard = corectCard;
     }
 
     public List<Card> getIncorrectCard() {
@@ -75,7 +75,7 @@ public class TestDetail {
                 "user=" + user +
                 ", test=" + test +
                 ", testDate=" + testDate +
-                ", corectCard=" + corectCard +
+                ", correctCard=" + correctCard +
                 ", incorrectCard=" + incorrectCard +
                 ", Score=" + Score +
                 '}';

@@ -1,6 +1,7 @@
 package service;
 
 
+import constant.Status;
 import main.Main;
 import constant.Regex;
 import constant.UserRole;
@@ -67,11 +68,12 @@ public class UserService {
             }
             user = findUserByEmailAndPassword(email, password);
             if (user != null) {
-                if(user.isLooked()){
+                if(user.getStatus() == Status.INACTIVE){
                     System.out.println("Tài khoản này đã bị khóa");
-                    return null;
+                    user = null;
+                }else {
+                    break;
                 }
-                break;
             }
             loginCount++;
             if (loginCount == MAX_LOGIN_TIMES) {
@@ -86,7 +88,7 @@ public class UserService {
     //Tìm kiếm người dùng bằng mail
     public User findUserByEmail(String email) {
         for (User user : users) {
-            if (user.getEmail() != null && user.getEmail().equals(email)) {
+            if (user.getEmail().equals(email)) {
                 return user;
             }
         }
@@ -96,8 +98,7 @@ public class UserService {
     //Tìm kiếm người dùng bằng mail và mật khẩu
     public User findUserByEmailAndPassword(String email, String password) {
         for (User user : users) {
-            if (user.getEmail() != null && user.getPassword() != null
-                    && user.getEmail().equalsIgnoreCase(email) && user.getPassword().equalsIgnoreCase(password)) {
+            if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
                 return user;
             }
         }
@@ -136,14 +137,14 @@ public class UserService {
     }
 
     //Hàm tạo user admin
-    public  void createDefaulAdminUser(){
+    public  void createDefaultAdminUser(){
         if (users == null || users.isEmpty()) {
             createAdmin();
             return;
         }
         for (User user : users){
-            if(user.getEmail() != null && user.getPassword() != null
-            && user.getEmail().equalsIgnoreCase(ADMIN_EMAIL) && user.getPassword().equalsIgnoreCase(ADMIN_PASSWORD)){
+            if(user.getEmail().equalsIgnoreCase(ADMIN_EMAIL)
+                    && user.getPassword().equalsIgnoreCase(ADMIN_PASSWORD)){
                 return;
             }
         }
@@ -473,14 +474,29 @@ public class UserService {
         return null;
     }
 
-    public void lockUserByEmail(String lockEmail) {
-        User user =findUserByEmail(lockEmail);
-        if (user != null) {
-            user.setLooked(true);
-            saveUserData();
-            System.out.println("Người dùng với Email" + lockEmail + "dã bị khóa");
-        }else {
-            System.out.println("Không tìm thấy người dùng với Email " + lockEmail);
+    public void lockUserById(int idUserLock) {
+        for (User user : users){
+            if (user.getId() == idUserLock){
+                user.setStatus(Status.INACTIVE);
+                System.out.println("User có ID trên đã được khóa");
+                printHeader();
+                showUserDetail(user);
+                saveUserData();
+                break;
+            }
+        }
+    }
+
+    public void unlockedUserById(int idUserLock){
+        for (User user: users){
+            if (user.getId() == idUserLock){
+                user.setStatus(Status.ACTIVE);
+                System.out.println("User có ID trên đã được mở khóa");
+                printHeader();
+                showUserDetail(user);
+                saveUserData();
+                break;
+            }
         }
     }
 }

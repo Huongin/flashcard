@@ -1,6 +1,6 @@
 package entity;
 
-import constant.State;
+import constant.Status;
 
 import java.util.Date;
 import java.util.List;
@@ -9,7 +9,7 @@ public class Test {
 
     private int id;
     private String name; //Tên bài test
-    private State testStatus;// Trạng thái bài test
+    private Status testStatus;// Trạng thái bài test
     private Date createdDate; //Ngày tạo bài test
     private List<Card> card; //Danh sách thẻ cần test
     private int passScoreThreshold; // Ngưỡng điểm đạt
@@ -18,7 +18,7 @@ public class Test {
         this.id = id;
     }
 
-    public Test(int id, String name, State testStatus, Date createdDate, List<Card> card, int passScoreThreshold) {
+    public Test(int id, String name, Status testStatus, Date createdDate, List<Card> card, int passScoreThreshold) {
         this.id = id;
         this.name = name;
         this.testStatus = testStatus;
@@ -43,11 +43,11 @@ public class Test {
         this.name = name;
     }
 
-    public State getTestStatus() {
+    public Status getTestStatus() {
         return testStatus;
     }
 
-    public void setTestStatus(State testStatus) {
+    public void setTestStatus(Status testStatus) {
         this.testStatus = testStatus;
     }
 

@@ -43,7 +43,7 @@ public class StudyService {
         }
         return null;
     }
-    
+
     public void studyWithAssignedDecks() {
         User user = userService.getLoggedInUser();
 

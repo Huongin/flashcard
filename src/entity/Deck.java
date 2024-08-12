@@ -31,6 +31,7 @@ public class Deck {
         this.creator = creator;
     }
 
+
     public Deck(List<User> assignedUser) {
         this.assignedUser = assignedUser;
     }

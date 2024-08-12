@@ -1,12 +1,10 @@
 package service;
 
-import constant.DateTimeConstant;
-import constant.State;
+import constant.Status;
 import entity.*;
 import util.FileUtil;
 import util.InputUtil;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class TestService {
@@ -74,10 +72,10 @@ public class TestService {
                 "Chức năng là số dương từ 1 tới 2, vui lòng nhập lại: ", 1, 2);
         switch (statuschoose) {
             case 1:
-                test.setTestStatus(State.ACTIVE);
+                test.setTestStatus(Status.ACTIVE);
                 break;
             case 2:
-                test.setTestStatus(State.INACTIVE);
+                test.setTestStatus(Status.INACTIVE);
                 break;
         }
         test.setCreatedDate(new Date());
@@ -151,7 +149,7 @@ public class TestService {
                 System.out.println("Thông tin chưa chính xác vui lòng nhập lại.");
                 continue;
             }
-            if (test.getTestStatus() == State.INACTIVE){
+            if (test.getTestStatus() == Status.INACTIVE){
                 System.out.println("Bài kiểm tra đang bị khóa, Vui lòng thay đổi trạng thái trước khi cập nhật thông tin");
                 System.out.println("1. Thay đổi trạng thái bài kiểm tra");
                 System.out.println("2. Thoát");
@@ -165,11 +163,11 @@ public class TestService {
                             "Chức năng là số dương từ 1 tới 2, vui lòng nhập lại: ", 1, 2);
                     switch (newStatus){
                         case 1:
-                            test.setTestStatus(State.ACTIVE);
+                            test.setTestStatus(Status.ACTIVE);
                             System.out.println("Trạng thái bài test đã kích hoạt");
                             break;
                         case 2:
-                            test.setTestStatus(State.INACTIVE);
+                            test.setTestStatus(Status.INACTIVE);
                             System.out.println("Bài test vẫn đang bị khóa");
                             break;
                     }

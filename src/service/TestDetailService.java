@@ -1,6 +1,6 @@
 package service;
 
-import constant.State;
+import constant.Status;
 import entity.Card;
 import entity.Test;
 import entity.TestDetail;
@@ -43,7 +43,7 @@ public class TestDetailService {
         System.out.println("Mời bạn nhập ID của bài kiểm tra muốn làm: ");
         int testId = new Scanner(System.in).nextInt();
         Test test = testService.findTestById(testId);
-        if(test == null || test.getTestStatus() == State.INACTIVE){
+        if(test == null || test.getTestStatus() == Status.INACTIVE){
             System.out.println("Bài kiểm tra không tồn tại hoặc đang trạng thái khóa");
             return;
         }
@@ -113,7 +113,7 @@ public class TestDetailService {
     }
 
     public void showTestDetail(TestDetail testDetail) {
-        System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n",testDetail.getUser(), testDetail.getTest(), testDetail.getTestDate(), testDetail.getCorectCard(), testDetail.getIncorrectCard(), testDetail.getScore() );
+        System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n",testDetail.getUser(), testDetail.getTest(), testDetail.getTestDate(), testDetail.getCorrectCard(), testDetail.getIncorrectCard(), testDetail.getScore() );
     }
 
     public void testResultsByIdTest(int testId) {

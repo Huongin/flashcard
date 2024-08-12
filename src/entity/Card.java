@@ -2,7 +2,7 @@ package entity;
 
 
 import constant.CardType;
-import constant.State;
+import constant.Status;
 
 public class Card {
     private static int AUTO_ID = 1;
@@ -11,7 +11,7 @@ public class Card {
     private String phonetic;
     private String meaning;
     private CardType cardType;
-    private State state;
+    private Status state;
     private String example;
     private User creator; //Người tạo thẻ học
     private Deck deck; // Bộ thẻ mà thẻ học thuộc về
@@ -25,7 +25,7 @@ public class Card {
 
 
     public Card(int id, String word, String phonetic, String meaning,
-                CardType cardType, State state, String example, User creator, Deck deck) {
+                CardType cardType, Status state, String example, User creator, Deck deck) {
         this.id = id;
         this.word = word;
         this.phonetic = phonetic;
@@ -76,11 +76,11 @@ public class Card {
         this.meaning = meaning;
     }
 
-    public State getState() {
+    public Status getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(Status state) {
         this.state = state;
     }
 
@@ -124,7 +124,7 @@ public class Card {
                 ", phonetic='" + phonetic + '\'' +
                 ", meaning='" + meaning + '\'' +
                 ", cardType=" + cardType.getValue()+
-                ", state=" + state +
+                ", state=" + state.getValue() +
                 ", example='" + example + '\'' +
                 ", creator=" + creator +
                 ", deck=" + deck +
