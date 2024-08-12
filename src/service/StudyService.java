@@ -7,6 +7,7 @@ import entity.User;
 import util.FileUtil;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,24 +27,27 @@ public class StudyService {
         this.deckService = deckService;
         this.cardService = cardService;
     }
-    public void setStudy(){
-        List<Study> studyList = fileUtil.readDataFromFile(STUDY_DATA_FILE,Study[].class);
+
+    public void setStudy() {
+        List<Study> studyList = fileUtil.readDataFromFile(STUDY_DATA_FILE, Study[].class);
         studies = studyList != null ? studyList : new ArrayList<>();
     }
+
     private void saveStudyData() {
-        fileUtil.writeDataToFile(studies,STUDY_DATA_FILE);
+        fileUtil.writeDataToFile(studies, STUDY_DATA_FILE);
     }
 
     // Tìm đối tượng study tương ứng với User và Deck nhập vào
-    private Study getStudyByUserAndDeck(User user, Deck deck){
-        for (Study study : studies){
-            if(study.getUser().equals(user) && study.getDeck().equals(deck)){
+    private Study getStudyByUserAndDeck(User user, Deck deck) {
+        for (Study study : studies) {
+            if (study.getUser().equals(user) && study.getDeck().equals(deck)) {
                 return study;
             }
         }
         return null;
     }
 
+    //Chức năng học với thẻ học được gán
     public void studyWithAssignedDecks() {
         User user = userService.getLoggedInUser();
 
@@ -59,19 +63,29 @@ public class StudyService {
         for (Deck deck : assignedDecks) {
             System.out.println("ID: " + deck.getId() + ", Chủ đề: " + deck.getTopic() + ", Cấp độ: " + deck.getLevel() + ", Người tạo: " + deck.getCreator());
         }
+
         //Chọn và nhập ID bộ thẻ muốn học
-        System.out.println("Nhập ID bộ thẻ muốn học: ");
-        int deckId = new Scanner(System.in).nextInt();
+        int deckId;
         Deck selected = null;
-        for (Deck deck : assignedDecks) {
-            if (deck.getId() == deckId) {
-                selected = deck;
-                break;
+        while (true) {
+            try {
+                System.out.println("Nhập ID bộ thẻ muốn học");
+                deckId = new Scanner(System.in).nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
+                continue;
             }
-        }
-        if (selected == null) {
-            System.out.println("Không tìm thấy bộ thẻ với ID vừa nhập.");
-            return;
+            for (Deck deck : assignedDecks) {
+                if (deck.getId() == deckId) {
+                    selected = deck;
+                    break;
+                }
+            }
+            if (selected == null) {
+                System.out.println("Không tìm thấy bộ thẻ với ID vừa nhập.");
+                continue;
+            }
+            break;
         }
         //Hiển thị các thẻ học trong bộ thẻ đã chọn
         List<Card> cards = cardService.getCardsByDeck(selected);
@@ -91,7 +105,7 @@ public class StudyService {
 
         Scanner inputEnter = new Scanner(System.in);
         List<Card> cardsRemove = new ArrayList<>(); //Danh sách cards sau khi học xong sẽ xóa khỏi danh sách chưa học
-        for (Card card : userStudy.getIncomingCards()){
+        for (Card card : userStudy.getIncomingCards()) {
             cardService.showCard(card);
             System.out.println("Nhấn Enter để chuyển qua từ tiếp theo....");
             inputEnter.nextLine();
@@ -106,6 +120,7 @@ public class StudyService {
         saveStudyData();
     }
 
+    //Chức năng học với thẻ học cá nhân
     public void studyWithPersonalCards() {
         User user = userService.getLoggedInUser();
 
@@ -116,18 +131,27 @@ public class StudyService {
             System.out.println("ID: " + deck.getId() + ", Chủ đề: " + deck.getTopic() + ", Cấp độ: " + deck.getLevel());
         }
         //Chọn và nhập ID  bộ thẻ muốn học
-        System.out.println("Nhập ID bộ thẻ muốn học");
-        int deckId = new Scanner(System.in).nextInt();
+        int deckId;
         Deck selected = null;
-        for (Deck deck : userDecks) {
-            if (deck.getId() == deckId) {
-                selected = deck;
-                break;
+        while (true) {
+            try {
+                System.out.println("Nhập ID bộ thẻ muốn học");
+                deckId = new Scanner(System.in).nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
+                continue;
             }
-        }
-        if (selected == null) {
-            System.out.println("Không tìm thấy bộ thẻ với ID vừa nhập.");
-            return;
+            for (Deck deck : userDecks) {
+                if (deck.getId() == deckId) {
+                    selected = deck;
+                    break;
+                }
+            }
+            if (selected == null) {
+                System.out.println("Không tìm thấy bộ thẻ với ID vừa nhập.");
+                continue;
+            }
+            break;
         }
         //Hiển thị các thẻ học trong bộ thẻ đã chọn
         List<Card> cards = cardService.getCardsByDeck(selected);
@@ -150,7 +174,7 @@ public class StudyService {
         System.out.print("Số lượng từ trong bộ thẻ: " + cards.size());
         Scanner inputEnter = new Scanner(System.in);
         List<Card> cardsRemove = new ArrayList<>(); //Danh sách cards sau khi học xong sẽ xóa khỏi danh sách chưa học
-        for (Card card : userStudy.getIncomingCards()){
+        for (Card card : userStudy.getIncomingCards()) {
             cardService.showCard(card);
             System.out.println("Nhấn Enter để chuyển qua từ tiếp theo....");
             inputEnter.nextLine();
@@ -164,29 +188,36 @@ public class StudyService {
         saveStudyData();
     }
 
-    // Lấy danh sách các thẻ đã học
+
+        // Lấy danh sách các thẻ đã học
     public void studiedCards() {
         User user = userService.getLoggedInUser();
 
         List<Card> studiedCards = new ArrayList<>();
 
-        for (Study study : studies){
-            if (study.getUser().equals(user)){
+        for (Study study : studies) {
+            if (study.getUser().equals(user)) {
                 studiedCards.addAll(study.getStudiedCards());
             }
         }
         if (studiedCards.isEmpty()) {
             System.out.println("Bạn chưa có thẻ nào được học.");
-        }else {
+        } else {
             System.out.println("Danh sách các thẻ đã học: ");
-            for (Card card : studiedCards){
-                System.out.println(card);
+            for (Card card : studiedCards) {
+                System.out.println("ID: " + card.getId());
+                System.out.println("Từ vựng: " + card.getWord());
+                System.out.println("Phiên âm: " + card.getPhonetic());
+                System.out.println("Nghĩa của từ: " + card.getMeaning());
+                System.out.println("Loại từ: " + card.getCardType());
+                System.out.println("Bộ thẻ: " + card.getDeck().getTopic());
+                System.out.println("Ví dụ: " + card.getExample());
+                System.out.println("------------------------------------------");
             }
         }
     }
 
     public void IncomingCards() {
-
         User user = userService.getLoggedInUser();
 
         List<Card> incomingCards = new ArrayList<>();
@@ -201,7 +232,14 @@ public class StudyService {
         } else {
             System.out.println("Danh sách các thẻ đã học: ");
             for (Card card : incomingCards) {
-                System.out.println(card);
+                System.out.println("ID: " + card.getId());
+                System.out.println("Từ vựng: " + card.getWord());
+                System.out.println("Phiên âm: " + card.getPhonetic());
+                System.out.println("Nghĩa của từ: " + card.getMeaning());
+                System.out.println("Loại từ: " + card.getCardType());
+                System.out.println("Bộ thẻ: " + card.getDeck().getTopic());
+                System.out.println("Ví dụ: " + card.getExample());
+                System.out.println("------------------------------------------");
             }
         }
     }

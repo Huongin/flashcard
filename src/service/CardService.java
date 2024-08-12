@@ -41,6 +41,7 @@ public class CardService {
         AUTO_ID = maxId + 1;
     }
 
+    //Tạo thẻ học mới
     public void createCard(User user) {
         //Chọn bộ thẻ cho thẻ học
         System.out.println("Hãy chọn chủ đề cho thẻ học của bạn: ");
@@ -129,15 +130,7 @@ public class CardService {
         fileUtil.writeDataToFile(cards, CARD_DATA_FILE);
     }
 
-    private Card findCardById(int cardId) {
-        for (Card card : cards) {
-            if (card.getId() == cardId) {
-                return card;
-            }
-        }
-        return null;
-    }
-
+     //Cập nhật thông tin thẻ hoc
     public void updateCardInfo() {
         User user = userService.getLoggedInUser();
         if (user == null) {
@@ -244,6 +237,17 @@ public class CardService {
         }
     }
 
+    //Tìm thẻ học bằng ID
+    private Card findCardById(int cardId) {
+        for (Card card : cards) {
+            if (card.getId() == cardId) {
+                return card;
+            }
+        }
+        return null;
+    }
+
+    // Tìm thẻ học theo từ tựng
     public void findCardByWord() {
         System.out.println("Mời bạn nhập từ vựng cần tìm: ");
         String word = new Scanner(System.in).nextLine();
@@ -255,7 +259,7 @@ public class CardService {
         }
         showCards(cards1);
     }
-
+     //Tìm từ vựng theo chủ đề bộ thẻ
     public void findCardByNameTopic() {
         System.out.println("Mời bạn nhập chủ đề muốn tìm: ");
         String topic = new Scanner(System.in).nextLine();
@@ -291,7 +295,7 @@ public class CardService {
         System.out.println("------------------------------------------");
     }
 
-
+   // Xóa thẻ học bằng ID
     public void deleteCardById(int cardId) {
         Card card = findCardById(cardId);
         cards.remove(card);
@@ -299,6 +303,7 @@ public class CardService {
         saveCardData();//Lưu file
     }
 
+    ///chua xu ly
     public List<Card> getAdminCards() {
         return List.of();
     }

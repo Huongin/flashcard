@@ -62,19 +62,14 @@
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/MenuLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/MenuLogichandle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/ReaderLogichandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Javacore-BTVN/Chuabai/BTBuoiso8/logichandle/ReaderLogichandle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constant/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/constant/Status.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Deck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/TestDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/TestDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cards.json" beforeDir="false" afterPath="$PROJECT_DIR$/cards.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deck.json" beforeDir="false" afterPath="$PROJECT_DIR$/deck.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/CardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/CardService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/StudyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/StudyService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/TestDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/TestDetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/TestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/TestService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/AdminMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/AdminMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/MainMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/UserMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/UserMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/study.json" beforeDir="false" afterPath="$PROJECT_DIR$/study.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/users.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -188,5 +183,30 @@
       <updated>1722261525226</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/service/UserService.java</url>
+          <line>364</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/service/TestDetailService.java</url>
+          <line>38</line>
+          <properties class="service.TestDetailService" method="takeTest">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="user.age" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

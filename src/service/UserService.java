@@ -88,7 +88,8 @@ public class UserService {
     //Tìm kiếm người dùng bằng mail
     public User findUserByEmail(String email) {
         for (User user : users) {
-            if (user.getEmail().equals(email)) {
+            if (user.getEmail() != null &&
+                    user.getEmail().equals(email)) {
                 return user;
             }
         }
@@ -98,7 +99,7 @@ public class UserService {
     //Tìm kiếm người dùng bằng mail và mật khẩu
     public User findUserByEmailAndPassword(String email, String password) {
         for (User user : users) {
-            if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
+            if (user.getEmail() != null && user.getPassword() != null && user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
                 return user;
             }
         }
@@ -143,7 +144,8 @@ public class UserService {
             return;
         }
         for (User user : users){
-            if(user.getEmail().equalsIgnoreCase(ADMIN_EMAIL)
+            if(user.getEmail() != null && user.getPassword() != null &&
+            user.getEmail().equalsIgnoreCase(ADMIN_EMAIL)
                     && user.getPassword().equalsIgnoreCase(ADMIN_PASSWORD)){
                 return;
             }

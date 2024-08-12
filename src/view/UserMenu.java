@@ -5,6 +5,7 @@ import main.Main;
 import service.*;
 import util.InputUtil;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserMenu {
@@ -52,8 +53,17 @@ public class UserMenu {
                     testDetailService.takeTest();
                     break;
                 case 6:
-                    System.out.println("Nhập ID người dùng cần tìm kiếm kết quả: ");
-                    int userId = new Scanner(System.in).nextInt();
+                    int userId;
+                    while (true) {
+                        try {
+                            System.out.println("Mời bạn nhập ID người dùng cần tìm kiếm kết quả: ");
+                            userId = new Scanner(System.in).nextInt();
+                        } catch (InputMismatchException e) {
+                            System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
+                            continue;
+                        }
+                        break;
+                    }
                     testDetailService.testResultsByUserId(userId);
                     break;
                 case 7:
@@ -72,7 +82,7 @@ public class UserMenu {
             System.out.println("3. Xóa bộ thẻ");
             System.out.println("4. Tạo thẻ học cá nhân");
             System.out.println("5. Cập nhật thông tin thẻ học ");
-            System.out.println("6. Xóa bộ thẻ");
+            System.out.println("6. Xóa thẻ học");
             System.out.println("7. Học cùng thẻ học cá nhân");
             System.out.println("8. Thoát  ");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng " ,
@@ -85,9 +95,18 @@ public class UserMenu {
                     deckService.updateDeckById();
                     break;
                 case 3:
-                    System.out.println("CẢNH BÁO! Khi xóa bộ thẻ các thẻ học trong bộ thẻ và lịch sử học tập sẽ bị xóa theo." +
-                            "Nếu đồng ý vui lòng nhập ID bộ thẻ cần xóa");
-                    int deleteId = new Scanner(System.in).nextInt();
+                    int deleteId;
+                    while (true){
+                        try {
+                            System.out.println("CẢNH BÁO! Khi xóa bộ thẻ các thẻ học trong bộ thẻ và lịch sử học tập sẽ bị xóa theo." +
+                                    " Nếu đồng ý vui lòng nhập ID của bộ thẻ cần xóa: ");
+                            deleteId = new Scanner(System.in).nextInt();
+                        }catch (InputMismatchException e){
+                            System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
+                            continue;
+                        }
+                        break;
+                    }
                     deckService.deleteDeckById(deleteId);
                     break;
                 case 4:
@@ -98,8 +117,17 @@ public class UserMenu {
                     cardService.updateCardInfo();
                     break;
                 case 6:
-                    System.out.println("Mời bạn nhập ID của thẻ học cần xóa: ");
-                    int cardId = new Scanner(System.in).nextInt();
+                    int cardId;
+                    while (true) {
+                        try {
+                            System.out.println("Mời bạn nhập ID của thẻ học cần xóa: ");
+                            cardId = new Scanner(System.in).nextInt();
+                        } catch (InputMismatchException e) {
+                            System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
+                            continue;
+                        }
+                        break;
+                    }
                     cardService.deleteCardById(cardId);
                     break;
                 case 7:
@@ -120,7 +148,7 @@ public class UserMenu {
             System.out.println("2. Danh sách thẻ đã học");
             System.out.println("3. Danh sách thẻ chưa học");
             System.out.println("4. Thoát");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng ",
                     "Chức năng là số dương từ 1 tới 4, vui lòng nhập lại: ", 1, 4);
             switch (choice) {
                 case 1:
