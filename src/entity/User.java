@@ -43,7 +43,9 @@ public class User {
 
 
     public User(String adminEmail, String adminPassword, UserRole userRole) {
-
+        this.email = adminEmail;
+        this.password = adminPassword;
+        this.role = userRole;
     }
 
     public static int getAutoId() {

@@ -28,7 +28,7 @@ public class AdminMenu {
 
     public void  menu() {
         while (true) {
-            System.out.print("--------MENU ADMIN MANAGEMENT--------");
+            System.out.println("--------MENU ADMIN MANAGEMENT--------");
             System.out.println("1.Quản lý danh sách người dùng");
             System.out.println("2.Quản lý thẻ học");
             System.out.println("3.Quản lý bộ thẻ học");
@@ -176,6 +176,7 @@ public class AdminMenu {
                     break;
                 case 2:
                     cardService.updateCardInfo();
+                    break;
                 case 3:
                     int cardId;
                     while (true) {
