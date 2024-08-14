@@ -14,9 +14,9 @@ public class TestDetail {
     public TestDetail(User user, Test test, Date date, List<Card> correctCards, List<Card> incorrectCards, int score) {
         this.user = user;
         this.test = test;
-        this.testDate = testDate;
+        this.testDate = date;
         this.correctCard = correctCards;
-        this.incorrectCard = incorrectCard;
+        this.incorrectCard = incorrectCards;
         Score = score;
     }
 

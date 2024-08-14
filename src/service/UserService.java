@@ -5,7 +5,6 @@ import constant.Regex;
 import constant.Status;
 import constant.UserRole;
 import entity.User;
-import main.Main;
 import util.FileUtil;
 import util.InputUtil;
 
@@ -156,7 +155,7 @@ public class UserService {
     }
 
     private void createAdmin() {
-        User user = new User(ADMIN_EMAIL, ADMIN_PASSWORD, UserRole.ADMIN, Status.ACTIVE);
+        User user = new User(AUTO_ID++, ADMIN_EMAIL, ADMIN_PASSWORD, UserRole.ADMIN, Status.ACTIVE);
         user.setId(0);
         users.add(user);
         saveUserData();
@@ -238,7 +237,7 @@ public class UserService {
         System.out.println("Mời bạn nhập ngôn ngữ mẹ đẻ: ");
         motherTounge = new Scanner(System.in).nextLine();
 
-        User user = new User(AUTO_ID++, email, password, fullname, age, motherTounge);
+        User user = new User(AUTO_ID++, email, password, fullname, age, motherTounge, Status.ACTIVE);
         users.add(user);
         saveUserData();
         return user;
@@ -378,8 +377,19 @@ public class UserService {
 
     public void updateUserInformationByAdmin() {
         System.out.println("Mời bạn nhập email tài khoản cần cập nhật thông tin: ");
-        String email = new Scanner(System.in).nextLine();
-        User user = findUserByEmail(email);
+        String email;
+        User user;
+        while (true) {
+            email = new Scanner(System.in).nextLine();
+            if (InputUtil.exitInput(email)) {
+                return;
+            }
+            user = findUserByEmail(email);
+            if (user != null) {
+                break;
+            }
+            System.out.println("Email không tồn tại, vui lòng nhập lại");
+        }
         System.out.println("Mời bạn nhập thông tin muốn chỉnh sửa: ");
         System.out.println("1.Email");
         System.out.println("2.Password");
@@ -467,15 +477,6 @@ public class UserService {
         }
         showUser(user);
         saveUserData();
-    }
-
-    public User getLoggedInUser() {
-        for (User userTemp : users) {
-            if (userTemp.getId() == Main.LOGGED_IN_USER.getId()) {
-                return userTemp;
-            }
-        }
-        return null;
     }
 
     public void lockUserById(int idUserLock) {

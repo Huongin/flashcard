@@ -4,6 +4,7 @@ import entity.Card;
 import entity.Deck;
 import entity.Study;
 import entity.User;
+import main.Main;
 import util.FileUtil;
 
 import java.util.ArrayList;
@@ -49,11 +50,9 @@ public class StudyService {
 
     //Chức năng học với thẻ học được gán
     public void studyWithAssignedDecks() {
-        User user = userService.getLoggedInUser();
-
         //Hiển thị các bộ thẻ người dùng được gán
         System.out.println("Danh sách bộ thẻ được gán cho bạn là: ");
-        List<Deck> assignedDecks = deckService.getAssignedDecksForUser(user);//Danh sách bộ thẻ được gán cho người d
+        List<Deck> assignedDecks = deckService.getAssignedDecksForUser(Main.LOGGED_IN_USER);//Danh sách bộ thẻ được gán cho người d
         if (assignedDecks.isEmpty()) {
             System.out.println("Bạn chưa được gán bộ thẻ nào để học");
             return;
@@ -94,9 +93,9 @@ public class StudyService {
             return;
         }
         //Tạo mới Study nếu chưa có
-        Study userStudy = getStudyByUserAndDeck(user, selected);
+        Study userStudy = getStudyByUserAndDeck(Main.LOGGED_IN_USER, selected);
         if (userStudy == null) {
-            userStudy = new Study(user, selected, new ArrayList<>(), new ArrayList<>(cards));
+            userStudy = new Study(Main.LOGGED_IN_USER, selected, new ArrayList<>(), new ArrayList<>(cards));
             studies.add(userStudy);
         }
 
@@ -122,11 +121,9 @@ public class StudyService {
 
     //Chức năng học với thẻ học cá nhân
     public void studyWithPersonalCards() {
-        User user = userService.getLoggedInUser();
-
         // Hiển thị các bộ thẻ trong danh sách cá nhân
         System.out.println("Danh sách bộ thẻ cá nhân");
-        List<Deck> userDecks = deckService.getUserCreatedDecks(user);
+        List<Deck> userDecks = deckService.getUserCreatedDecks(Main.LOGGED_IN_USER);
         for (Deck deck : userDecks) {
             System.out.println("ID: " + deck.getId() + ", Chủ đề: " + deck.getTopic() + ", Cấp độ: " + deck.getLevel());
         }
@@ -165,9 +162,9 @@ public class StudyService {
         }
 
         //Tạo mới Study nếu chưa có
-        Study userStudy = getStudyByUserAndDeck(user, selected);
+        Study userStudy = getStudyByUserAndDeck(Main.LOGGED_IN_USER, selected);
         if (userStudy == null) {
-            userStudy = new Study(user, selected, new ArrayList<>(), new ArrayList<>(cards));
+            userStudy = new Study(Main.LOGGED_IN_USER, selected, new ArrayList<>(), new ArrayList<>(cards));
             studies.add(userStudy);
         }
 
@@ -191,12 +188,10 @@ public class StudyService {
 
         // Lấy danh sách các thẻ đã học
     public void studiedCards() {
-        User user = userService.getLoggedInUser();
-
         List<Card> studiedCards = new ArrayList<>();
 
         for (Study study : studies) {
-            if (study.getUser().equals(user)) {
+            if (study.getUser().equals(Main.LOGGED_IN_USER)) {
                 studiedCards.addAll(study.getStudiedCards());
             }
         }
@@ -218,12 +213,10 @@ public class StudyService {
     }
 
     public void IncomingCards() {
-        User user = userService.getLoggedInUser();
-
         List<Card> incomingCards = new ArrayList<>();
 
         for (Study study : studies) {
-            if (study.getUser().equals(user)) {
+            if (study.getUser().equals(Main.LOGGED_IN_USER)) {
                 incomingCards.addAll(study.getIncomingCards());
             }
         }

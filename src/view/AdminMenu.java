@@ -1,6 +1,5 @@
 package view;
 
-import entity.Card;
 import entity.User;
 import main.Main;
 import service.*;
@@ -18,7 +17,7 @@ public class AdminMenu {
     private final TestService testService;
     private final TestDetailService testDetailService;
 
-    public AdminMenu(UserService userService, CardService cardService, DeckService deckService,TestService testService, TestDetailService testDetailService) {
+    public AdminMenu(UserService userService, CardService cardService, DeckService deckService, TestService testService, TestDetailService testDetailService) {
         this.userService = userService;
         this.cardService = cardService;
         this.deckService = deckService;
@@ -26,7 +25,7 @@ public class AdminMenu {
         this.testDetailService = testDetailService;
     }
 
-    public void  menu() {
+    public void menu() {
         while (true) {
             System.out.println("--------MENU ADMIN MANAGEMENT--------");
             System.out.println("1.Quản lý danh sách người dùng");
@@ -34,14 +33,14 @@ public class AdminMenu {
             System.out.println("3.Quản lý bộ thẻ học");
             System.out.println("4.Quản lý bài test");
             System.out.println("5.Thoát");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng: " ,
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng: ",
                     "Chức năng là số dương từ 1 đến 5, vui lòng nhập lại: ", 1, 5);
             switch (choice) {
                 case 1:
                     userManagementMenu();
                     break;
                 case 2:
-                    flashcardManagementMenu();
+                    flashCardManagementMenu();
                     break;
                 case 3:
                     deckManagementMenu();
@@ -56,7 +55,7 @@ public class AdminMenu {
     }
 
     private void testManagementMenu() {
-        while (true){
+        while (true) {
             System.out.println("------------------- PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT-------------------");
             System.out.println("-----------------------QUẢN LÝ BÀI TEST-----------------------");
             System.out.println("1. Tạo bài test mới");
@@ -65,7 +64,7 @@ public class AdminMenu {
             System.out.println("4. Xem kết quả kiểm tra theo ID bài test");
             System.out.println("5. Xem kết quả kiểm tra theo tên User");
             System.out.println("6. Thoát");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng "  ,
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng ",
                     "Chức năng là số dương từ 1 tới 6, vui lòng nhập lại: ", 1, 6);
             switch (choice) {
                 case 1:
@@ -121,7 +120,7 @@ public class AdminMenu {
             System.out.println("4. Xem danh sách các danh mục trong bộ thẻ đang có");
             System.out.println("5. Gán người dùng vào bộ thẻ");
             System.out.println("6. Thoát");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng "  ,
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng ",
                     "Chức năng là số dương từ 1 tới 6, vui lòng nhập lại: ", 1, 6);
             switch (choice) {
                 case 1:
@@ -132,18 +131,21 @@ public class AdminMenu {
                     break;
                 case 3:
                     int deleteId;
-                    while (true){
+                    while (true) {
                         try {
                             System.out.println("CẢNH BÁO! Khi xóa bộ thẻ các thẻ học trong bộ thẻ và lịch sử học tập sẽ bị xóa theo." +
                                     " Nếu đồng ý vui lòng nhập ID của bộ thẻ cần xóa: ");
                             deleteId = new Scanner(System.in).nextInt();
-                        }catch (InputMismatchException e){
+                        } catch (InputMismatchException e) {
                             System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
                             continue;
                         }
                         break;
                     }
                     deckService.deleteDeckById(deleteId);
+                    // TODO - xóa card và study tương ứng nữa
+//                    cardService.deleteByDeckId(deleteId);
+//                    studyService.deleteByDeckId(deleteId);
                     break;
                 case 4:
                     deckService.showCardDeckList();
@@ -157,7 +159,7 @@ public class AdminMenu {
         }
     }
 
-    private void  flashcardManagementMenu() {
+    private void flashCardManagementMenu() {
         while (true) {
             System.out.println("------------------ PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT------------------");
             System.out.println("------------------QUẢN LÝ DANH SÁCH THẺ HỌC------------------");
@@ -167,12 +169,11 @@ public class AdminMenu {
             System.out.println("4. Tìm kiếm thẻ học theo từ");
             System.out.println("5. Tìm kiếm thẻ học theo chủ đề");
             System.out.println("6. Thoát");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng " ,
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng ",
                     "Chức năng là số dương từ 1 tới 6, vui lòng nhập lại: ", 1, 6);
             switch (choice) {
                 case 1:
-                    User user = Main.LOGGED_IN_USER;
-                    cardService.createCard(user);
+                    cardService.createCard();
                     break;
                 case 2:
                     cardService.updateCardInfo();
@@ -203,9 +204,9 @@ public class AdminMenu {
     }
 
     public void userManagementMenu() {
-         User user;
-         int idUserLock;
-        while (true){
+        User user;
+        int idUserLock;
+        while (true) {
             System.out.println("------------------ PHẦN MỀM HỌC TỪ VỰNG TIẾNG NHẬT------------------");
             System.out.println("------------------QUẢN LÝ DANH SÁCH NGƯỜI DÙNG------------------");
             System.out.println("1.Tìm kiếm người dùng theo tên ");
@@ -214,7 +215,7 @@ public class AdminMenu {
             System.out.println("4.Khóa hoạt động của người dùng");
             System.out.println("5.Mở khóa hoạt động của người dùng");
             System.out.println("6.Thoát");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng " ,
+            int choice = InputUtil.chooseOption("Xin mời chọn chức năng ",
                     "Chức năng là số dương từ 1 đến 6, Vui lòng nhập lại: ", 1, 6);
             switch (choice) {
                 case 1:
@@ -226,17 +227,17 @@ public class AdminMenu {
                 case 3:
                     userService.updateUserInformationByAdmin();
                 case 4:
-                    while (true){
+                    while (true) {
                         try {
                             System.out.println("Mời bạn nhập ID của tài khoản muốn khóa: ");
                             idUserLock = new Scanner(System.in).nextInt();
-                        }catch (InputMismatchException e){
+                        } catch (InputMismatchException e) {
                             System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
                             continue;
                         }
                         user = userService.findUserById(idUserLock);
-                        if (user == null){
-                            System.out.println("Không tìm thấy ID " + idUserLock + ". Vui lòng nhập lại: " );
+                        if (user == null) {
+                            System.out.println("Không tìm thấy user có ID " + idUserLock + ". Vui lòng nhập lại: ");
                             continue;
                         }
                         break;
@@ -244,17 +245,17 @@ public class AdminMenu {
                     userService.lockUserById(idUserLock);
                     break;
                 case 5:
-                    while (true){
+                    while (true) {
                         try {
                             System.out.println("Mời bạn nhập ID của tài khoản muốn mở khóa: ");
                             idUserLock = new Scanner(System.in).nextInt();
-                        }catch (InputMismatchException e){
+                        } catch (InputMismatchException e) {
                             System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
                             continue;
                         }
                         user = userService.findUserById(idUserLock);
-                        if (user == null){
-                            System.out.println("Không tìm thấy ID " + idUserLock + ". Vui lòng nhập lại: " );
+                        if (user == null) {
+                            System.out.println("Không tìm thấy ID " + idUserLock + ". Vui lòng nhập lại: ");
                             continue;
                         }
                         break;

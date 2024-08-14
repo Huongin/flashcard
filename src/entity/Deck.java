@@ -1,10 +1,9 @@
 package entity;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 import constant.Level;
 
+import java.util.Date;
+import java.util.List;
 
 
 public class Deck {
@@ -22,7 +21,7 @@ public class Deck {
         this.id = id;
     }
 
-    public Deck( String topic, Level level, List<Card> cards, Date createdDate, String description, User creator) {
+    public Deck(String topic, Level level, List<Card> cards, Date createdDate, String description, User creator) {
         this.topic = topic;
         this.level = level;
         this.cards = cards;
@@ -106,7 +105,7 @@ public class Deck {
         return "Deck{" +
                 "id=" + id +
                 ", topic='" + topic + '\'' +
-                ", level=" + level.getValue()+
+                ", level=" + level.getValue() +
                 ", cards=" + cards +
                 ", createdDate=" + createdDate +
                 ", description='" + description + '\'' +

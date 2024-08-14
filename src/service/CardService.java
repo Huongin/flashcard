@@ -2,14 +2,16 @@ package service;
 
 
 import constant.CardType;
-import constant.UserRole;
 import entity.Card;
 import entity.Deck;
-import entity.User;
+import main.Main;
 import util.FileUtil;
 import util.InputUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
 
 
 public class CardService {
@@ -42,22 +44,22 @@ public class CardService {
     }
 
     //Tạo thẻ học mới
-    public void createCard(User user) {
+    public void createCard() {
         //Chọn bộ thẻ cho thẻ học
-        System.out.println("Hãy chọn chủ đề cho thẻ học của bạn: ");
-        List<Deck> userDecks = deckService.getUserCreatedDecks(user);
+        List<Deck> userDecks = deckService.getUserCreatedDecks(Main.LOGGED_IN_USER);
         if (userDecks.isEmpty()) {
             System.out.println("Bạn không có bộ thẻ nào trong danh sách.");
             return;
-        } else {
-            System.out.println("Danh sách các bộ thẻ của bạn là : ");
-            for (Deck deck : userDecks){
-                System.out.println("ID: " + deck.getId() + ", Tên chủ đề: " + deck.getTopic() + ",Cấp độ: " + deck.getLevel());
-            }
         }
+
+        System.out.println("Danh sách các bộ thẻ của bạn là : ");
+        for (Deck deck : userDecks) {
+            System.out.println("ID: " + deck.getId() + ", Tên chủ đề: " + deck.getTopic() + ", Cấp độ: " + deck.getLevel());
+        }
+
+        System.out.println("Hãy chọn chủ đề cho thẻ học của bạn bằng cách nhập ID của bộ thẻ: ");
         Deck selectedDeck;
-        while (true){
-            System.out.println("Nhập ID bộ thẻ muốn thêm thẻ học vào: ");
+        while (true) {
             int deckId;
             try {
                 deckId = new Scanner(System.in).nextInt();
@@ -65,7 +67,7 @@ public class CardService {
                 System.out.println("Giá trị bạn nhập không phải số nguyên.Vui lòng nhập lại: ");
                 continue;
             }
-            selectedDeck = DeckService.findDeckById(deckId);
+            selectedDeck = deckService.findDeckById(deckId);
             if (selectedDeck == null) {
                 System.out.println("Thông tin không chính xác vui lòng nhập lại");
                 continue;
@@ -108,7 +110,7 @@ public class CardService {
 
         System.out.println("Nhập ví dụ về cách dùng từ"); //Nhập ví dụ
         card.setExample(new Scanner(System.in).nextLine());
-        card.setCreator(user); //Gán người tạo thẻ
+        card.setCreator(Main.LOGGED_IN_USER); //Gán người tạo thẻ
         card.setDeck(selectedDeck);//Gán bộ thẻ cho thẻ học
 
         cards.add(card); // Thêm thẻ vào danh sách thẻ
@@ -130,111 +132,105 @@ public class CardService {
         fileUtil.writeDataToFile(cards, CARD_DATA_FILE);
     }
 
-     //Cập nhật thông tin thẻ hoc
+    //Cập nhật thông tin thẻ hoc
     public void updateCardInfo() {
-        User user = userService.getLoggedInUser();
-        if (user == null) {
-            System.out.println("Vui lòng đăng nhập lại trước khi tạo thẻ.");
-        }
+        Card card = null;
+        System.out.println("Mời bạn nhập ID của thẻ học: ");
         while (true) {
-            System.out.println("Mời bạn nhập ID của thẻ học: ");
             int cardId;
-            while (true) {
-                try {
-                    cardId = new Scanner(System.in).nextInt();
-                    break; // Thoát khỏi vòng lặp nếu gúa trị là số nguyên hợp lệ
-                } catch (InputMismatchException e) {
-                    System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại");
+            try {
+                cardId = new Scanner(System.in).nextInt();
+                card = findCardById(cardId);
+                if (card == null) {
+                    System.out.println("Thông tin không chính xác, vui lòng nhập lại: ");
+                    continue;
                 }
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại");
             }
-            Card card = findCardById(cardId);
-            if (card == null) {
-                System.out.println("Thông tin không chính xác, vui lòng nhập lại: ");
-                continue;
-            }
-            System.out.println("Mời bạn chọn phần thông tin muốn chỉnh sửa: ");
-            System.out.println("1. Từ vựng");
-            System.out.println("2. Phiên âm");
-            System.out.println("3. Nghĩa của từ");
-            System.out.println("4. Loại từ vung");
-            System.out.println("5. Ví dụ về cách dùng từ");
-            System.out.println("6. Chủ đề bộ thẻ");
-            System.out.println("7. Thoát");
-            int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
-                    "Chức năng là số dương từ 1 đến 7, Vui lòng nhập lại: ", 1, 7);
-            switch (choice) {
-                case 1:
-                    System.out.println("Mời bạn nhập từ mới");
-                    String newWord = new Scanner(System.in).nextLine();
-                    card.setWord(newWord);
-                    break;
-                case 2:
-                    System.out.println("Mời bạn nhâp phiên âm mới của từ");
-                    String newPhonetic = new Scanner(System.in).nextLine();
-                    card.setPhonetic(newPhonetic);
-                    break;
-                case 3:
-                    System.out.println("Mời bạn nhập nghĩa mới của từ");
-                    String newMeaning = new Scanner(System.in).nextLine();
-                    card.setMeaning(newMeaning);
-                    break;
-                case 4:
-                    System.out.println("Mời bạn nhập thể loại mới của từ");
-                    System.out.println("1. Danh từ");
-                    System.out.println("2. Tính từ i");
-                    System.out.println("3. Tính từ na");
-                    System.out.println("4. Động từ");
-                    int newStyle = InputUtil.chooseOption("Xin mời chọn chức năng",
-                            "Chức năng là số dương từ 1 đến 4, Vui lòng nhập lại: ", 1, 5);
-                    switch (newStyle) {
-                        case 1:
-                            card.setCardType(CardType.Noun);
-                            break;
-                        case 2:
-                            card.setCardType(CardType.Adji);
-                            break;
-                        case 3:
-                            card.setCardType(CardType.AdjNa);
-                            break;
-                        case 4:
-                            card.setCardType(CardType.Verb);
-                            break;
-                    }
-                    break;
-                case 5:
-                    System.out.println("Mời bạn nhập lại ví dụ");
-                    String newExample = new Scanner(System.in).nextLine();
-                    card.setExample(newExample);
-                    break;
-                case 6:
-                    Deck deck;
-                    deckService.showCardDeckList();
-                    while (true) {
-                        System.out.println("Mời bạn nhập ID của chủ đề bộ thẻ muốn cập nhật: ");
-                        int id;
-                        try {
-                            id = new Scanner(System.in).nextInt();
-                        } catch (InputMismatchException e) {
-                            System.out.println("Giá trị vừa nhập không phải là một số nguyên. Vui lòng nhập lại: ");
-                            continue;
-                        }
-                        deck = DeckService.findDeckById(id);
-                        if (deck == null) {
-                            System.out.println("Id vừa nhập không tồn tại trong hệ thống, vui lòng nhập lại: ");
-                            continue;
-                        }
-                        break;
-                    }
-                    card.setDeck(deck); //Cập nhật bộ thẻ cho thẻ học
-                    break;
-                case 7:
-                    return;
-            }
-            System.out.println("Bạn đã cập nhật thành công thông tin về thẻ học");
-            showCard(card);
-            saveCardData();
-            break;
         }
+        System.out.println("Mời bạn chọn phần thông tin muốn chỉnh sửa: ");
+        System.out.println("1. Từ vựng");
+        System.out.println("2. Phiên âm");
+        System.out.println("3. Nghĩa của từ");
+        System.out.println("4. Loại từ vung");
+        System.out.println("5. Ví dụ về cách dùng từ");
+        System.out.println("6. Chủ đề bộ thẻ");
+        System.out.println("7. Thoát");
+        int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
+                "Chức năng là số dương từ 1 đến 7, Vui lòng nhập lại: ", 1, 7);
+        switch (choice) {
+            case 1:
+                System.out.println("Mời bạn nhập từ mới");
+                String newWord = new Scanner(System.in).nextLine();
+                card.setWord(newWord);
+                break;
+            case 2:
+                System.out.println("Mời bạn nhâp phiên âm mới của từ");
+                String newPhonetic = new Scanner(System.in).nextLine();
+                card.setPhonetic(newPhonetic);
+                break;
+            case 3:
+                System.out.println("Mời bạn nhập nghĩa mới của từ");
+                String newMeaning = new Scanner(System.in).nextLine();
+                card.setMeaning(newMeaning);
+                break;
+            case 4:
+                System.out.println("Mời bạn nhập thể loại mới của từ");
+                System.out.println("1. Danh từ");
+                System.out.println("2. Tính từ i");
+                System.out.println("3. Tính từ na");
+                System.out.println("4. Động từ");
+                int newStyle = InputUtil.chooseOption("Xin mời chọn chức năng",
+                        "Chức năng là số dương từ 1 đến 4, Vui lòng nhập lại: ", 1, 5);
+                switch (newStyle) {
+                    case 1:
+                        card.setCardType(CardType.Noun);
+                        break;
+                    case 2:
+                        card.setCardType(CardType.Adji);
+                        break;
+                    case 3:
+                        card.setCardType(CardType.AdjNa);
+                        break;
+                    case 4:
+                        card.setCardType(CardType.Verb);
+                        break;
+                }
+                break;
+            case 5:
+                System.out.println("Mời bạn nhập lại ví dụ");
+                String newExample = new Scanner(System.in).nextLine();
+                card.setExample(newExample);
+                break;
+            case 6:
+                Deck deck;
+                deckService.showCardDeckList();
+                while (true) {
+                    System.out.println("Mời bạn nhập ID của chủ đề bộ thẻ muốn cập nhật: ");
+                    int id;
+                    try {
+                        id = new Scanner(System.in).nextInt();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Giá trị vừa nhập không phải là một số nguyên. Vui lòng nhập lại: ");
+                        continue;
+                    }
+                    deck = deckService.findDeckById(id);
+                    if (deck == null) {
+                        System.out.println("Id vừa nhập không tồn tại trong hệ thống, vui lòng nhập lại: ");
+                        continue;
+                    }
+                    break;
+                }
+                card.setDeck(deck); //Cập nhật bộ thẻ cho thẻ học
+                break;
+            case 7:
+                return;
+        }
+        System.out.println("Bạn đã cập nhật thành công thông tin về thẻ học");
+        showCard(card);
+        saveCardData();
     }
 
     //Tìm thẻ học bằng ID
@@ -259,7 +255,8 @@ public class CardService {
         }
         showCards(cards1);
     }
-     //Tìm từ vựng theo chủ đề bộ thẻ
+
+    //Tìm từ vựng theo chủ đề bộ thẻ
     public void findCardByNameTopic() {
         System.out.println("Mời bạn nhập chủ đề muốn tìm: ");
         String topic = new Scanner(System.in).nextLine();
@@ -295,7 +292,7 @@ public class CardService {
         System.out.println("------------------------------------------");
     }
 
-   // Xóa thẻ học bằng ID
+    // Xóa thẻ học bằng ID
     public void deleteCardById(int cardId) {
         Card card = findCardById(cardId);
         cards.remove(card);
@@ -303,7 +300,7 @@ public class CardService {
         saveCardData();//Lưu file
     }
 
-    ///chua xu ly
+    // TODO - chua xu ly
     public List<Card> getAdminCards() {
         return List.of();
     }

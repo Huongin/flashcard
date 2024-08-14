@@ -1,7 +1,10 @@
 package service;
 
 import constant.Status;
-import entity.*;
+import entity.Card;
+import entity.Deck;
+import entity.Test;
+import main.Main;
 import util.FileUtil;
 import util.InputUtil;
 
@@ -44,8 +47,6 @@ public class TestService {
 
 
     public void createNewTest() {
-        User user = userService.getLoggedInUser();
-
         System.out.println("Nhập tên bài test cần tạo: ");
         String name = new Scanner(System.in).nextLine();
 
@@ -81,13 +82,13 @@ public class TestService {
         test.setCreatedDate(new Date());
         test.setCard(cardsInSelectedDeck);
 
-        //Tính ngưỡng điểm đạt dựa trên 60% tổng số từ trong bộ thẻ
+        // Tính ngưỡng điểm đạt dựa trên 60% tổng số từ trong bộ thẻ
         int totalCards = cardsInSelectedDeck.size();
         int passScoreThresholdPersent = new Scanner(System.in).nextInt();
-        if(passScoreThresholdPersent<0 || passScoreThresholdPersent >100){
+        if (passScoreThresholdPersent < 0 || passScoreThresholdPersent > 100) {
             System.out.println("Giá trị không hợp lệ, vui lòng nhập lại số từ 0 đến 100");
-        }else {
-            int passScoreThreshold = (int) Math.ceil(totalCards * (passScoreThresholdPersent/100.0));// Điểm được làm tròn lên
+        } else {
+            int passScoreThreshold = (int) Math.ceil(totalCards * (passScoreThresholdPersent / 100.0));// Điểm được làm tròn lên
             System.out.println("Ngưỡng điểm đạt kiểm tra là: " + passScoreThreshold);
 
             test.setPassScoreThreshold(passScoreThreshold);
@@ -98,9 +99,8 @@ public class TestService {
     }
 
     private List<Card> selectDeckAndGetCards() {
-        User user = userService.getLoggedInUser();
         // Lấy danh sách bộ thẻ do admin gán cho người dùng
-        List<Deck> publicDecks = deckService.getAssignedDecksForUser(user);
+        List<Deck> publicDecks = deckService.getAssignedDecksForUser(Main.LOGGED_IN_USER);
         if (publicDecks.isEmpty()) {
             System.out.println("Không có bộ thẻ nào được admin gán để sử dụng");
             return null;
@@ -126,42 +126,42 @@ public class TestService {
             return new ArrayList<>();
         }
         List<Card> cardsInSelectedDeck = cardService.getCardsByDeck(selectedDeck);
-        if (cardsInSelectedDeck.isEmpty()){
+        if (cardsInSelectedDeck.isEmpty()) {
             System.out.println("Không có thẻ nào trong bộ thẻ đã chọn");
         }
         return cardsInSelectedDeck;
     }
 
     public void updateTestById() {
-        while (true){
+        while (true) {
             System.out.println("Mời bạn nhập ID của bài kiểm tra: ");
-            int testId ;
-            while (true){
-                try{
+            int testId;
+            while (true) {
+                try {
                     testId = new Scanner(System.in).nextInt();
                     break;// Thoát khỏi vòng lặp nếu giá trị nhập vào là số nguyên
-                }catch(InputMismatchException e){
+                } catch (InputMismatchException e) {
                     System.out.println("Giá trị bạn vừa nhập không phải là số nguyên");
                 }
             }
             Test test = findTestById(testId);
-            if(test == null){
+            if (test == null) {
                 System.out.println("Thông tin chưa chính xác vui lòng nhập lại.");
                 continue;
             }
-            if (test.getTestStatus() == Status.INACTIVE){
+            if (test.getTestStatus() == Status.INACTIVE) {
                 System.out.println("Bài kiểm tra đang bị khóa, Vui lòng thay đổi trạng thái trước khi cập nhật thông tin");
                 System.out.println("1. Thay đổi trạng thái bài kiểm tra");
                 System.out.println("2. Thoát");
                 int option = InputUtil.chooseOption("Xin mời chọn chức năng",
                         "Chức năng là số dương từ 1 tới 2, vui lòng nhập lại: ", 1, 2);
-                if (option == 1){
+                if (option == 1) {
                     System.out.println("Chọn lại trạng thái cho bài test");
                     System.out.println("1.Chuyển thành kích hoạt (ACTIVE)");
                     System.out.println("2.Giữ nguyên trạng thái khóa (INACTIVE)");
                     int newStatus = InputUtil.chooseOption("Xin mời chọn chức năng",
                             "Chức năng là số dương từ 1 tới 2, vui lòng nhập lại: ", 1, 2);
-                    switch (newStatus){
+                    switch (newStatus) {
                         case 1:
                             test.setTestStatus(Status.ACTIVE);
                             System.out.println("Trạng thái bài test đã kích hoạt");
@@ -192,18 +192,18 @@ public class TestService {
                     break;
                 case 3:
                     //Lấy danh sách thẻ trong bộ thẻ đã chọn
-                    List<Card> cardsInselectedDeck =test.getCard();
-                    if (cardsInselectedDeck.isEmpty()){
+                    List<Card> cardsInselectedDeck = test.getCard();
+                    if (cardsInselectedDeck.isEmpty()) {
                         System.out.println("Không có thẻ nào trong bộ thẻ đã chọn");
                         break;
                     }
                     System.out.println("Nhập ngưỡng điểm đạt mới (tính theo %): ");
                     int totalCards = cardsInselectedDeck.size();
                     int passScoreThresholdPersent = new Scanner(System.in).nextInt();
-                    if(passScoreThresholdPersent<0 || passScoreThresholdPersent >100){
+                    if (passScoreThresholdPersent < 0 || passScoreThresholdPersent > 100) {
                         System.out.println("Giá trị không hợp lệ, vui lòng nhập lại số từ 0 đến 100");
-                    }else {
-                        int passScoreThreshold = (int) Math.ceil(totalCards * (passScoreThresholdPersent/100.0));// Điểm được làm tròn lên
+                    } else {
+                        int passScoreThreshold = (int) Math.ceil(totalCards * (passScoreThresholdPersent / 100.0));// Điểm được làm tròn lên
                         System.out.println("Ngưỡng điểm đạt kiểm tra là: " + passScoreThreshold);
 
                         test.setPassScoreThreshold(passScoreThreshold);
@@ -228,11 +228,11 @@ public class TestService {
 
     public void showTestList() {
         printHeader();
-        if(tests == null || tests.isEmpty()){
+        if (tests == null || tests.isEmpty()) {
             System.out.println("Hiện tại chưa có bài kiểm tra nào");
             return;
         }
-        for (Test test : tests){
+        for (Test test : tests) {
             showTestDetail(test);
         }
     }

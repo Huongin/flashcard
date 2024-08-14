@@ -4,8 +4,6 @@ import constant.Status;
 import constant.UserRole;
 
 public class User {
-    private static int AUTO_ID = 1;
-
     private int id;
     private String email;
     private String password;
@@ -15,19 +13,14 @@ public class User {
     private String motherTounge;
     private Status status;
 
-    public User() {
-        this.id = AUTO_ID;
-        AUTO_ID++;
-    }
-
-    public User(int id, String email, String password, String fullName, int age, String motherTounge) {
+    public User(int id, String email, String password, String fullName, int age, String motherTounge, Status status) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.role = role;
         this.fullName = fullName;
         this.age = age;
         this.motherTounge = motherTounge;
+        this.status = status;
     }
 
     public User(int id, String email, String password, UserRole role, String fullName, int age, String motherTounge, Status status) {
@@ -41,16 +34,11 @@ public class User {
         this.status = status;
     }
 
-
-    public User(String adminEmail, String adminPassword, UserRole userRole, Status status) {
+    public User(int id, String adminEmail, String adminPassword, UserRole userRole, Status status) {
         this.email = adminEmail;
         this.password = adminPassword;
         this.role = userRole;
         this.status = status;
-    }
-
-    public static int getAutoId() {
-        return AUTO_ID;
     }
 
     public int getId() {

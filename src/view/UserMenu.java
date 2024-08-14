@@ -110,8 +110,7 @@ public class UserMenu {
                     deckService.deleteDeckById(deleteId);
                     break;
                 case 4:
-                    User user = Main.LOGGED_IN_USER;
-                    cardService.createCard(user);
+                    cardService.createCard();
                     break;
                 case 5:
                     cardService.updateCardInfo();
