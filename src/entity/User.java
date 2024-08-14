@@ -15,7 +15,7 @@ public class User {
     private String motherTounge;
     private Status status;
 
-    public User(){
+    public User() {
         this.id = AUTO_ID;
         AUTO_ID++;
     }
@@ -42,10 +42,11 @@ public class User {
     }
 
 
-    public User(String adminEmail, String adminPassword, UserRole userRole) {
+    public User(String adminEmail, String adminPassword, UserRole userRole, Status status) {
         this.email = adminEmail;
         this.password = adminPassword;
         this.role = userRole;
+        this.status = status;
     }
 
     public static int getAutoId() {

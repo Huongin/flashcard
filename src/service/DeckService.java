@@ -227,37 +227,37 @@ public class DeckService {
             return;
         }
         // Nhập số lượng người dùng muốn gán vào bộ thẻ
-        System.out.println("Nhập số người dùng muốn gán vào bộ thẻ");
-        int userNumber;
+        int userNumber = 0;
         while (true) {
-            userNumber = new Scanner(System.in).nextInt();
-            if (userNumber > 0) {
+            System.out.println("Nhập số người dùng muốn gán vào bộ thẻ");
+            if (userNumber > 0){
                 break;
+            }else {
+                System.out.println("Số lượng người dùng phải lớn hơn 0. Vui lòng thử lại.");
             }
-            System.out.println("Số lượng người dùng phải lớn hơn 0. Vui lòng nhập lại: ");
-        }
 
-        //Nhập ID người dùng cần gán vào bộ thẻ
-        for (int i = 0; i < userNumber; i++) {
-            while (true) {
-                System.out.println("Nhập ID người dùng thứ " + (i + 1) + " cần gán vào bộ thẻ: ");
-                try {
-                    int userId = scanner.nextInt();
-                    User user = userService.findUserById(userId);
-                    if (user == null) {
-                        System.out.println("Người dùng với ID" + userId + "Không tồn tại, vui lòng nhập lại.");
-                        continue;
+            //Nhập ID người dùng cần gán vào bộ thẻ
+            for (int i = 0; i < userNumber; i++) {
+                while (true) {
+                    System.out.println("Nhập ID người dùng thứ" + (i + 1) + "cần gán vào bộ thẻ: ");
+                    try {
+                        int userId = scanner.nextInt();
+                        User user = userService.findUserById(userId);
+                        if (user == null) {
+                            System.out.println("Người dùng với ID" + userId + "Không tồn tại, vui lòng nhập lại.");
+                        } else {
+                            assignedUsers.add(user);
+                            break;
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Giá trị nhập vào không phải là số nguyên. Vui lòng thử lại.");
+                        scanner.next();// Bỏ qua giá trị không hợp lệ
                     }
-                    assignedUsers.add(user);
-                    break;
-                } catch (InputMismatchException e) {
-                    System.out.println("Giá trị nhập vào không phải là số nguyên. Vui lòng thử lại.");
-                    scanner.next();// Bỏ qua giá trị không hợp lệ
                 }
             }
+            deck.setAssignedUser(assignedUsers);
+            System.out.println("Đã gán người dùng vào bộ thẻ thành công");
         }
-        deck.setAssignedUser(assignedUsers);
-        System.out.println("Đã gán người dùng vào bộ thẻ thành công");
     }
 
     //Lấy danh sách bộ thẻ người dùng được gán

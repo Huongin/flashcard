@@ -1,16 +1,18 @@
 package service;
 
 
-import constant.Status;
-import main.Main;
 import constant.Regex;
+import constant.Status;
 import constant.UserRole;
-
+import entity.User;
+import main.Main;
 import util.FileUtil;
 import util.InputUtil;
-import entity.User;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
 
 public class UserService {
 
@@ -24,20 +26,20 @@ public class UserService {
     private static final int MAX_LOGIN_TIMES = 5;
 
 
-    public void setUsers(){
+    public void setUsers() {
         List<User> userList = fileUtil.readDataFromFile(USER_FILE, User[].class);
         users = userList != null ? userList : new ArrayList<>();
     }
 
     //Lưu dữ liệu vào File
-    private void saveUserData(){
-        fileUtil.writeDataToFile(users,USER_FILE);
+    private void saveUserData() {
+        fileUtil.writeDataToFile(users, USER_FILE);
     }
 
-    public void findCurrentAutoId(){
+    public void findCurrentAutoId() {
         int maxId = -1;
-        for (User user : users){
-            if (user.getId() > maxId){
+        for (User user : users) {
+            if (user.getId() > maxId) {
                 maxId = user.getId();
             }
         }
@@ -68,10 +70,10 @@ public class UserService {
             }
             user = findUserByEmailAndPassword(email, password);
             if (user != null) {
-                if(user.getStatus() == Status.INACTIVE){
+                if (user.getStatus() == Status.INACTIVE) {
                     System.out.println("Tài khoản này đã bị khóa");
                     user = null;
-                }else {
+                } else {
                     break;
                 }
             }
@@ -81,7 +83,7 @@ public class UserService {
                 break;
             }
             System.out.println("Thông tin đăng nhập không chính xác.Đăng nhập thất bại, vui lòng thử lại.");
-        } while (true) ;
+        } while (true);
         return user;
     }
 
@@ -138,15 +140,15 @@ public class UserService {
     }
 
     //Hàm tạo user admin
-    public  void createDefaultAdminUser(){
+    public void createDefaultAdminUser() {
         if (users == null || users.isEmpty()) {
             createAdmin();
             return;
         }
-        for (User user : users){
-            if(user.getEmail() != null && user.getPassword() != null &&
-            user.getEmail().equalsIgnoreCase(ADMIN_EMAIL)
-                    && user.getPassword().equalsIgnoreCase(ADMIN_PASSWORD)){
+        for (User user : users) {
+            if (user.getEmail() != null && user.getPassword() != null &&
+                    user.getEmail().equalsIgnoreCase(ADMIN_EMAIL)
+                    && user.getPassword().equalsIgnoreCase(ADMIN_PASSWORD)) {
                 return;
             }
         }
@@ -154,7 +156,7 @@ public class UserService {
     }
 
     private void createAdmin() {
-        User user = new User(ADMIN_EMAIL,ADMIN_PASSWORD,UserRole.ADMIN);
+        User user = new User(ADMIN_EMAIL, ADMIN_PASSWORD, UserRole.ADMIN, Status.ACTIVE);
         user.setId(0);
         users.add(user);
         saveUserData();
@@ -294,10 +296,10 @@ public class UserService {
         System.out.println("6.Thoát");
         int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
                 "Chức năng là số dương từ 1 đến 6, Vui lòng nhập lại: ", 1, 6);
-        switch (choice){
+        switch (choice) {
             case 1:
                 String newEmail;
-                while (true){
+                while (true) {
                     System.out.println("Mời bạn nhập email mới: ");
                     newEmail = new Scanner(System.in).nextLine();
                     if (!newEmail.matches(Regex.EMAIL_REGEX)) {
@@ -345,7 +347,7 @@ public class UserService {
                 user.setFullname(newName);
                 break;
             case 4:
-                int newAge = - 1;
+                int newAge = -1;
                 while (true) {
                     try {
                         System.out.println("Mời bạn nhập tuổi mới: ");
@@ -387,10 +389,10 @@ public class UserService {
         System.out.println("6.Thoát");
         int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
                 "Chức năng là số dương từ 1 đến 6, Vui lòng nhập lại: ", 1, 6);
-        switch (choice){
+        switch (choice) {
             case 1:
                 String newEmail;
-                while (true){
+                while (true) {
                     System.out.println("Mời bạn nhập email mới: ");
                     newEmail = new Scanner(System.in).nextLine();
                     if (!newEmail.matches(Regex.EMAIL_REGEX)) {
@@ -438,7 +440,7 @@ public class UserService {
                 user.setFullname(newName);
                 break;
             case 4:
-                int newAge = - 1;
+                int newAge = -1;
                 while (true) {
                     try {
                         System.out.println("Mời bạn nhập tuổi mới: ");
@@ -477,8 +479,8 @@ public class UserService {
     }
 
     public void lockUserById(int idUserLock) {
-        for (User user : users){
-            if (user.getId() == idUserLock){
+        for (User user : users) {
+            if (user.getId() == idUserLock) {
                 user.setStatus(Status.INACTIVE);
                 System.out.println("User có ID trên đã được khóa");
                 printHeader();
@@ -489,9 +491,9 @@ public class UserService {
         }
     }
 
-    public void unlockedUserById(int idUserLock){
-        for (User user: users){
-            if (user.getId() == idUserLock){
+    public void unlockedUserById(int idUserLock) {
+        for (User user : users) {
+            if (user.getId() == idUserLock) {
                 user.setStatus(Status.ACTIVE);
                 System.out.println("User có ID trên đã được mở khóa");
                 printHeader();
