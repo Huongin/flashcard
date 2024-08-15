@@ -163,10 +163,19 @@ public class DeckService {
     }
 
     public void deleteDeckById(int deleteId) {
-        Deck deck = findDeckById(deleteId);
-        decks.remove(deck);
-        saveDeckData();// Lưu file
-        showCardDeckList();
+        while (true) {
+            Deck deck = findDeckById(deleteId);
+            if (deck == null) {
+                System.out.println("Không tìm thấy bộ thẻ nào với ID vừa nhập. vui lòng nhập lại ID: ");
+                deleteId = new Scanner(System.in).nextInt();
+                continue;
+            }
+            decks.remove(deck);
+            saveDeckData();// Lưu file
+            System.out.println("Bạn đã xóa chủ đề thành công. Các chủ đề hiện tại còn lại trong bộ thẻ của bạn là: ");
+            showCardDeckList();
+            break;
+        }
     }
 
     public void showCardDeckList() {
@@ -212,7 +221,7 @@ public class DeckService {
         int deckId = new Scanner(System.in).nextInt();
         Deck deck = findDeckById(deckId);
         if (deck == null) {
-            System.out.println("Bộ thẻ không tồn tại.");
+            System.out.println("không tìm thấy bộ thẻ với ID này");
             return;
         }
         // Nhập số lượng người dùng muốn gán vào bộ thẻ
@@ -222,7 +231,7 @@ public class DeckService {
             try {
                 userNumber = new Scanner(System.in).nextInt();
             } catch (InputMismatchException e) {
-                System.out.println("Cần nhập một  nguyên dương, vui lòng nhập lại: ");
+                System.out.println("Cần nhập một nguyên dương, vui lòng nhập lại: ");
             }
             if (userNumber > 0) {
                 break;
@@ -234,7 +243,7 @@ public class DeckService {
         //Nhập ID người dùng cần gán vào bộ thẻ
         for (int i = 0; i < userNumber; i++) {
             while (true) {
-                System.out.println("Nhập ID người dùng thứ" + (i + 1) + "cần gán vào bộ thẻ: ");
+                System.out.println("Nhập ID người dùng thứ " + (i + 1) + " cần gán vào bộ thẻ: ");
                 try {
                     int userId = new Scanner(System.in).nextInt();
                     User user = userService.findUserById(userId);

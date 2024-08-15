@@ -226,6 +226,7 @@ public class AdminMenu {
                     break;
                 case 3:
                     userService.updateUserInformationByAdmin();
+                    break;
                 case 4:
                     while (true) {
                         try {

@@ -48,7 +48,7 @@ public class CardService {
         //Chọn bộ thẻ cho thẻ học
         List<Deck> userDecks = deckService.getUserCreatedDecks(Main.LOGGED_IN_USER);
         if (userDecks.isEmpty()) {
-            System.out.println("Bạn không có bộ thẻ nào trong danh sách.");
+            System.out.println("Bạn không có bộ thẻ nào trong danh sách. Vui lòng tạo bộ thẻ trước khi tạo thẻ học");
             return;
         }
 
