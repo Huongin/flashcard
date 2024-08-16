@@ -1,6 +1,7 @@
 package service;
 
 
+import constant.DateTimeConstant;
 import constant.Regex;
 import constant.Status;
 import constant.UserRole;
@@ -8,6 +9,9 @@ import entity.User;
 import util.FileUtil;
 import util.InputUtil;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -218,20 +222,35 @@ public class UserService {
             }
         }
         //Nhập tuổi
-        int age = -1;
+        LocalDate birthDate = null;
+        int age = 0;
         while (true) {
             try {
-                System.out.println("Mời bạn nhập tuổi: ");
-                age = new Scanner(System.in).nextInt();
-                if (age < 0 || age > 120) {
-                    System.out.println("Tuổi không hợp lệ. Vui lòng nhập lại.");
+                System.out.println("Mời bạn nhập ngày sinh (dd-MM-yyyy): ");
+                String birthdayInput = new Scanner(System.in).nextLine();
+                birthDate = LocalDate.parse(birthdayInput, DateTimeConstant.DATE_FORMATTER);
+
+                if (birthDate.isAfter(LocalDate.now())) {
+                    System.out.println("Ngày sinh lớn hơn ngày hiện tại không hợp lệ. Vui lòng nhập lại");
                     continue;
                 }
                 break;
-            } catch (InputMismatchException e) {
-                System.out.print("Số tuổi là số nguyên từ 1 đến 120, vui lòng nhập lại: ");
+            }catch (DateTimeException e){
+                System.out.println("Định dạng ngày sinh không hợp lệ vui lòng nhập lại");
             }
         }
+        // Tính tuổi hiện tại
+        int currentYear = Year.now().getValue();
+        int birthdayYear = birthDate.getYear();
+        age = currentYear - birthdayYear;
+
+        LocalDate today = LocalDate.now();
+        if (birthDate.plusYears(age).isAfter(today)){
+            age--;
+        }
+        System.out.println("Ngày sinh: " + birthDate);
+        System.out.println("Tuổi hiện tại: " + age);
+
         //Nhập ngôn ngữ mẹ đẻ
         String motherTounge;
         System.out.println("Mời bạn nhập ngôn ngữ mẹ đẻ: ");
