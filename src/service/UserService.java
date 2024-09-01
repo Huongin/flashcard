@@ -6,6 +6,7 @@ import constant.Regex;
 import constant.Status;
 import constant.UserRole;
 import entity.User;
+import util.BirthDateUtil;
 import util.FileUtil;
 import util.InputUtil;
 
@@ -226,7 +227,7 @@ public class UserService {
         int age = 0;
         while (true) {
             try {
-                System.out.println("Mời bạn nhập ngày sinh (dd-MM-yyyy): ");
+                System.out.println("Mời bạn nhập ngày sinh (dd/MM/yyyy): ");
                 String birthdayInput = new Scanner(System.in).nextLine();
                 birthDate = LocalDate.parse(birthdayInput, DateTimeConstant.DATE_FORMATTER);
 
@@ -239,15 +240,9 @@ public class UserService {
                 System.out.println("Định dạng ngày sinh không hợp lệ vui lòng nhập lại");
             }
         }
-        // Tính tuổi hiện tại
-        int currentYear = Year.now().getValue();
-        int birthdayYear = birthDate.getYear();
-        age = currentYear - birthdayYear;
 
-        LocalDate today = LocalDate.now();
-        if (birthDate.plusYears(age).isAfter(today)){
-            age--;
-        }
+        age = BirthDateUtil.calculateAge(birthDate); //Tính tuổi
+
         System.out.println("Ngày sinh: " + birthDate);
         System.out.println("Tuổi hiện tại: " + age);
 
@@ -261,6 +256,8 @@ public class UserService {
         saveUserData();
         return user;
     }
+
+
 
     //Tìm kiếm người dùng theo tên
     public void searchUserByName() {
@@ -318,8 +315,11 @@ public class UserService {
             case 1:
                 String newEmail;
                 while (true) {
-                    System.out.println("Mời bạn nhập email mới: ");
+                    System.out.println("Mời bạn nhập email mới (nhập 'exit' để thoát): ");
                     newEmail = new Scanner(System.in).nextLine();
+                    if (InputUtil.exitInput(newEmail)){
+                        return;
+                    }
                     if (!newEmail.matches(Regex.EMAIL_REGEX)) {
                         System.out.println("Email không đúng định dạng vui lòng nhập lại");
                         continue;
@@ -341,8 +341,11 @@ public class UserService {
             case 2:
                 String newPassword;
                 while (true) {
-                    System.out.println("Mời bạn nhập password mới (8 -> 12 ký tự cả chữ thường, chữ hoa và cả số)");
+                    System.out.println("Mời bạn nhập password mới (8 -> 12 ký tự cả chữ thường, chữ hoa và cả số)(nhập 'exit' để thoát): ");
                     newPassword = new Scanner(System.in).nextLine();
+                    if (InputUtil.exitInput(newPassword)){
+                        return;
+                    }
                     if (!newPassword.matches(Regex.PASSWORD_REGEX)) {
                         System.out.println("Password không đúng định dạng vui lòng nhập lại ");
                         continue;
@@ -354,8 +357,11 @@ public class UserService {
             case 3:
                 String newName;
                 while (true) {
-                    System.out.println("Mời bạn nhập họ tên mới: ");
+                    System.out.println("Mời bạn nhập họ tên mới (nhập 'exit' để thoát): ");
                     newName = new Scanner(System.in).nextLine();
+                    if (InputUtil.exitInput(newName)){
+                        return;
+                    }
                     if (!newName.matches(".*\\d.*") && !newName.isEmpty()) {
                         break;
                     } else {
@@ -365,26 +371,38 @@ public class UserService {
                 user.setFullname(newName);
                 break;
             case 4:
-                int newAge = -1;
+                LocalDate newbirthDate = null;
+                int newAge = 0;
                 while (true) {
                     try {
-                        System.out.println("Mời bạn nhập tuổi mới: ");
-                        newAge = new Scanner(System.in).nextInt();
-                        if (newAge < 0 || newAge > 120) {
-                            System.out.println("Tuổi không hợp lệ. Vui lòng nhập lại.");
+                        System.out.println("Mời bạn nhập ngày sinh mới (nhập 'exit' để thoát): ");
+                        String birthdayInput = new Scanner(System.in).nextLine();
+                        if (InputUtil.exitInput(birthdayInput)){
+                            return;
+                        }
+                        newbirthDate = LocalDate.parse(birthdayInput, DateTimeConstant.DATE_FORMATTER);
+
+                        if (newbirthDate.isAfter(LocalDate.now())) {
+                            System.out.println("Ngày sinh lớn hơn ngày hiện tại không hợp lệ. Vui lòng nhập lại");
                             continue;
                         }
                         break;
-                    } catch (InputMismatchException e) {
-                        System.out.print("Số tuổi là số nguyên từ 1 đến 120, vui lòng nhập lại: ");
+                    }catch (DateTimeException e){
+                        System.out.println("Định dạng ngày sinh không hợp lệ vui lòng nhập lại");
                     }
                 }
+
+                newAge = BirthDateUtil.calculateAge(newbirthDate);
                 user.setAge(newAge);
+
                 break;
             case 5:
                 String newMotherTounge;
-                System.out.print("Nhập ngôn ngữ mẹ đẻ của bạn: ");
+                System.out.print("Nhập ngôn ngữ mẹ đẻ của bạn (nhập 'exit' để thoát): ");
                 newMotherTounge = new Scanner(System.in).nextLine();
+                if (InputUtil.exitInput(newMotherTounge)){
+                    return;
+                }
                 user.setMothertounge(newMotherTounge);
                 break;
             case 6:
@@ -422,8 +440,11 @@ public class UserService {
             case 1:
                 String newEmail;
                 while (true) {
-                    System.out.println("Mời bạn nhập email mới: ");
+                    System.out.println("Mời bạn nhập email mới (nhập 'exit' để thoát): ");
                     newEmail = new Scanner(System.in).nextLine();
+                    if (InputUtil.exitInput(newEmail)){
+                        return;
+                    }
                     if (!newEmail.matches(Regex.EMAIL_REGEX)) {
                         System.out.println("Email không đúng định dạng vui lòng nhập lại");
                         continue;
@@ -445,8 +466,11 @@ public class UserService {
             case 2:
                 String newPassword;
                 while (true) {
-                    System.out.println("Mời bạn nhập password mới (8 -> 12 ký tự cả chữ thường, chữ hoa và cả số)");
+                    System.out.println("Mời bạn nhập password mới (8 -> 12 ký tự cả chữ thường, chữ hoa và cả số)(nhập 'exit' để thoát): ");
                     newPassword = new Scanner(System.in).nextLine();
+                    if (InputUtil.exitInput(newPassword)){
+                        return;
+                    }
                     if (!newPassword.matches(Regex.PASSWORD_REGEX)) {
                         System.out.println("Password không đúng định dạng vui lòng nhập lại ");
                         continue;
@@ -458,8 +482,11 @@ public class UserService {
             case 3:
                 String newName;
                 while (true) {
-                    System.out.println("Mời bạn nhập họ tên mới: ");
+                    System.out.println("Mời bạn nhập họ tên mới (nhập 'exit' để thoát): ");
                     newName = new Scanner(System.in).nextLine();
+                    if (InputUtil.exitInput(newName)){
+                        return;
+                    }
                     if (!newName.matches(".*\\d.*") && !newName.isEmpty()) {
                         break;
                     } else {
@@ -469,26 +496,38 @@ public class UserService {
                 user.setFullname(newName);
                 break;
             case 4:
-                int newAge = -1;
+                LocalDate newbirthDate = null;
+                int newAge = 0;
                 while (true) {
                     try {
-                        System.out.println("Mời bạn nhập tuổi mới: ");
-                        newAge = new Scanner(System.in).nextInt();
-                        if (newAge < 0 || newAge > 120) {
-                            System.out.println("Tuổi không hợp lệ. Vui lòng nhập lại.");
+                        System.out.println("Mời bạn nhập ngày sinh mới (nhập 'exit' để thoát): ");
+                        String birthdayInput = new Scanner(System.in).nextLine();
+                        if (InputUtil.exitInput(birthdayInput)){
+                            return;
+                        }
+                        newbirthDate = LocalDate.parse(birthdayInput, DateTimeConstant.DATE_FORMATTER);
+
+                        if (newbirthDate.isAfter(LocalDate.now())) {
+                            System.out.println("Ngày sinh lớn hơn ngày hiện tại không hợp lệ. Vui lòng nhập lại");
                             continue;
                         }
                         break;
-                    } catch (InputMismatchException e) {
-                        System.out.print("Số tuổi là số nguyên từ 1 đến 120, vui lòng nhập lại: ");
+                    }catch (DateTimeException e){
+                        System.out.println("Định dạng ngày sinh không hợp lệ vui lòng nhập lại");
                     }
                 }
+
+                newAge = BirthDateUtil.calculateAge(newbirthDate);
                 user.setAge(newAge);
+
                 break;
             case 5:
                 String newMotherTounge;
-                System.out.print("Nhập ngôn ngữ mẹ đẻ của bạn: ");
+                System.out.print("Nhập ngôn ngữ mẹ đẻ của bạn (nhập 'exit' để thoát): ");
                 newMotherTounge = new Scanner(System.in).nextLine();
+                if (InputUtil.exitInput(newMotherTounge)){
+                    return;
+                }
                 user.setMothertounge(newMotherTounge);
                 break;
             case 6:

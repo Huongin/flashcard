@@ -154,7 +154,7 @@ public class CardService {
         System.out.println("1. Từ vựng");
         System.out.println("2. Phiên âm");
         System.out.println("3. Nghĩa của từ");
-        System.out.println("4. Loại từ vung");
+        System.out.println("4. Loại từ vựng");
         System.out.println("5. Ví dụ về cách dùng từ");
         System.out.println("6. Chủ đề bộ thẻ");
         System.out.println("7. Thoát");
@@ -294,14 +294,27 @@ public class CardService {
 
     // Xóa thẻ học bằng ID
     public void deleteCardById(int cardId) {
-        Card card = findCardById(cardId);
-        cards.remove(card);
-        showCard(card);
-        saveCardData();//Lưu file
+        while(true) {
+            Card card = findCardById(cardId);
+            if (card == null) {
+                System.out.println("Không tìm thấy card nào với Id vừa nhập. Vui lòng nhập lại.");
+                cardId = new Scanner(System.in).nextInt();
+                continue;
+            }
+            cards.remove(card);
+            System.out.println("Bạn đã xóa thẻ học thành công");
+            saveCardData();//Lưu file
+            break;
+        }
     }
 
-    // TODO - chua xu ly
+    //Danh sách tất cả các thẻ do admin tạo
     public List<Card> getAdminCards() {
-        return List.of();
+        List<Deck> allAdminDecks = deckService.getAdminDecks();
+        List<Card> adminCard = new ArrayList<>();
+        for (Deck deck : allAdminDecks ){
+            adminCard.addAll(deck.getCards());
+        }
+        return adminCard;
     }
 }

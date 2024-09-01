@@ -177,6 +177,7 @@ public class AdminMenu {
                     break;
                 case 2:
                     cardService.updateCardInfo();
+                    break;
                 case 3:
                     int cardId;
                     while (true) {

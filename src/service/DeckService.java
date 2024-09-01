@@ -1,6 +1,7 @@
 package service;
 
 import constant.Level;
+import constant.UserRole;
 import entity.Deck;
 import entity.User;
 import main.Main;
@@ -260,6 +261,13 @@ public class DeckService {
         }
         deck.setAssignedUser(assignedUsers);
         System.out.println("Đã gán người dùng vào bộ thẻ thành công");
+        System.out.println("Danh sách người dùng đã được gán vào bộ thẻ");
+        System.out.printf("%-10s %-20s%n", "ID", "Tên người dùng");
+        System.out.println("------------------------------------------");
+        for (User user : assignedUsers){
+            System.out.printf("%-10s %-20s%n",user.getId(), user.getFullname());
+        }
+        System.out.println();
     }
 
     //Lấy danh sách bộ thẻ người dùng được gán
@@ -271,5 +279,15 @@ public class DeckService {
             }
         }
         return assignedDecks;
+    }
+
+    public List<Deck> getAdminDecks(){
+        List<Deck> adminDecks = new ArrayList<>();
+        for (Deck deck : decks){
+            if (deck.getCreator().getRole().equals(UserRole.ADMIN)){
+                adminDecks.add(deck);
+            }
+        }
+        return adminDecks;
     }
 }

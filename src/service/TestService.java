@@ -69,7 +69,7 @@ public class TestService {
         System.out.println("Chọn trạng thái cho bài test");
         System.out.println("1. Cho phép làm test");
         System.out.println("2. Không cho phép làm test");
-        int statuschoose = InputUtil.chooseOption("Xin mời chọn chức năng",
+        int statuschoose = InputUtil.chooseOption("Xin mời chọn chức năng " ,
                 "Chức năng là số dương từ 1 tới 2, vui lòng nhập lại: ", 1, 2);
         switch (statuschoose) {
             case 1:
@@ -153,13 +153,13 @@ public class TestService {
                 System.out.println("Bài kiểm tra đang bị khóa, Vui lòng thay đổi trạng thái trước khi cập nhật thông tin");
                 System.out.println("1. Thay đổi trạng thái bài kiểm tra");
                 System.out.println("2. Thoát");
-                int option = InputUtil.chooseOption("Xin mời chọn chức năng",
+                int option = InputUtil.chooseOption("Xin mời chọn chức năng " ,
                         "Chức năng là số dương từ 1 tới 2, vui lòng nhập lại: ", 1, 2);
                 if (option == 1) {
                     System.out.println("Chọn lại trạng thái cho bài test");
                     System.out.println("1.Chuyển thành kích hoạt (ACTIVE)");
-                    System.out.println("2.Giữ nguyên trạng thái khóa (INACTIVE)");
-                    int newStatus = InputUtil.chooseOption("Xin mời chọn chức năng",
+                    System.out.println("2.Thoát (Giữ nguyên trạng thái khóa (INACTIVE))");
+                    int newStatus = InputUtil.chooseOption("Xin mời chọn chức năng " ,
                             "Chức năng là số dương từ 1 tới 2, vui lòng nhập lại: ", 1, 2);
                     switch (newStatus) {
                         case 1:
@@ -167,9 +167,7 @@ public class TestService {
                             System.out.println("Trạng thái bài test đã kích hoạt");
                             break;
                         case 2:
-                            test.setTestStatus(Status.INACTIVE);
-                            System.out.println("Bài test vẫn đang bị khóa");
-                            break;
+                           return;
                     }
                 }
                 return;
@@ -183,7 +181,7 @@ public class TestService {
                     "Chức năng là số dương từ 1 tới 4, vui lòng nhập lại: ", 1, 4);
             switch (choose) {
                 case 1:
-                    System.out.println("Nhập tên mới cho bài test: ");
+                    System.out.println("Nhập tên mới cho bài test : ");
                     String newName = new Scanner(System.in).nextLine();
                     test.setName(newName);
                     break;
@@ -238,11 +236,11 @@ public class TestService {
     }
 
     public void printHeader() {
-        System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", "ID", "Name", "TestStatus", "CreatedDate", "PassScoreThreshold");
+        System.out.printf("%-5s%-30s%-30s%-20s%-20s%n", "ID", "Name", "TestStatus", "CreatedDate", "PassScoreThreshold");
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public void showTestDetail(Test test) {
-        System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", test.getId(), test.getName(), test.getTestStatus(), test.getCreatedDate(), test.getPassScoreThreshold());
+        System.out.printf("%-5s%-30s%-30s%-20s%-20s%n", test.getId(), test.getName(), test.getTestStatus(), test.getCreatedDate(), test.getPassScoreThreshold());
     }
 }

@@ -72,10 +72,10 @@ public class TestDetailService {
         int passScoreThreshold = test.getPassScoreThreshold();
         boolean isPassed = score >= passScoreThreshold;
         String result = isPassed ? "Có" : "Không";
-        System.out.printf("Có vượt qua bài test không? : ", result);
-        System.out.printf("Điểm đạt được: ", score, cards.size());
-        System.out.printf("Số từ đúng: ", correctCards.size());
-        System.out.printf("Số từ sai: ", incorrectCards.size());
+        System.out.printf("Có vượt qua bài test không? : %s\n", result);
+        System.out.printf("Điểm đạt được:　 %d/%d\n", score, cards.size());
+        System.out.printf("Số từ đúng:  %d\n", correctCards.size());
+        System.out.printf("Số từ sai:  %d\n", incorrectCards.size());
 
         //Lưu kết quả test
         TestDetail testDetail = new TestDetail(Main.LOGGED_IN_USER, test, new Date(), correctCards, incorrectCards, score);
@@ -111,12 +111,12 @@ public class TestDetailService {
     }
 
     public void printHeader() {
-        System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", "User", "Test", "DateTest", "CorrectCards", "IncorrectCards", "Score");
+        System.out.printf("%-30s%-30s%-10s%-20s%-10s%-10s%-10s%n", "FullName", "TestName","PassScoreThreshold", "DateTest", "CorrectCards", "IncorrectCards", "Score");
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public void showTestDetail(TestDetail testDetail) {
-        System.out.printf("%-5s%-20s%-20s%-20s%-20s%-20s%-10s%-30s%-20s%-10s%-10s%n", testDetail.getUser(), testDetail.getTest(), testDetail.getTestDate(), testDetail.getCorrectCard(), testDetail.getIncorrectCard(), testDetail.getScore());
+        System.out.printf("%-30s%-30s%-10s%-20s%-10s%-10s%-10s%n", testDetail.getUser().getFullname(), testDetail.getTest().getName(),testDetail.getTest().getPassScoreThreshold(), testDetail.getTestDate(), testDetail.getCorrectCard(), testDetail.getIncorrectCard(), testDetail.getScore());
     }
 
     public void testResultsByIdTest(int testId) {
