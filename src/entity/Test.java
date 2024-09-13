@@ -14,7 +14,7 @@ public class Test {
     private List<Card> card; //Danh sách thẻ cần test
     private int passScoreThreshold; // Ngưỡng điểm đạt
 
-    public Test(int i) {
+    public Test(int id) {
         this.id = id;
     }
 

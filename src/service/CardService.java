@@ -91,8 +91,9 @@ public class CardService {
         System.out.println("2. Tính từ i");
         System.out.println("3. Tính từ na");
         System.out.println("4. Động từ");
+        System.out.println("5. Loại từ khác");
         int choice = InputUtil.chooseOption("Xin mời chọn chức năng",
-                "Chức năng là số dương từ 1 đến 4, Vui lòng nhập lại: ", 1, 5);
+                "Chức năng là số dương từ 1 đến 5, Vui lòng nhập lại: ", 1, 5);
         switch (choice) {
             case 1:
                 card.setCardType(CardType.Noun);
@@ -105,6 +106,9 @@ public class CardService {
                 break;
             case 4:
                 card.setCardType(CardType.Verb);
+                break;
+            case 5:
+                card.setCardType(CardType.Other);
                 break;
         }
 
@@ -182,8 +186,9 @@ public class CardService {
                 System.out.println("2. Tính từ i");
                 System.out.println("3. Tính từ na");
                 System.out.println("4. Động từ");
+                System.out.println("5. Loại từ khác");
                 int newStyle = InputUtil.chooseOption("Xin mời chọn chức năng",
-                        "Chức năng là số dương từ 1 đến 4, Vui lòng nhập lại: ", 1, 5);
+                        "Chức năng là số dương từ 1 đến 5, Vui lòng nhập lại: ", 1, 5);
                 switch (newStyle) {
                     case 1:
                         card.setCardType(CardType.Noun);
@@ -196,6 +201,9 @@ public class CardService {
                         break;
                     case 4:
                         card.setCardType(CardType.Verb);
+                        break;
+                    case 5:
+                        card.setCardType(CardType.Other);
                         break;
                 }
                 break;
@@ -249,7 +257,7 @@ public class CardService {
         String word = new Scanner(System.in).nextLine();
         List<Card> cards1 = new ArrayList<>();
         for (Card card : cards) {
-            if (card.getWord().toLowerCase().contains(word.toLowerCase())) {
+            if (card.getWord() != null && card.getWord().toLowerCase().contains(word.toLowerCase())) {
                 cards1.add(card);
             }
         }
@@ -269,6 +277,24 @@ public class CardService {
         showCards(cards1);
     }
 
+    public List<Card> findCardsByDeckId(int deckId) {
+        Deck selectedDeck = deckService.findDeckById(deckId);
+
+        if(selectedDeck == null){
+            System.out.println("Bộ thẻ với ID này không tồn tại.");
+            return  null;
+        }
+
+        List<Card> cardsInDeckId = new ArrayList<>();
+            for (Card card : cards) {
+                if(card.getDeck().getId() == deckId){
+                    cardsInDeckId.add(card);
+                }
+        }
+        showCards(cardsInDeckId);
+        return cardsInDeckId;
+    }
+
     public void showCard(Card card) {
         showCardDetail(card);
     }
@@ -286,7 +312,7 @@ public class CardService {
         System.out.println("Nghĩa của từ: " + card.getMeaning());
         System.out.println("Loại từ: " + card.getCardType());
         System.out.println("Trạng thái: " + card.getState());
-        System.out.println("Bộ thẻ: " + card.getDeck().getTopic());
+        System.out.println("Bộ thẻ: " + "ID:" + card.getDeck().getId() + " Tên: " + card.getDeck().getTopic());
         System.out.println("Ví dụ: " + card.getExample());
         System.out.println("Người tạo: " + card.getCreator().getFullname());
         System.out.println("------------------------------------------");
@@ -294,27 +320,47 @@ public class CardService {
 
     // Xóa thẻ học bằng ID
     public void deleteCardById(int cardId) {
-        while(true) {
-            Card card = findCardById(cardId);
-            if (card == null) {
-                System.out.println("Không tìm thấy card nào với Id vừa nhập. Vui lòng nhập lại.");
-                cardId = new Scanner(System.in).nextInt();
-                continue;
+        while (true) {
+            try {
+                Card card = findCardById(cardId);
+                if (card == null) {
+                    System.out.println("Không tìm thấy card nào với Id vừa nhập. Vui lòng nhập lại.");
+                    cardId = new Scanner(System.in).nextInt();
+                    continue;
+                }
+                cards.remove(card);
+                System.out.println("Bạn đã xóa thẻ học thành công");
+                saveCardData();//Lưu file
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Giá trị bạn vừa nhập không phải là số nguyên. Vui lòng nhập lại.");
             }
-            cards.remove(card);
-            System.out.println("Bạn đã xóa thẻ học thành công");
-            saveCardData();//Lưu file
-            break;
         }
+    }
+    //Xóa tất cả thẻ học có trong bộ thẻ theo deckId
+    public void deleteByDeckId(int deleteId) {
+        List<Card> cardsToRemove = new ArrayList<>();
+        for (Card card : cards){
+            if (card.getDeck().getId() == deleteId){
+                cardsToRemove.add(card);
+            }
+        }
+        cards.removeAll(cardsToRemove);
+        saveCardData();
     }
 
     //Danh sách tất cả các thẻ do admin tạo
-    public List<Card> getAdminCards() {
-        List<Deck> allAdminDecks = deckService.getAdminDecks();
-        List<Card> adminCard = new ArrayList<>();
-        for (Deck deck : allAdminDecks ){
-            adminCard.addAll(deck.getCards());
-        }
-        return adminCard;
-    }
+//    public List<Card> getAdminCards() {
+//        List<Deck> allAdminDecks = deckService.getAdminDecks();
+//        List<Card> adminCards = new ArrayList<>();
+//
+//        if (allAdminDecks != null){
+//            for (Deck deck : allAdminDecks ){
+//                if (deck.getCards() != null){
+//                    adminCards.addAll(deck.getCards());
+//                }
+//            }
+//        }
+//        return adminCards;
+//    }
 }

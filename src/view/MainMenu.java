@@ -19,7 +19,7 @@ public class MainMenu {
 
     //Khai báo tất cả các menu của các role khác nhau (Đi kèm các service cần thiết)
     private final UserMenu userMenu = new UserMenu(userService, deckService, cardService, studyService, testService, testDetailService);
-    private final AdminMenu adminMenu = new AdminMenu(userService, cardService, deckService, testService, testDetailService );
+    private final AdminMenu adminMenu = new AdminMenu(userService, cardService, deckService, studyService, testService, testDetailService );
 
     public void menu() {
         while (true) {

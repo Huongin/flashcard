@@ -13,10 +13,7 @@ import util.InputUtil;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class UserService {
 
@@ -263,11 +260,15 @@ public class UserService {
     public void searchUserByName() {
         System.out.println("Mời bạn nhập tên của User: ");
         String name = new Scanner(System.in).nextLine();
+        boolean found = false;
         for (User user : users) {
             if (user.getFullname() != null && user.getFullname().toLowerCase().contains(name.toLowerCase())) {
                 System.out.println(user);
+                found = true;
             }
-            showUser(user);
+        }
+        if (!found){
+            System.out.println("Không có người dùng nào có tên vừa nhập");
         }
     }
 
@@ -277,9 +278,17 @@ public class UserService {
         showUserDetail(user);
     }
 
-    public void showUsers(List<User> users1) {
+    public void showUsers() {
+        for(int i = 0; i < users.size() - 1; i++){
+            for (int j = i + 1; j < users.size(); j++){
+                if(users.get(i).getId() == users.get(j).getId()){
+                    users.remove(j);
+                    j--;
+                }
+            }
+        }
         printHeader();
-        for (User user : users1) {
+        for (User user : users) {
             showUserDetail(user);
         }
     }

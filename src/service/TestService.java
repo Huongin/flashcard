@@ -4,6 +4,7 @@ import constant.Status;
 import entity.Card;
 import entity.Deck;
 import entity.Test;
+import entity.User;
 import main.Main;
 import util.FileUtil;
 import util.InputUtil;
@@ -42,7 +43,7 @@ public class TestService {
                 maxId = test.getId();
             }
         }
-        AUTO_ID = maxId++;
+        AUTO_ID = maxId+1;
     }
 
 
@@ -50,22 +51,15 @@ public class TestService {
         System.out.println("Nhập tên bài test cần tạo: ");
         String name = new Scanner(System.in).nextLine();
 
-        // Lấy danh sách thẻ chung do admin tạo để kiểm tra xem có thẻ học nào hay chưa
-        List<Card> publicCard = cardService.getAdminCards();
-        if (publicCard.isEmpty()) {
-            System.out.println("Không có thẻ học nào do admin tạo để sử dụng.");
-            return;
-        }
-
         //Lấy danh sách thẻ trong bộ thẻ đã chọn
         List<Card> cardsInSelectedDeck = selectDeckAndGetCards();
-        if (cardsInSelectedDeck.isEmpty()) {
+        if (cardsInSelectedDeck == null || cardsInSelectedDeck.isEmpty()) {
             System.out.println("Không có thẻ nào trong bộ thẻ đã chọn");
             return;
         }
         //Tạo bài kiểm tra
         Test test = new Test(AUTO_ID++);
-        test.setName(new Scanner(System.in).nextLine());
+        test.setName(name);// sử dụng tên nhập ban đầu
         System.out.println("Chọn trạng thái cho bài test");
         System.out.println("1. Cho phép làm test");
         System.out.println("2. Không cho phép làm test");
@@ -83,39 +77,52 @@ public class TestService {
         test.setCard(cardsInSelectedDeck);
 
         // Tính ngưỡng điểm đạt dựa trên 60% tổng số từ trong bộ thẻ
+        int maxScore = 10;// thang điểm 10
         int totalCards = cardsInSelectedDeck.size();
-        int passScoreThresholdPersent = new Scanner(System.in).nextInt();
-        if (passScoreThresholdPersent < 0 || passScoreThresholdPersent > 100) {
-            System.out.println("Giá trị không hợp lệ, vui lòng nhập lại số từ 0 đến 100");
-        } else {
-            int passScoreThreshold = (int) Math.ceil(totalCards * (passScoreThresholdPersent / 100.0));// Điểm được làm tròn lên
-            System.out.println("Ngưỡng điểm đạt kiểm tra là: " + passScoreThreshold);
 
-            test.setPassScoreThreshold(passScoreThreshold);
+        int passScoreThresholdPersent;
+        while (true) {
+            System.out.println("Nhập phần trăm ngưỡng điểm đạt (0~100): ");
+            passScoreThresholdPersent = new Scanner(System.in).nextInt();
+            if (passScoreThresholdPersent < 0 || passScoreThresholdPersent > 100) {
+                System.out.println("Giá trị không hợp lệ, vui lòng nhập lại số từ 0 đến 100");
+            } else {
+                break;
+            }
         }
+
+        int correctCardsThreshold = (int) Math.ceil(totalCards * (passScoreThresholdPersent / 100.0));//Tính số câu đúng cần đạt
+        int passScoreThreshold =(correctCardsThreshold * maxScore) /totalCards;// Điểm cần đạt
+
+        System.out.println("Số câu đúng cần đạt: " + correctCardsThreshold);
+        System.out.println("Ngưỡng điểm đạt kiểm tra là: " + passScoreThreshold);
+
+        test.setPassScoreThreshold(passScoreThreshold);
+
 
         tests.add(test);
         saveTestsData();
     }
 
     private List<Card> selectDeckAndGetCards() {
-        // Lấy danh sách bộ thẻ do admin gán cho người dùng
-        List<Deck> publicDecks = deckService.getAssignedDecksForUser(Main.LOGGED_IN_USER);
-        if (publicDecks.isEmpty()) {
-            System.out.println("Không có bộ thẻ nào được admin gán để sử dụng");
+        // Lấy danh sách bộ thẻ của tài khoản đăng nhập
+        List<Deck> testDecks = deckService.getUserCreatedDecks(Main.LOGGED_IN_USER);
+        if (testDecks.isEmpty()) {
+            System.out.println("Không có bộ thẻ nào trong danh sách bộ thẻ của admin");
             return null;
         }
         //Hiển thị danh sách bộ thẻ
 
-        System.out.println("Chọn bộ thẻ để làm kiểm tra: ");
-        for (Deck deck : publicDecks) {
+        System.out.println("Danh sách bộ thẻ của bạn: ");
+        for (Deck deck : testDecks) {
             System.out.println("ID: " + deck.getId() + ", Chủ đề: " + deck.getTopic() + ", Level: " + deck.getLevel());
         }
         //Chọn bộ thẻ cho bài kiểm tra
-        System.out.print("Nhập ID bộ thẻ muốn làm kiểm tra: ");
+        System.out.print("Mời bạn nhập ID bộ thẻ: ");
         int deckId = new Scanner(System.in).nextInt();
         Deck selectedDeck = null;
-        for (Deck deck : publicDecks) {
+
+        for (Deck deck : testDecks) {
             if (deck.getId() == deckId) {
                 selectedDeck = deck;
                 break;
@@ -123,11 +130,12 @@ public class TestService {
         }
         if (selectedDeck == null) {
             System.out.println("Không tìm thấy bộ thẻ với ID đã nhập.");
-            return new ArrayList<>();
+            return null;
         }
-        List<Card> cardsInSelectedDeck = cardService.getCardsByDeck(selectedDeck);
-        if (cardsInSelectedDeck.isEmpty()) {
-            System.out.println("Không có thẻ nào trong bộ thẻ đã chọn");
+        List<Card> cardsInSelectedDeck = cardService.findCardsByDeckId(deckId);
+        if (cardsInSelectedDeck == null || cardsInSelectedDeck.isEmpty()) {
+            System.out.println("Không có thẻ nào trong bộ thẻ: " + selectedDeck.getId());
+            return null;
         }
         return cardsInSelectedDeck;
     }
@@ -236,11 +244,11 @@ public class TestService {
     }
 
     public void printHeader() {
-        System.out.printf("%-5s%-30s%-30s%-20s%-20s%n", "ID", "Name", "TestStatus", "CreatedDate", "PassScoreThreshold");
+        System.out.printf("%-5s%-30s%-25s%-30s%-10s%n", "ID", "Name", "TestStatus", "CreatedDate", "PassScoreThreshold");
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public void showTestDetail(Test test) {
-        System.out.printf("%-5s%-30s%-30s%-20s%-20s%n", test.getId(), test.getName(), test.getTestStatus(), test.getCreatedDate(), test.getPassScoreThreshold());
+        System.out.printf("%-5s%-30s%-25s%-30s%-10s%n", test.getId(), test.getName(), test.getTestStatus(), test.getCreatedDate(), test.getPassScoreThreshold());
     }
 }

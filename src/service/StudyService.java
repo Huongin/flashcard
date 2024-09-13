@@ -66,12 +66,15 @@ public class StudyService {
         //Chọn và nhập ID bộ thẻ muốn học
         int deckId;
         Deck selected = null;
+        Scanner scanner = new Scanner(System.in);
         while (true) {
             try {
                 System.out.println("Nhập ID bộ thẻ muốn học");
-                deckId = new Scanner(System.in).nextInt();
+                deckId = scanner.nextInt();
+                scanner.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
+                scanner.nextLine();
                 continue;
             }
             for (Deck deck : assignedDecks) {
@@ -130,12 +133,15 @@ public class StudyService {
         //Chọn và nhập ID  bộ thẻ muốn học
         int deckId;
         Deck selected = null;
+        Scanner scanner = new Scanner(System.in);
         while (true) {
             try {
                 System.out.println("Nhập ID bộ thẻ muốn học");
-                deckId = new Scanner(System.in).nextInt();
+                deckId = scanner.nextInt();
+                scanner.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Giá trị bạn vừa nhập không phải là một số nguyên. Vui lòng nhập lại.");
+                scanner.nextLine();
                 continue;
             }
             for (Deck deck : userDecks) {
@@ -235,5 +241,17 @@ public class StudyService {
                 System.out.println("------------------------------------------");
             }
         }
+    }
+
+    // Xóa lịch sử học theo deckId
+    public void deleteByDeckId(int deleteId) {
+        List<Study> studiesToRemove = new ArrayList<>();
+        for (Study study : studies){
+            if (study.getDeck().getId() == deleteId){
+                studiesToRemove.add(study);
+            }
+        }
+        studies.removeAll(studiesToRemove);
+        saveStudyData();
     }
 }

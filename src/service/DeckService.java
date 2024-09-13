@@ -180,6 +180,7 @@ public class DeckService {
     }
 
     public void showCardDeckList() {
+        printHeader();
         for (Deck deck : decks) {
             showDeckDetail(deck);
         }
@@ -187,16 +188,22 @@ public class DeckService {
 
 
     public void showDeck(Deck deck) {
+        printHeader();
         showDeckDetail(deck);
     }
 
+    public void printHeader(){
+        System.out.printf("%-5s %-20s %-10s %-50s %-25s%n", "ID", "Topic", "Level","Description", "Created Date");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------");
+    }
+
     public static void showDeckDetail(Deck deck) {
-        System.out.println("Id: " + deck.getId());
-        System.out.println("Topic: " + deck.getTopic());
-        System.out.println("Level: " + deck.getLevel());
-        System.out.println("Created Date: " + deck.getCreatedDate());
-        System.out.println("Description: " + deck.getDescription());
-        System.out.println("------------------------------------------");
+        System.out.printf("%-5s %-20s %-10s %-50s %-25s%n",
+                deck.getId(),
+                deck.getTopic(),
+                deck.getLevel(),
+                deck.getDescription(),
+                deck.getCreatedDate());
     }
 
 
@@ -213,7 +220,6 @@ public class DeckService {
     }
 
     //Chức năng gán người dùng vào bộ thẻ của admin
-
     public void assignUserToDeck() {
         // Danh sách người dùng được gán vào bộ thẻ
         List<User> assignedUsers = new ArrayList<>();//Danh sách người dùng được chọn gán vào bộ thẻ
@@ -281,13 +287,4 @@ public class DeckService {
         return assignedDecks;
     }
 
-    public List<Deck> getAdminDecks(){
-        List<Deck> adminDecks = new ArrayList<>();
-        for (Deck deck : decks){
-            if (deck.getCreator().getRole().equals(UserRole.ADMIN)){
-                adminDecks.add(deck);
-            }
-        }
-        return adminDecks;
-    }
 }

@@ -83,10 +83,11 @@ public class UserMenu {
             System.out.println("4. Tạo thẻ học cá nhân");
             System.out.println("5. Cập nhật thông tin thẻ học ");
             System.out.println("6. Xóa thẻ học");
-            System.out.println("7. Học cùng thẻ học cá nhân");
-            System.out.println("8. Thoát  ");
+            System.out.println("7. Hiện danh sách từ vựng theo chủ đề");
+            System.out.println("8. Học cùng thẻ học cá nhân");
+            System.out.println("9. Thoát  ");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng " ,
-                    "Chức năng là số dương từ 1 tới 8, vui lòng nhập lại: ", 1, 8);
+                    "Chức năng là số dương từ 1 tới 9, vui lòng nhập lại: ", 1, 9);
             switch (choice) {
                 case 1:
                     deckService.createDeck();
@@ -108,6 +109,7 @@ public class UserMenu {
                         break;
                     }
                     deckService.deleteDeckById(deleteId);
+                    cardService.deleteByDeckId(deleteId);
                     break;
                 case 4:
                     cardService.createCard();
@@ -130,10 +132,13 @@ public class UserMenu {
                     cardService.deleteCardById(cardId);
                     break;
                 case 7:
-                    studyService.studyWithPersonalCards();
+                    cardService.findCardByNameTopic();
                     break;
                 case 8:
+                    studyService.studyWithPersonalCards();
                     break;
+                case 9:
+                    return;
             }
         }
     }

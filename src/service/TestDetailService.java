@@ -111,12 +111,12 @@ public class TestDetailService {
     }
 
     public void printHeader() {
-        System.out.printf("%-30s%-30s%-10s%-20s%-10s%-10s%-10s%n", "FullName", "TestName","PassScoreThreshold", "DateTest", "CorrectCards", "IncorrectCards", "Score");
+        System.out.printf("%-30s%-30s%-10s%-30s%-10s%-10s%-10s%n", "FullName", "TestName","PassScoreThreshold", "DateTest", "CorrectCards", "IncorrectCards", "Score");
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public void showTestDetail(TestDetail testDetail) {
-        System.out.printf("%-30s%-30s%-10s%-20s%-10s%-10s%-10s%n", testDetail.getUser().getFullname(), testDetail.getTest().getName(),testDetail.getTest().getPassScoreThreshold(), testDetail.getTestDate(), testDetail.getCorrectCard(), testDetail.getIncorrectCard(), testDetail.getScore());
+        System.out.printf("%-30s%-30s%-10s%-30s%-10s%-10s%-10s%n", testDetail.getUser().getFullname(), testDetail.getTest().getName(),testDetail.getTest().getPassScoreThreshold(), testDetail.getTestDate(), testDetail.getCorrectCard(), testDetail.getIncorrectCard(), testDetail.getScore());
     }
 
     public void testResultsByIdTest(int testId) {

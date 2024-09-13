@@ -1,11 +1,13 @@
 package view;
 
+import entity.Deck;
 import entity.User;
 import main.Main;
 import service.*;
 import util.InputUtil;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -14,13 +16,15 @@ public class AdminMenu {
     private final UserService userService;
     private final CardService cardService;
     private final DeckService deckService;
+    private final StudyService studyService;
     private final TestService testService;
     private final TestDetailService testDetailService;
 
-    public AdminMenu(UserService userService, CardService cardService, DeckService deckService, TestService testService, TestDetailService testDetailService) {
+    public AdminMenu(UserService userService, CardService cardService, DeckService deckService, StudyService studyService, TestService testService, TestDetailService testDetailService) {
         this.userService = userService;
         this.cardService = cardService;
         this.deckService = deckService;
+        this.studyService = studyService;
         this.testService = testService;
         this.testDetailService = testDetailService;
     }
@@ -143,9 +147,9 @@ public class AdminMenu {
                         break;
                     }
                     deckService.deleteDeckById(deleteId);
-                    // TODO - xóa card và study tương ứng nữa
-//                    cardService.deleteByDeckId(deleteId);
-//                    studyService.deleteByDeckId(deleteId);
+                    // TODO - xóa card và study tương ứng
+                    cardService.deleteByDeckId(deleteId);
+                    studyService.deleteByDeckId(deleteId);
                     break;
                 case 4:
                     deckService.showCardDeckList();
@@ -168,9 +172,10 @@ public class AdminMenu {
             System.out.println("3. Xóa thẻ học");
             System.out.println("4. Tìm kiếm thẻ học theo từ");
             System.out.println("5. Tìm kiếm thẻ học theo chủ đề");
-            System.out.println("6. Thoát");
+            System.out.println("6. Tìm kiếm thẻ học theo ID chủ đề");
+            System.out.println("7. Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng ",
-                    "Chức năng là số dương từ 1 tới 6, vui lòng nhập lại: ", 1, 6);
+                    "Chức năng là số dương từ 1 tới 7, vui lòng nhập lại: ", 1, 7);
             switch (choice) {
                 case 1:
                     cardService.createCard();
@@ -199,6 +204,26 @@ public class AdminMenu {
                     cardService.findCardByNameTopic();
                     break;
                 case 6:
+                    System.out.println("Mời bạn nhập ID bộ thẻ muốn xóa: ");
+                    int deckId;
+                    Deck selectedDeck = null;
+
+                    while (true) {
+                        try {
+                            deckId = new Scanner(System.in).nextInt();
+                            selectedDeck = deckService.findDeckById(deckId);
+                            if (selectedDeck == null) {
+                                System.out.println("Bộ thẻ với ID này không tồn tại. Vui lòng nhập lại: ");
+                                continue;
+                            }
+                            break;
+                        } catch (InputMismatchException e) {
+                            System.out.println("ID không hợp lệ, vui lòng nhập lại: ");
+                        }
+                    }
+                    cardService.findCardsByDeckId(deckId);
+                    break;
+                case 7:
                     return;
             }
         }
@@ -215,15 +240,16 @@ public class AdminMenu {
             System.out.println("3.Cập nhật thông tin người dùng ");
             System.out.println("4.Khóa hoạt động của người dùng");
             System.out.println("5.Mở khóa hoạt động của người dùng");
-            System.out.println("6.Thoát");
+            System.out.println("6.Danh sách người dùng");
+            System.out.println("7.Thoát");
             int choice = InputUtil.chooseOption("Xin mời chọn chức năng ",
-                    "Chức năng là số dương từ 1 đến 6, Vui lòng nhập lại: ", 1, 6);
+                    "Chức năng là số dương từ 1 đến 7, Vui lòng nhập lại: ", 1, 7);
             switch (choice) {
                 case 1:
                     userService.searchUserByName();
                     break;
                 case 2:
-                    userService.creatUserInfo();
+                    userService.createUserForAdmin();
                     break;
                 case 3:
                     userService.updateUserInformationByAdmin();
@@ -265,6 +291,8 @@ public class AdminMenu {
                     userService.unlockedUserById(idUserLock);
                     break;
                 case 6:
+                    userService.showUsers();
+                case 7:
                     return;
             }
         }
